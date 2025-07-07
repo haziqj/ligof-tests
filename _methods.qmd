@@ -1,10 +1,9 @@
+---
+bibliography: refs.bib
+csl: apa.csl
+---
 
-<!-- --- -->
-<!-- bibliography: refs.bib -->
-<!-- csl: apa.csl -->
-<!-- --- -->
-
-<!-- {{< include _extensions/_maths_shortcuts.qmd >}} -->
+{{< include _extensions/_maths_shortcuts.qmd >}}
 
 ```{r}
 #| include: false
@@ -20,7 +19,7 @@ Let $\mathcal R = \{ \mathbf c = (c_1,\dots, c_p)^\top \mid c_i \in \{1,\dots, m
 The joint probability of observing a response pattern $\mathbf c_r \in \mathcal R$ is given by
 $$
 \pi_r = \Pr(\mathbf y = \mathbf c_r) = \Pr(y_1 = \mathbf c_{r1}, \ldots, y_p = \mathbf c_{rp}), \hspace{2em} r = 1, \ldots, R,
-$$
+$${#eq-each-joint-resp-prob}
 with $\sum_r \pi_R = 1$.
 Collect all response probabilities into the vector $\boldsymbol \pi = (\pi_1, \ldots, \pi_R)^\top \in [0,1]^R$.
 An example with $p=3$, $m_1=2$, and $m_2=m_3=3$ is given below.
@@ -189,17 +188,43 @@ As a remark, the UV approach is commonly employed in the context of confirmatory
 
 For this factor analysis model, the parameters of interest are the non-zero entries $\blambda$ of the loading matrix $\bLambda$, the unique non-diagonal entries $\bpsi$ in the factor correlation matrix $\bPsi$, and the thresholds $\btau^{(i)} = (\tau_1^{(i)},\dots,\tau_{m_i-1}^{(i)})^\top$ for each ordinal item $y_i$.
 Collectively, these parameters are denoted by $\theta = (\blambda^\top,\brho^\top,\btau^{(1)},\dots,\btau^{(p)})^\top$ belonging to some parameter space $\Theta$.
+Under this CFA model, each joint response probability $\pi_r$ from @eq-each-joint-resp-prob is now evaluated as a function of  $\theta$:
+$$
+\pi_r := \pi_r(\theta) = \idotsint \limits_{\mathcal C_r} \phi_p(\by^* \mid \bzero,\bSigma_{\by^*}) \, \dint\by^*,
+$$
+where the $p$-dimensional integral is taken over the set $\mathcal C_r = \{ \by^* \in \bbR^p \mid y_i = \mathbf c_{ri}, i=1,\dots,p\}$, the set of all continuous values that yield the response pattern $\mathbf c_r$.
+
+Many methods exist...
+
+- This includes minimum variance or best asymptotic  normal (BAN) estimators such as the maximum likelihood estimator (MLE) or the  minimum chi-square estimator. It also includes the limited information estimators  for IRT models: those implemented in programs such as LISREL, EQS, MPLUS,  or NOHARM, and those proposed by Christoffersson (1975) and J ̈oreskog and  Moustaki (2001).
+- Also, the limited information estimators considered by Christoffersson (1975), J ̈oreskog (1994); see also Maydeu-Olivares (2006), J ̈oreskog and Moustaki (2001), Lee, Poon, and Bentler (1995), Maydeu-Olivares (2001b), and Muth ́en (1978, 1984, 1993) are special cases of this framework.
+- (e.g., Christoffersson 1975; Muthén 1978, 1984, 1993).
+
+They have in common that the estimating equations take the same basic form 
+$$
+U(\theta) \propto \Delta_\theta^\top W_\theta m_n(\theta)
+$$
+where $\Delta_\theta$ is the Jacobian matrix containing the derivatives of the model moments with respect to the parameters, $W_\theta$ is a weight matrix, and $m_n(\theta)$ is the vector of differences between the observed and model-implied moments.
 
 ### Parameter estimation
 
+Suppose that a sample $\mathcal Y = \{\by^{(s)}\}_{s=1}^n$ is obtained, where $\by^{(s)} = (y_1^{(s)},\ldots,y_p^{(s)})^\top$ represents the $p$-dimensional ordinal-data observation from subject $s\in\{1,\dots,n\}$.
+As a remark, samples may not necessarily be independent, and in such cases, corresponding sampling weights $\omega_s$ can be used to account for the sampling design [@jamil2025pairwise], and most of what will be discussed below can be adapted to account for this.
+
+
+
 ### Distribution of residuals
 
-### Wald type tests
+$$
+\sqrt{n} (\bp - \bpi) \xrightarrow{D} {\N}_R(\bzero, \bSigma)
+$${#eq-clt-prop}
 
-### Pearson type tests
+### Wald-type tests
+
+### Pearson-type tests
 
 ### General GOF tests
 
 ### Estimation of degrees of freedom
 
-<!-- ## References -->
+## References
