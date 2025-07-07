@@ -13,7 +13,6 @@ library(kableExtra)
 library(gt)
 ```
 
-
 ### Ordinal data
 
 Consider the case of analysing multivariate data $\mathbf y = (y_{1}, \ldots, y_{p})^\top$, where each item $y_{i}$ is an ordinal random variable with $m_i$ categories, $i=1,\dots,p$.
@@ -152,6 +151,45 @@ For further details, consult @reiser1996analysis and @maydeu2006limited.
 
 ### Confirmatory factor analysis
 
+The confirmatory factor analysis (CFA) model imposes a structure on the joint response probabilities by assuming that the $p$ observed variables are manifestations of a smaller set of $q$ latent variables.
+In this way, the CFA may be viewed as a data-reduction technique since, effectively, the correlations among variables are modelled by a pre-specific factor structure using lower-dimensional data summaries.
+
+CFA is typically used for continuous manifest variables, but it can also be applied to ordinal data.
+A common approach is the *underlying variable* (UV) approach, where the observed responses $y_i$ are assumed to be discretised versions of continuous latent variables $y_i^*$.
+The connection is made through
+$$
+y_i = \begin{cases}
+1 & \ \ \tau_0^{(i)} < y^*_i < \tau_1^{(i)} \\
+2 &  \ \ \tau_{1}^{(i)} <  y^*_i < \tau_2^{(i)} \\
+3 &  \ \ \tau_{2}^{(i)} <  y^*_i < \tau_3^{(i)} \\
+\vdots &  \hphantom{\tau_{1}^{(i)} \leq \ \ \ } \vdots \\
+m_i & \tau_{m_i-1}^{(i)} < y^*_i < \tau_{m_i}^{(i)},
+\end{cases}
+$$
+with the *thresholds* $\tau_k^{(i)}$ for item $i$ satisfying the ordering 
+$$
+-\infty \equiv \tau_0^{(i)} < \tau_1^{(i)} < \tau_2^{(i)} < \cdots < \tau_{m_i-1}^{(i)} < \tau_m^{(i)} \equiv +\infty.
+$$
+Evidently, the model is invariant to a linear transformation, since scaling and shifting the underlying variables $y_i^*$ do not affect the outcome of the ordinal variable $y_i$.
+For this reason it is convenient to assume, for the purposes of model identifiability, a zero mean Gaussian distribution $\by^* \sim \N_p(\bzero,\bSigma_{\by^*})$, where $\bSigma_{\by^*}$ is a correlation matrix.
+
+The underlying continuous variables $\by^*$, unlike their discrete counterparts $\by$, are now suitable to be modelled using a factor analysis model.
+Here, the goal is to find a set of latent factors $\bfeta = (\eta_1,\dots,\eta_q)^\top \in \bbR^q$, with $q \ll p$, that sufficiently explain the covariance structure of the $p$-dimensional variable space.
+This is achieved by the relationship
+$$
+\by^* = \bLambda \bfeta + \bepsilon,
+$$
+where $\bLambda$ is a (often sparse) $p \times q$ matrix of factor loadings, and $\bepsilon$ is a vector of residuals.
+Certain distributional assumptions are made, namely that $\bfeta \sim \N_q(\bzero,\bPsi)$ with $\bPsi$ a correlation matrix, $\bepsilon \sim \N_p(\bzero,\bTheta_{\bepsilon})$ with $\bTheta_{\bepsilon} = \bI - \diag(\bLambda \bPsi \bLambda^\top)$, and that $\Cov(\bfeta,\bepsilon) = \bzero$.
+Together, this implies that the polychoric correlation matrix of $\by$ is given by
+$$
+\bSigma_{\by^*} = \bLambda \bPsi \bLambda^\top + \bTheta_{\bepsilon} \in \bbR^{p\times p}.
+$$
+As a remark, the UV approach is commonly employed in the context of confirmatory factor analysis (CFA) models due to the ease of modelling, though other approaches such as item response theory (IRT) models are also available [@joreskog2001factor].
+
+For this factor analysis model, the parameters of interest are the non-zero entries $\blambda$ of the loading matrix $\bLambda$, the unique non-diagonal entries $\bpsi$ in the factor correlation matrix $\bPsi$, and the thresholds $\btau^{(i)} = (\tau_1^{(i)},\dots,\tau_{m_i-1}^{(i)})^\top$ for each ordinal item $y_i$.
+Collectively, these parameters are denoted by $\theta = (\blambda^\top,\brho^\top,\btau^{(1)},\dots,\btau^{(p)})^\top$ belonging to some parameter space $\Theta$.
+
 ### Parameter estimation
 
 ### Distribution of residuals
@@ -163,3 +201,5 @@ For further details, consult @reiser1996analysis and @maydeu2006limited.
 ### General GOF tests
 
 ### Estimation of degrees of freedom
+
+<!-- ## References -->
