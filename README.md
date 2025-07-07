@@ -1,7 +1,7 @@
 
-# quarto-manuscript-template
+# Limited information goodness-of-fit tests for ordinal factor models
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-This is my template for writing academic manuscripts using Quarto.
+Manuscript in preparation.
