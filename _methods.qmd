@@ -1,3 +1,8 @@
+---
+bibliography: refs.bib
+csl: apa.csl
+---
+
 {{< include _extensions/_maths_shortcuts.qmd >}}
 
 ```{r}
@@ -69,13 +74,80 @@ tab_rp |>
   tab_options(table.width = "80%")
 ```
 
-Response patterns for $p=3$ and $m_1=2$, $m_2=3$, and $m_3=3$.
+Response patterns for $p=3$ with $m_1=2$, and $m_2=m_3=3$.
 :::
 
+Later on we wish to use lower-order residuals to assess the fit of a model to the data, which first requires a description of lower-order moments and its connection to the joint response probabilities.
+<!-- Let $I_{ik} = [y_i = k]$ be the indicator variable for the event that $y_i$ takes the value $k$, where $[\cdot]$ is the Iverson bracket. -->
+Marginally, each $y_i$ can be viewed as a multinoulli random variable with event probabilities $\pi^{(i)}_k = \Pr(y_i = k)$, $k=1,\dots m_i$, that sum to one.
+Therefore, this univariate distribution is characterised by its $(m_i-1)$ *moments* $\pi^{(i)}_2,\dots,\pi^{(i)}_{m_i}$, with the first moment being redundant due to the sum to unity constraint.
+All univariate moments can be collected into the vector $\dot{\boldsymbol\pi}_1 = (\pi^{(i)}_k)^\top$ whose dimension is $S_1 = \sum_i (m_i-1)$.
+In a similar light, the bivariate distribution of $(y_i, y_j)$ is characterised by its $(m_i-1)(m_j-1)$ *joint moments* $\pi^{(ij)}_{k,l} = \Pr(y_i = k, y_j = l)$, $k=2,\dots,m_i$, $l=2,\dots,m_j$.
+Also collect all bivariate moments into the vector $\dot{\boldsymbol\pi}_2 = (\pi^{(ij)}_{k,l})^\top$ whose dimension is $S_2 = \sum_{i<j} (m_i-1)(m_j-1)$.
+Finally, denote by $\boldsymbol\pi_2 = (\dot\bpi_1^\top, \dot\bpi_2^\top)^\top$ the vector of multivariate moments up to order 2, which is a vector of length $S = S_1 + S_2$.
 
-Marginally, each $y_i$ can be viewed as a multinoulli random variable with event probabilities $\pi_{ik} = \Pr(y_i = k)$.
+Because the lower order moments are contained in the higher order moments, the vector $\boldsymbol\pi_2$ can be extracted from the joint probabilities $\bpi$ via a linear operation $\bpi_2 = \bT_2 \bpi$ [@jamil2025pairwise].
+As an example, continuing from the $p=3$ instance above, the moments for the first variable $y_1$, $\Pr(y_1=2)$ can be obtained by *summing* over all joint probabilities whose patterns contain $y_1=2$.
+The positions of these joint probabilities in the vector $\bpi$ are picked up by the first row of the matrix $\bT_2$.
+Similarly, the two bivariate moments of $(y_1,y_2)$, i.e. $\pi^{(12)}_{22}$ and $\pi^{(12)}_{23}$ are obtained by summing over the joint probabilities whose patterns contain $y_1=2$ and $y_2=2$, and $y_1=2$ and $y_2=3$, respectively.
 
+::: {#fig-T2-matrix}
+```{r}
+#| echo: false
+options(width = 100)
+create_T2_mat <- function(m) {
+  # m: integer vector of length p, where m[i] = number of categories of variable i
+  p <- length(m)
+  # 1) all joint patterns (rows = ∏ m[i], cols = p)
+  patterns <- expand.grid(rev(lapply(m, seq_len)), KEEP.OUT.ATTRS = FALSE, stringsAsFactors = FALSE)
+  patterns <- patterns[, rev(seq_len(p))] # reverse to match y1, y2, ...
+  n_pat <- nrow(patterns)
+  
+  # 2) precompute total number of rows: sum_i (m[i]-1) + sum_{i<j} (m[i]-1)*(m[j]-1)
+  uni_rows <- sum(m - 1)
+  biv_rows <- 0L
+  for(i in seq_len(p-1)) for(j in (i+1):p)
+    biv_rows <- biv_rows + (m[i]-1)*(m[j]-1)
+  total_rows <- uni_rows + biv_rows
+  
+  # 3) allocate
+  out <- matrix(0L, nrow = total_rows, ncol = n_pat)
+  rn  <- character(total_rows)
+  
+  # 4) fill univariate indicator rows
+  r <- 1L
+  for(i in seq_len(p)) {
+    for(cat in 2:m[i]) {
+      out[r, ] <- as.integer(patterns[[i]] == cat)
+      rn[r]   <- paste0("Y", i, "=", cat)
+      r       <- r + 1L
+    }
+  }
+  
+  # 5) fill bivariate indicator rows
+  for(i in seq_len(p-1)) for(j in (i+1):p) {
+    for(c1 in 2:m[i]) for(c2 in 2:m[j]) {
+      out[r, ] <- as.integer(patterns[[i]] == c1 & patterns[[j]] == c2)
+      rn[r]   <- paste0("Y", i, "=", c1, ",Y", j, "=", c2)
+      r       <- r + 1L
+    }
+  }
+  
+  rownames(out) <- rn
+  colnames(out) <- apply(patterns, 1, paste0, collapse = "")
+  out
+}
+create_T2_mat(c(2, 3, 3))
+```
 
+Matrix $\bT_2$ for the case of $p=3$ with $m_1=2$, and $m_2=m_3=3$.
+
+:::
+
+Note that this construction of lower-order moments generalises to any order $q \le p$, but the total number of moments up to order $q$ grows combinatorially in both $p$ and the category counts $m_i$, yielding design matrices $\mathbf{T}_q$ that can become computationally burdensome. 
+Moreover, although we arbitrarily dropped the first moment in the foregoing construction, the choice of which category to omit is immaterial.
+This is because category probabilities sum to one, so excluding any one category produces a similar-dimensional parameterisation algebraically equivalent to excluding any other. 
+For further details, consult @reiser1996analysis and @maydeu2006limited.
 
 ## Confirmatory factor analysis
 
