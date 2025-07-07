@@ -1,9 +1,10 @@
----
-bibliography: refs.bib
-csl: apa.csl
----
 
-{{< include _extensions/_maths_shortcuts.qmd >}}
+<!-- --- -->
+<!-- bibliography: refs.bib -->
+<!-- csl: apa.csl -->
+<!-- --- -->
+
+<!-- {{< include _extensions/_maths_shortcuts.qmd >}} -->
 
 ```{r}
 #| include: false
@@ -13,7 +14,7 @@ library(gt)
 ```
 
 
-## Ordinal data
+### Ordinal data
 
 Consider the case of analysing multivariate data $\mathbf y = (y_{1}, \ldots, y_{p})^\top$, where each item $y_{i}$ is an ordinal random variable with $m_i$ categories, $i=1,\dots,p$.
 Let $\mathcal R = \{ \mathbf c = (c_1,\dots, c_p)^\top \mid c_i \in \{1,\dots, m_i\}\}$ be the set of all possible response patterns, and let $R=\prod_{i} m_i$ be the cardinality of this set.
@@ -149,16 +150,16 @@ Moreover, although we arbitrarily dropped the first moment in the foregoing cons
 This is because category probabilities sum to one, so excluding any one category produces a similar-dimensional parameterisation algebraically equivalent to excluding any other. 
 For further details, consult @reiser1996analysis and @maydeu2006limited.
 
-## Confirmatory factor analysis
+### Confirmatory factor analysis
 
-## Parameter estimation
+### Parameter estimation
 
-## Distribution of residuals
+### Distribution of residuals
 
-## Wald type tests
+### Wald type tests
 
-## Pearson type tests
+### Pearson type tests
 
-## General GOF tests
+### General GOF tests
 
-## Estimation of degrees of freedom
+### Estimation of degrees of freedom

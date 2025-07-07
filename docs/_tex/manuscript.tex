@@ -139,6 +139,22 @@
  
 
 
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{anyfontsize}
 \KOMAoption{captions}{tableheading}
 \include{_extensions/maths_shortcuts.tex}
 \makeatletter
@@ -175,15 +191,6 @@
 \@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
 \floatname{codelisting}{Listing}
 \newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
-\usepackage{amsthm}
-\theoremstyle{plain}
-\newtheorem{theorem}{Theorem}[section]
-\theoremstyle{remark}
-\AtBeginDocument{\renewcommand*{\proofname}{Proof}}
-\newtheorem*{remark}{Remark}
-\newtheorem*{solution}{Solution}
-\newtheorem{refremark}{Remark}[section]
-\newtheorem{refsolution}{Solution}[section]
 \makeatother
 \makeatletter
 \makeatother
@@ -195,8 +202,9 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 \hypersetup{
-  pdftitle={A title},
-  pdfkeywords={Keyword, Keyword, Keyword, Keyword, Keyword},
+  pdftitle={Limited information goodness-of-fit tests for ordinal factor models},
+  pdfkeywords={Ordinal data, Confirmatory factor analysis, Limited
+information, Goodness-of-fit tests},
   colorlinks=true,
   linkcolor={blue},
   filecolor={Maroon},
@@ -205,144 +213,211 @@
   pdfcreator={LaTeX via pandoc}}
 
 
-\title{A title}
-\author{Haziq Jamil \and Another Coauthor}
+\title{Limited information goodness-of-fit tests for ordinal factor
+models}
+\author{Haziq Jamil}
 \date{}
 \begin{document}
 \maketitle
 \begin{abstract}
-A nice abstract goes here.
+Limited information approaches overcome sparsity issues and
+computational challenges in traditional goodness-of-fit tests. This
+paper describes the implementation of LIGOF tests for ordinal factor
+models that have been fitted using the \texttt{\{lavaan\}} package in R.
+The tests are computationally efficient and reliable, and adapted to
+suit whichever parameter estimation procedure was used to fit the model.
+The implementation is available as an R package called
+\texttt{\{lavaan.ligof\}}.
 \end{abstract}
 
 
 \section{Introduction}\label{introduction}
 
-The structural equation models are
-\begin{equation}\phantomsection\label{eq-sem}{
-\begin{aligned}
-  \by &= \bnu + \bLambda \bfeta + \bepsilon \\
-  \bfeta &= \balpha + \bB \bfeta  + \bzeta \\
-  \bepsilon &\sim \N(\bzero, \bTheta_{\bepsilon}) \\
-  \bzeta &\sim \N(\bzero, \bPsi) \\
-\end{aligned}
-}\end{equation}
-
-where \(\bLambda\) is the factor loading matrix, \(\bfeta\) is the
-latent variable vector, \(\bepsilon\) is the measurement error vector,
-\(\bnu\) is the intercept vector, \(\balpha\) is the intercept vector
-for the latent variables, \(\bB\) is the regression coefficient matrix
-for the latent variables, and \(\bTheta_{\bepsilon}\) and \(\bPsi\) are
-the covariance matrices of the measurement errors and latent variables,
-respectively. The model defined by Equation~\ref{eq-sem} is very nice.
-
 \section{Methods}\label{methods}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sagittis
-posuere ligula sit amet lacinia. Duis dignissim pellentesque magna,
-rhoncus congue sapien finibus mollis. Ut eu sem laoreet, vehicula ipsum
-in, convallis erat. Vestibulum magna sem, blandit pulvinar augue sit
-amet, auctor malesuada sapien. Nullam faucibus leo eget eros hendrerit,
-non laoreet ipsum lacinia. Curabitur cursus diam elit, non tempus ante
-volutpat a. Quisque hendrerit blandit purus non fringilla. Integer sit
-amet elit viverra ante dapibus semper. Vestibulum viverra rutrum enim,
-at luctus enim posuere eu. Orci varius natoque penatibus et magnis dis
-parturient montes, nascetur ridiculus mus.
+\subsection{Ordinal data}\label{ordinal-data}
 
-Nunc ac dignissim magna. Vestibulum vitae egestas elit. Proin feugiat
-leo quis ante condimentum, eu ornare mauris feugiat. Pellentesque
-habitant morbi tristique senectus et netus et malesuada fames ac turpis
-egestas. Mauris cursus laoreet ex, dignissim bibendum est posuere
-iaculis. Suspendisse et maximus elit. In fringilla gravida ornare.
-Aenean id lectus pulvinar, sagittis felis nec, rutrum risus. Nam vel
-neque eu arcu blandit fringilla et in quam. Aliquam luctus est sit amet
-vestibulum eleifend. Phasellus elementum sagittis molestie. Proin tempor
-lorem arcu, at condimentum purus volutpat eu. Fusce et pellentesque
-ligula. Pellentesque id tellus at erat luctus fringilla. Suspendisse
-potenti.
+Consider the case of analysing multivariate data
+\(\mathbf y = (y_{1}, \ldots, y_{p})^\top\), where each item \(y_{i}\)
+is an ordinal random variable with \(m_i\) categories, \(i=1,\dots,p\).
+Let
+\(\mathcal R = \{ \mathbf c = (c_1,\dots, c_p)^\top \mid c_i \in \{1,\dots, m_i\}\}\)
+be the set of all possible response patterns, and let
+\(R=\prod_{i} m_i\) be the cardinality of this set. The joint
+probability of observing a response pattern
+\(\mathbf c_r \in \mathcal R\) is given by \[
+\pi_r = \Pr(\mathbf y = \mathbf c_r) = \Pr(y_1 = \mathbf c_{r1}, \ldots, y_p = \mathbf c_{rp}), \hspace{2em} r = 1, \ldots, R,
+\] with \(\sum_r \pi_R = 1\). Collect all response probabilities into
+the vector
+\(\boldsymbol \pi = (\pi_1, \ldots, \pi_R)^\top \in [0,1]^R\). An
+example with \(p=3\), \(m_1=2\), and \(m_2=m_3=3\) is given below. In
+total, there are \(R=2 \times 3 \times 3 = 18\) response patterns as
+shown in Table~\ref{tbl-response-patterns}.
+
+\begin{table}
+
+\caption{\label{tbl-response-patterns}Response patterns for \(p=3\) with
+\(m_1=2\), and \(m_2=m_3=3\).}
+
+\begin{minipage}{0.50\linewidth}
+
+\fontsize{12.0pt}{14.4pt}\selectfont
+\begin{tabular*}{0.8\linewidth}{@{\extracolsep{\fill}}rrrrr}
+\toprule
+\(r\) & \(y_1\) & \(y_2\) & \(y_3\) & Pattern \\ 
+\midrule\addlinespace[2.5pt]
+1 & 1 & 1 & 1 & 111 \\ 
+2 & 1 & 1 & 2 & 112 \\ 
+3 & 1 & 1 & 3 & 113 \\ 
+4 & 1 & 2 & 1 & 121 \\ 
+5 & 1 & 2 & 2 & 122 \\ 
+6 & 1 & 2 & 3 & 123 \\ 
+7 & 1 & 3 & 1 & 131 \\ 
+8 & 1 & 3 & 2 & 132 \\ 
+9 & 1 & 3 & 3 & 133 \\ 
+\bottomrule
+\end{tabular*}
+
+\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+
+\fontsize{12.0pt}{14.4pt}\selectfont
+\begin{tabular*}{0.8\linewidth}{@{\extracolsep{\fill}}rrrrr}
+\toprule
+\(r\) & \(y_1\) & \(y_2\) & \(y_3\) & Pattern \\ 
+\midrule\addlinespace[2.5pt]
+10 & 2 & 1 & 1 & 211 \\ 
+11 & 2 & 1 & 2 & 212 \\ 
+12 & 2 & 1 & 3 & 213 \\ 
+13 & 2 & 2 & 1 & 221 \\ 
+14 & 2 & 2 & 2 & 222 \\ 
+15 & 2 & 2 & 3 & 223 \\ 
+16 & 2 & 3 & 1 & 231 \\ 
+17 & 2 & 3 & 2 & 232 \\ 
+18 & 2 & 3 & 3 & 233 \\ 
+\bottomrule
+\end{tabular*}
+
+\end{minipage}%
+
+\end{table}%
+
+Later on we wish to use lower-order residuals to assess the fit of a
+model to the data, which first requires a description of lower-order
+moments and its connection to the joint response probabilities.
+Marginally, each \(y_i\) can be viewed as a multinoulli random variable
+with event probabilities \(\pi^{(i)}_k = \Pr(y_i = k)\),
+\(k=1,\dots m_i\), that sum to one. Therefore, this univariate
+distribution is characterised by its \((m_i-1)\) \emph{moments}
+\(\pi^{(i)}_2,\dots,\pi^{(i)}_{m_i}\), with the first moment being
+redundant due to the sum to unity constraint. All univariate moments can
+be collected into the vector
+\(\dot{\boldsymbol\pi}_1 = (\pi^{(i)}_k)^\top\) whose dimension is
+\(S_1 = \sum_i (m_i-1)\). In a similar light, the bivariate distribution
+of \((y_i, y_j)\) is characterised by its \((m_i-1)(m_j-1)\) \emph{joint
+moments} \(\pi^{(ij)}_{k,l} = \Pr(y_i = k, y_j = l)\),
+\(k=2,\dots,m_i\), \(l=2,\dots,m_j\). Also collect all bivariate moments
+into the vector \(\dot{\boldsymbol\pi}_2 = (\pi^{(ij)}_{k,l})^\top\)
+whose dimension is \(S_2 = \sum_{i<j} (m_i-1)(m_j-1)\). Finally, denote
+by \(\boldsymbol\pi_2 = (\dot\bpi_1^\top, \dot\bpi_2^\top)^\top\) the
+vector of multivariate moments up to order 2, which is a vector of
+length \(S = S_1 + S_2\).
+
+Because the lower order moments are contained in the higher order
+moments, the vector \(\boldsymbol\pi_2\) can be extracted from the joint
+probabilities \(\bpi\) via a linear operation \(\bpi_2 = \bT_2 \bpi\)
+(Jamil et al., 2025). As an example, continuing from the \(p=3\)
+instance above, the moments for the first variable \(y_1\),
+\(\Pr(y_1=2)\) can be obtained by \emph{summing} over all joint
+probabilities whose patterns contain \(y_1=2\). The positions of these
+joint probabilities in the vector \(\bpi\) are picked up by the first
+row of the matrix \(\bT_2\). Similarly, the two bivariate moments of
+\((y_1,y_2)\), i.e.~\(\pi^{(12)}_{22}\) and \(\pi^{(12)}_{23}\) are
+obtained by summing over the joint probabilities whose patterns contain
+\(y_1=2\) and \(y_2=2\), and \(y_1=2\) and \(y_2=3\), respectively.
 
 \begin{figure}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{manuscript_files/mediabag/Beo6Fv01AACgREABKBAS.png}}
+\begin{verbatim}
+          111 112 113 121 122 123 131 132 133 211 212 213 221 222 223 231 232 233
+Y1=2        0   0   0   0   0   0   0   0   0   1   1   1   1   1   1   1   1   1
+Y2=2        0   0   0   1   1   1   0   0   0   0   0   0   1   1   1   0   0   0
+Y2=3        0   0   0   0   0   0   1   1   1   0   0   0   0   0   0   1   1   1
+Y3=2        0   1   0   0   1   0   0   1   0   0   1   0   0   1   0   0   1   0
+Y3=3        0   0   1   0   0   1   0   0   1   0   0   1   0   0   1   0   0   1
+Y1=2,Y2=2   0   0   0   0   0   0   0   0   0   0   0   0   1   1   1   0   0   0
+Y1=2,Y2=3   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1   1   1
+Y1=2,Y3=2   0   0   0   0   0   0   0   0   0   0   1   0   0   1   0   0   1   0
+Y1=2,Y3=3   0   0   0   0   0   0   0   0   0   0   0   1   0   0   1   0   0   1
+Y2=2,Y3=2   0   0   0   0   1   0   0   0   0   0   0   0   0   1   0   0   0   0
+Y2=2,Y3=3   0   0   0   0   0   1   0   0   0   0   0   0   0   0   1   0   0   0
+Y2=3,Y3=2   0   0   0   0   0   0   0   1   0   0   0   0   0   0   0   0   1   0
+Y2=3,Y3=3   0   0   0   0   0   0   0   0   1   0   0   0   0   0   0   0   0   1
+\end{verbatim}
 
 }
 
-\caption{\label{fig-placeholder}Here's a caption.}
+\caption{\label{fig-T2-matrix}Matrix \(\bT_2\) for the case of \(p=3\)
+with \(m_1=2\), and \(m_2=m_3=3\).}
 
 \end{figure}%
 
-We need to update Figure~\ref{fig-placeholder} to a better one in the
-future!
+Note that this construction of lower-order moments generalises to any
+order \(q \le p\), but the total number of moments up to order \(q\)
+grows combinatorially in both \(p\) and the category counts \(m_i\),
+yielding design matrices \(\mathbf{T}_q\) that can become
+computationally burdensome. Moreover, although we arbitrarily dropped
+the first moment in the foregoing construction, the choice of which
+category to omit is immaterial. This is because category probabilities
+sum to one, so excluding any one category produces a similar-dimensional
+parameterisation algebraically equivalent to excluding any other. For
+further details, consult Reiser (1996) and Maydeu-Olivares \& Joe
+(2006).
+
+\subsection{Confirmatory factor
+analysis}\label{confirmatory-factor-analysis}
+
+\subsection{Parameter estimation}\label{parameter-estimation}
+
+\subsection{Distribution of residuals}\label{distribution-of-residuals}
+
+\subsection{Wald type tests}\label{wald-type-tests}
+
+\subsection{Pearson type tests}\label{pearson-type-tests}
+
+\subsection{General GOF tests}\label{general-gof-tests}
+
+\subsection{Estimation of degrees of
+freedom}\label{estimation-of-degrees-of-freedom}
+
+\section{Usage}\label{usage}
 
 \section*{References}\label{references}
 \addcontentsline{toc}{section}{References}
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
-\bibitem[\citeproctext]{ref-bartholomew2011latent}
-Bartholomew, D. J., Knott, M., \& Moustaki, I. (2011). \emph{Latent
-variable models and factor analysis: A unified approach} (3rd ed).
-Wiley.
+\bibitem[\citeproctext]{ref-jamil2025pairwise}
+Jamil, H., Moustaki, I., \& Skinner, C. (2025). Pairwise likelihood
+estimation and limited-information goodness-of-fit test statistics for
+binary factor analysis models under complex survey sampling.
+\emph{British Journal of Mathematical and Statistical Psychology},
+\emph{78}(1), 258--285. \url{https://doi.org/10.1111/bmsp.12358}
 
-\bibitem[\citeproctext]{ref-bollen1989structural}
-Bollen, K. A. (1989). \emph{Structural equations with latent variables}
-(pp. xiv, 514). John Wiley \& Sons.
-\url{https://doi.org/10.1002/9781118619179}
+\bibitem[\citeproctext]{ref-maydeu2006limited}
+Maydeu-Olivares, A., \& Joe, H. (2006). Limited information
+goodness-of-fit testing in multidimensional contingency tables.
+\emph{Psychometrika}, \emph{71}(4), 713.
 
-\bibitem[\citeproctext]{ref-joreskog2001factor}
-Jöreskog, K. G., \& Moustaki, I. (2001). Factor {Analysis} of {Ordinal
-Variables}: {A Comparison} of {Three Approaches}. \emph{Multivariate
-Behavioral Research}, \emph{36}(3), 347--387.
-\url{https://doi.org/10.1207/S15327906347-387}
-
-\bibitem[\citeproctext]{ref-lee2007structural}
-Lee, S.-Y. (2007). \emph{Structural equation modeling: A {Bayesian}
-approach}. Wiley.
-
-\bibitem[\citeproctext]{ref-rue2009approximate}
-Rue, H., Martino, S., \& Chopin, N. (2009). Approximate {Bayesian
-Inference} for {Latent Gaussian} models by using {Integrated Nested
-Laplace Approximations}. \emph{Journal of the Royal Statistical Society
-Series B: Statistical Methodology}, \emph{71}(2), 319--392.
-\url{https://doi.org/10.1111/j.1467-9868.2008.00700.x}
+\bibitem[\citeproctext]{ref-reiser1996analysis}
+Reiser, M. (1996). Analysis of residuals for the multionmial item
+response model. \emph{Psychometrika}, \emph{61}(3), 509--528.
+\url{https://doi.org/10.1007/BF02294552}
 
 \end{CSLReferences}
-
-\section*{Appendix}\label{appendix}
-\addcontentsline{toc}{section}{Appendix}
-
-\section{Derivatives}\label{derivatives}
-
-\[
-\begin{aligned}
-\frac{\partial \ell(\theta)}{\partial \theta} 
-&= \frac{\partial}{\partial \theta} \left( \sum_{i=1}^{n} \log p(x_i | \theta) \right)\\
-&= \sum_{i=1}^{n} \frac{\partial}{\partial \theta} \log p(x_i | \theta) \\
-&= \sum_{i=1}^{n} \frac{1}{p(x_i | \theta)} \frac{\partial p(x_i | \theta)}{\partial \theta}
-\end{aligned}
-\]
-
-\section{Additional proof}\label{additional-proof}
-
-Please look at Theorem~\ref{thm-prime}.
-
-\begin{theorem}[]\protect\hypertarget{thm-prime}{}\label{thm-prime}
-
-There are an in finite number of primes.
-
-\end{theorem}
-
-\begin{proof}
-Assume there are a finite number of primes, say
-\(p_1, p_2, \ldots, p_n\). Consider the number
-\(N = p_1 p_2 \cdots p_n + 1\). This number is not divisible by any of
-the primes \(p_1, p_2, \ldots, p_n\) (since it leaves a remainder of 1
-when divided by any of them). Therefore, \(N\) must either be prime
-itself or have a prime factor that is not in our original list,
-contradicting the assumption that we had listed all primes. Thus, there
-are an infinite number of primes.
-\end{proof}
 
 
 

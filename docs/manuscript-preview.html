@@ -1,49 +1,173 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="generator" content="quarto-1.7.31">
 
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="keywords" content="Ordinal data, Confirmatory factor analysis, Limited information, Goodness-of-fit tests">
 
-<meta name="keywords" content="Ordinal data, Confirmatory factor analysis, Limited information, Goodness-of-fit tests">
+    <title>Limited information goodness-of-fit tests for ordinal factor models</title>
+    <style>
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      div.columns{display: flex; gap: min(4vw, 1.5em);}
+      div.column{flex: auto; overflow-x: auto;}
+      div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+      ul.task-list{list-style: none;}
+      ul.task-list li input[type="checkbox"] {
+        width: 0.8em;
+        margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+        vertical-align: middle;
+      }
+      /* CSS for syntax highlighting */
+      html { -webkit-text-size-adjust: 100%; }
+      pre > code.sourceCode { white-space: pre; position: relative; }
+      pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+      pre > code.sourceCode > span:empty { height: 1.2em; }
+      .sourceCode { overflow: visible; }
+      code.sourceCode > span { color: inherit; text-decoration: inherit; }
+      div.sourceCode { margin: 1em 0; }
+      pre.sourceCode { margin: 0; }
+      @media screen {
+      div.sourceCode { overflow: auto; }
+      }
+      @media print {
+      pre > code.sourceCode { white-space: pre-wrap; }
+      pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+      }
+      pre.numberSource code
+        { counter-reset: source-line 0; }
+      pre.numberSource code > span
+        { position: relative; left: -4em; counter-increment: source-line; }
+      pre.numberSource code > span > a:first-child::before
+        { content: counter(source-line);
+          position: relative; left: -1em; text-align: right; vertical-align: baseline;
+          border: none; display: inline-block;
+          -webkit-touch-callout: none; -webkit-user-select: none;
+          -khtml-user-select: none; -moz-user-select: none;
+          -ms-user-select: none; user-select: none;
+          padding: 0 4px; width: 4em;
+        }
+      pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+      div.sourceCode
+        {   }
+      @media screen {
+      pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+      }
+      /* CSS for citations */
+      div.csl-bib-body { }
+      div.csl-entry {
+        clear: both;
+        margin-bottom: 0em;
+      }
+      .hanging-indent div.csl-entry {
+        margin-left:2em;
+        text-indent:-2em;
+      }
+      div.csl-left-margin {
+        min-width:2em;
+        float:left;
+      }
+      div.csl-right-inline {
+        margin-left:2em;
+        padding-left:1em;
+      }
+      div.csl-indent {
+        margin-left: 2em;
+      }    </style>
 
-<title>Limited information goodness-of-fit tests for ordinal factor models</title>
-<style>
-code{white-space: pre-wrap;}
-span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
-div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-ul.task-list{list-style: none;}
-ul.task-list li input[type="checkbox"] {
-  width: 0.8em;
-  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
-  vertical-align: middle;
-}
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+    <style>
+      body.hypothesis-enabled #quarto-embed-header {
+        padding-right: 36px;
+      }
 
+      #quarto-embed-header {
+        height: 3em;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: solid 1px;
+      }
 
+      #quarto-embed-header h6 {
+        font-size: 1.1em;
+        padding-top: 0.6em;
+        margin-left: 1em;
+        margin-right: 1em;
+        font-weight: 400;
+      }
+
+      #quarto-embed-header a.quarto-back-link,
+      #quarto-embed-header a.quarto-download-embed {
+        font-size: 0.8em;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        margin-left: 1em;
+        margin-right: 1em;
+      }
+
+      .quarto-back-container {
+        padding-left: 0.5em;
+        display: flex;
+      }
+
+      .headroom {
+          will-change: transform;
+          transition: transform 200ms linear;
+      }
+
+      .headroom--pinned {
+          transform: translateY(0%);
+      }
+
+      .headroom--unpinned {
+          transform: translateY(-100%);
+      }      
+    </style>
+
+    <script>
+    window.document.addEventListener("DOMContentLoaded", function () {
+
+      var header = window.document.querySelector("#quarto-embed-header");
+      const titleBannerEl = window.document.querySelector("body > #title-block-header");
+      if (titleBannerEl) {
+        titleBannerEl.style.paddingTop = header.clientHeight + "px";
+      }
+      const contentEl = window.document.getElementById('quarto-content');
+      for (const child of contentEl.children) {
+        child.style.paddingTop = header.clientHeight + "px";
+        child.style.marginTop = "1em";
+      }
+
+      // Use the article root if the `back` call doesn't work. This isn't perfect
+      // but should typically work
+      window.quartoBackToArticle = () => {
+        var currentUrl = window.location.href;
+        window.history.back();
+        setTimeout(() => {
+            // if location was not changed in 100 ms, then there is no history back
+            if(currentUrl === window.location.href){              
+                // redirect to site root
+                window.location.href = "index.html";
+            }
+        }, 100);
+      }
+
+      const headroom = new window.Headroom(header, {
+        tolerance: 5,
+        onPin: function () {
+        },
+        onUnpin: function () {
+        },
+      });
+      headroom.init();
+    });
+    </script>
+
+    
+<script src="site_libs/manuscript-notebook/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -55,38 +179,8 @@ div.csl-indent {
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-4061d95a898dc327f84b821d0e9ae8ea.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<meta name="citation_title" content="Limited information goodness-of-fit tests for ordinal factor models">
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script> 
+      <meta name="citation_title" content="Limited information goodness-of-fit tests for ordinal factor models">
 <meta name="citation_abstract" content="Limited information approaches overcome sparsity issues and computational challenges in traditional goodness-of-fit tests. This paper describes the implementation of LIGOF tests for ordinal factor models that have been fitted using the `{lavaan}` package in R. The tests are computationally efficient and reliable, and adapted to suit whichever parameter estimation procedure was used to fit the model. The implementation is available as an R package called `{lavaan.ligof}`.
 ">
 <meta name="citation_keywords" content="Ordinal data,Confirmatory factor analysis,Limited information,Goodness-of-fit tests">
@@ -132,9 +226,16 @@ window.Quarto = {
 <meta name="citation_reference" content="citation_title=Composite likelihood estimation in multivariate data analysis;,citation_author=Zhao;,citation_author=Y;,citation_author=H. Joe;,citation_publication_date=2005;,citation_cover_date=2005;,citation_year=2005;,citation_issue=3;,citation_volume=33;,citation_journal_title=Tha Canadian Journal of Statistics;">
 </head>
 
-<body class="quarto-light">
+  <body class="quarto-notebook quarto-light">
+    <div id="quarto-embed-header" class="headroom fixed-top bg-primary">
+      
+      <a onclick="window.quartoBackToArticle(); return false;" class="btn btn-primary quarto-back-link" href=""><i class="bi bi-caret-left"></i> Back to Article</a>
+      <h6><i class="bi bi-journal-code"></i> Article Notebook</h6>
 
-<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+            <a href="./manuscript.qmd" class="btn btn-primary quarto-download-embed" download="manuscript.qmd">Download Source</a>
+          </div>
+
+     <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">Limited information goodness-of-fit tests for ordinal factor models</h1>
@@ -168,7 +269,7 @@ window.Quarto = {
               </div>
       </div>
       <div class="quarto-title-meta-column-end quarto-other-formats-target">
-      <div class="quarto-alternate-formats"><div class="quarto-title-meta-heading">Other Formats</div><div class="quarto-title-meta-contents"><p><a href="jamil2025.pdf"><i class="bi bi-file-pdf"></i>PDF</a></p></div></div></div>
+      </div>
     </div>
 
     <div>
@@ -212,13 +313,10 @@ window.Quarto = {
 </div>
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
 </div>
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">      
 
-
-
-  
-
-
+       <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># LaTeX shortcuts </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(readr<span class="sc">::</span><span class="fu">read_file</span>(<span class="st">"_extensions/maths_shortcuts.tex"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="introduction" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
 </section>
@@ -229,19 +327,77 @@ window.Quarto = {
 <!-- csl: apa.csl -->
 <!-- --- -->
 <!-- {{< include _extensions/_maths_shortcuts.qmd >}} -->
+<div class="cell-container"><div class="cell-decorator"><pre>In [1]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.2     ✔ tibble    3.3.0
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.0.4     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'kableExtra'
+
+The following object is masked from 'package:dplyr':
+
+    group_rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
 <section id="ordinal-data" class="level3" data-number="2.1">
 <h3 data-number="2.1" class="anchored" data-anchor-id="ordinal-data"><span class="header-section-number">2.1</span> Ordinal data</h3>
 <p>Consider the case of analysing multivariate data <span class="math inline">\(\mathbf y = (y_{1}, \ldots, y_{p})^\top\)</span>, where each item <span class="math inline">\(y_{i}\)</span> is an ordinal random variable with <span class="math inline">\(m_i\)</span> categories, <span class="math inline">\(i=1,\dots,p\)</span>. Let <span class="math inline">\(\mathcal R = \{ \mathbf c = (c_1,\dots, c_p)^\top \mid c_i \in \{1,\dots, m_i\}\}\)</span> be the set of all possible response patterns, and let <span class="math inline">\(R=\prod_{i} m_i\)</span> be the cardinality of this set. The joint probability of observing a response pattern <span class="math inline">\(\mathbf c_r \in \mathcal R\)</span> is given by <span class="math display">\[
 \pi_r = \Pr(\mathbf y = \mathbf c_r) = \Pr(y_1 = \mathbf c_{r1}, \ldots, y_p = \mathbf c_{rp}), \hspace{2em} r = 1, \ldots, R,
 \]</span> with <span class="math inline">\(\sum_r \pi_R = 1\)</span>. Collect all response probabilities into the vector <span class="math inline">\(\boldsymbol \pi = (\pi_1, \ldots, \pi_R)^\top \in [0,1]^R\)</span>. An example with <span class="math inline">\(p=3\)</span>, <span class="math inline">\(m_1=2\)</span>, and <span class="math inline">\(m_2=m_3=3\)</span> is given below. In total, there are <span class="math inline">\(R=2 \times 3 \times 3 = 18\)</span> response patterns as shown in <a href="#tbl-response-patterns" class="quarto-xref">Table&nbsp;1</a>.</p>
+<div class="cell-container"><div class="cell-decorator"><pre>In [2]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>tab_rp <span class="ot">&lt;-</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_grid</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">y1 =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">y2 =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">y3 =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(<span class="st">"pattern"</span>, <span class="fu">everything</span>(), <span class="at">sep =</span> <span class="st">""</span>, <span class="at">remove =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">r =</span> <span class="fu">row_number</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(r, <span class="fu">starts_with</span>(<span class="st">"y"</span>), pattern)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>tab_rp <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">r =</span> <span class="fu">md</span>(<span class="st">"$r$"</span>),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y1 =</span> <span class="fu">md</span>(<span class="st">"$y_1$"</span>),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y2 =</span> <span class="fu">md</span>(<span class="st">"$y_2$"</span>),</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y3 =</span> <span class="fu">md</span>(<span class="st">"$y_3$"</span>),</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">pattern =</span> <span class="st">"Pattern"</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_options</span>(<span class="at">table.width =</span> <span class="st">"80%"</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>tab_rp <span class="sc">|&gt;</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">r =</span> <span class="fu">md</span>(<span class="st">"$r$"</span>),</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">y1 =</span> <span class="fu">md</span>(<span class="st">"$y_1$"</span>),</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">y2 =</span> <span class="fu">md</span>(<span class="st">"$y_2$"</span>),</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">y3 =</span> <span class="fu">md</span>(<span class="st">"$y_3$"</span>),</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">pattern =</span> <span class="st">"Pattern"</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_options</span>(<span class="at">table.width =</span> <span class="st">"80%"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div id="tbl-response-patterns" class="quarto-layout-panel anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-response-patterns-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> with <span class="math inline">\(m_1=2\)</span>, and <span class="math inline">\(m_2=m_3=3\)</span>.
 </figcaption>
-<div aria-describedby="tbl-response-patterns-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="tbl-response-patterns-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
 <div class="quarto-layout-row">
-<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="cell-output-display">
 <div id="vsokmdluas" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#vsokmdluas table {
@@ -754,8 +910,8 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
 </table>
 </div>
 </div>
-</div>
-<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+</div></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="cell-output-display">
 <div id="nogavjqqce" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#nogavjqqce table {
@@ -1268,7 +1424,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
 </table>
 </div>
 </div>
-</div>
+</div></div>
 </div>
 </div>
 </figure>
@@ -1277,8 +1433,52 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
 <p>Because the lower order moments are contained in the higher order moments, the vector <span class="math inline">\(\boldsymbol\pi_2\)</span> can be extracted from the joint probabilities <span class="math inline">\({\boldsymbol\pi}\)</span> via a linear operation <span class="math inline">\({\boldsymbol\pi}_2 = {\mathbf T}_2 {\boldsymbol\pi}\)</span> <span class="citation" data-cites="jamil2025pairwise">(<a href="#ref-jamil2025pairwise" role="doc-biblioref">Jamil et al., 2025</a>)</span>. As an example, continuing from the <span class="math inline">\(p=3\)</span> instance above, the moments for the first variable <span class="math inline">\(y_1\)</span>, <span class="math inline">\(\Pr(y_1=2)\)</span> can be obtained by <em>summing</em> over all joint probabilities whose patterns contain <span class="math inline">\(y_1=2\)</span>. The positions of these joint probabilities in the vector <span class="math inline">\({\boldsymbol\pi}\)</span> are picked up by the first row of the matrix <span class="math inline">\({\mathbf T}_2\)</span>. Similarly, the two bivariate moments of <span class="math inline">\((y_1,y_2)\)</span>, i.e.&nbsp;<span class="math inline">\(\pi^{(12)}_{22}\)</span> and <span class="math inline">\(\pi^{(12)}_{23}\)</span> are obtained by summing over the joint probabilities whose patterns contain <span class="math inline">\(y_1=2\)</span> and <span class="math inline">\(y_2=2\)</span>, and <span class="math inline">\(y_1=2\)</span> and <span class="math inline">\(y_2=3\)</span>, respectively.</p>
 <div id="fig-T2-matrix" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-T2-matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell">
+<div aria-describedby="fig-T2-matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
+<div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">100</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>create_T2_mat <span class="ot">&lt;-</span> <span class="cf">function</span>(m) {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># m: integer vector of length p, where m[i] = number of categories of variable i</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">length</span>(m)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 1) all joint patterns (rows = ∏ m[i], cols = p)</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  patterns <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="fu">rev</span>(<span class="fu">lapply</span>(m, seq_len)), <span class="at">KEEP.OUT.ATTRS =</span> <span class="cn">FALSE</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  patterns <span class="ot">&lt;-</span> patterns[, <span class="fu">rev</span>(<span class="fu">seq_len</span>(p))] <span class="co"># reverse to match y1, y2, ...</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  n_pat <span class="ot">&lt;-</span> <span class="fu">nrow</span>(patterns)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2) precompute total number of rows: sum_i (m[i]-1) + sum_{i&lt;j} (m[i]-1)*(m[j]-1)</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  uni_rows <span class="ot">&lt;-</span> <span class="fu">sum</span>(m <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  biv_rows <span class="ot">&lt;-</span> <span class="dv">0</span>L</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(p<span class="dv">-1</span>)) <span class="cf">for</span>(j <span class="cf">in</span> (i<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>p)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    biv_rows <span class="ot">&lt;-</span> biv_rows <span class="sc">+</span> (m[i]<span class="sc">-</span><span class="dv">1</span>)<span class="sc">*</span>(m[j]<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  total_rows <span class="ot">&lt;-</span> uni_rows <span class="sc">+</span> biv_rows</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 3) allocate</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>L, <span class="at">nrow =</span> total_rows, <span class="at">ncol =</span> n_pat)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  rn  <span class="ot">&lt;-</span> <span class="fu">character</span>(total_rows)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 4) fill univariate indicator rows</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="dv">1</span>L</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(p)) {</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(cat <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>m[i]) {</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>      out[r, ] <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(patterns[[i]] <span class="sc">==</span> cat)</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>      rn[r]   <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"Y"</span>, i, <span class="st">"="</span>, cat)</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>      r       <span class="ot">&lt;-</span> r <span class="sc">+</span> <span class="dv">1</span>L</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 5) fill bivariate indicator rows</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(p<span class="dv">-1</span>)) <span class="cf">for</span>(j <span class="cf">in</span> (i<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>p) {</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(c1 <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>m[i]) <span class="cf">for</span>(c2 <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>m[j]) {</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>      out[r, ] <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(patterns[[i]] <span class="sc">==</span> c1 <span class="sc">&amp;</span> patterns[[j]] <span class="sc">==</span> c2)</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>      rn[r]   <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"Y"</span>, i, <span class="st">"="</span>, c1, <span class="st">",Y"</span>, j, <span class="st">"="</span>, c2)</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>      r       <span class="ot">&lt;-</span> r <span class="sc">+</span> <span class="dv">1</span>L</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(out) <span class="ot">&lt;-</span> rn</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(out) <span class="ot">&lt;-</span> <span class="fu">apply</span>(patterns, <span class="dv">1</span>, paste0, <span class="at">collapse =</span> <span class="st">""</span>)</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>  out</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a><span class="fu">create_T2_mat</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          111 112 113 121 122 123 131 132 133 211 212 213 221 222 223 231 232 233
 Y1=2        0   0   0   0   0   0   0   0   0   1   1   1   1   1   1   1   1   1
@@ -1295,7 +1495,7 @@ Y2=2,Y3=3   0   0   0   0   0   1   0   0   0   0   0   0   0   0   1   0   0   
 Y2=3,Y3=2   0   0   0   0   0   0   0   1   0   0   0   0   0   0   0   0   1   0
 Y2=3,Y3=3   0   0   0   0   0   0   0   0   1   0   0   0   0   0   0   0   0   1</code></pre>
 </div>
-</div>
+</div></div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-T2-matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: Matrix <span class="math inline">\({\mathbf T}_2\)</span> for the case of <span class="math inline">\(p=3\)</span> with <span class="math inline">\(m_1=2\)</span>, and <span class="math inline">\(m_2=m_3=3\)</span>.
@@ -1345,30 +1545,8 @@ Reiser, M. (1996). Analysis of residuals for the multionmial item response model
 <!-- ## Appendix {.unnumbered} -->
 <!-- {{< include _appendix.qmd >}} -->
 </section>
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@article{jamil2025,
-  author = {Jamil, Haziq},
-  title = {Limited Information Goodness-of-Fit Tests for Ordinal Factor
-    Models},
-  journal = {Manuscript in preparation},
-  date = {2025},
-  url = {https://haziqj.ml/ligof-tests},
-  langid = {en},
-  abstract = {Limited information approaches overcome sparsity issues
-    and computational challenges in traditional goodness-of-fit tests.
-    This paper describes the implementation of LIGOF tests for ordinal
-    factor models that have been fitted using the `\{lavaan\}` package
-    in R. The tests are computationally efficient and reliable, and
-    adapted to suit whichever parameter estimation procedure was used to
-    fit the model. The implementation is available as an R package
-    called `\{lavaan.ligof\}`.}
-}
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-jamil2025" class="csl-entry quarto-appendix-citeas" role="listitem">
-Jamil, H. (2025). Limited information goodness-of-fit tests for ordinal
-factor models. <em>Manuscript in Preparation</em>. <a href="https://haziqj.ml/ligof-tests">https://haziqj.ml/ligof-tests</a>
-</div></div></section></div></main>
-<!-- /main column -->
-<script id="quarto-html-after-body" type="application/javascript">
+     </main>
+<!-- /main column -->  <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -1766,10 +1944,6 @@ factor models. <em>Manuscript in Preparation</em>. <a href="https://haziqj.ml/li
       }
     }
   });
-  </script>
-</div> <!-- /content -->
-
-
-
-
+  </script>  </div> <!-- /content --> 
+  
 </body></html>
