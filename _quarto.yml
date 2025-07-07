@@ -21,7 +21,7 @@ format:
 
   pdf:
     pdf-engine: pdflatex
-    output-file: jamil2025
+    output-file: jamil2025limited
     keep-tex: true
     number-sections: true
     header-includes:
@@ -34,7 +34,7 @@ format:
   #   doublespacing: false
   #   runninghead: "A Preprint"
   #   authorcols: false
-  #   output-file: jamil2025
+  #   output-file: jamil2025limited
   #   header-includes:
   #     - \usepackage{setspace}
   #     - \include{_extensions/maths_shortcuts.tex}
@@ -42,7 +42,7 @@ format:
 
   # docx: 
   #   link-citations: true
-  #   output-file: jamil2025
+  #   output-file: jamil2025limited
 
 execute:
   echo: false
