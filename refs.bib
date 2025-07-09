@@ -87,12 +87,17 @@
   title = {Factor Analysis of Dichotomized Variables},
   author = {Christoffersson, Anders},
   year = {1975},
+  month = mar,
   journal = {Psychometrika},
   volume = {40},
   number = {1},
   pages = {5--32},
-  publisher = {Springer},
-  urldate = {2025-01-27}
+  issn = {1860-0980},
+  doi = {10.1007/BF02291477},
+  urldate = {2025-07-08},
+  abstract = {An approach for multiple factor analysis of dichotomized variables is presented. It is based on the distribution of the first and second order joint probabilities of the binary scored items. The estimator is based on the generalized least squares principle. Standard errors and a test of the fit of the model is given.},
+  langid = {english},
+  keywords = {Applied Statistics,Dichotomize Variable,Five Factor Model,Joint Probability,Mixed Methods,Multivariate Analysis,Psychometrics,Public Policy,Quantitative Psychology,Standard Error,Statistical Theory}
 }
 
 @book{fuller2009introduction,
@@ -132,6 +137,22 @@
   year = {2023}
 }
 
+@article{huber1964robust,
+  title = {Robust {{Estimation}} of a {{Location Parameter}}},
+  author = {Huber, Peter J.},
+  year = {1964},
+  month = mar,
+  journal = {The Annals of Mathematical Statistics},
+  volume = {35},
+  number = {1},
+  pages = {73--101},
+  publisher = {Institute of Mathematical Statistics},
+  issn = {0003-4851, 2168-8990},
+  doi = {10.1214/aoms/1177703732},
+  urldate = {2025-07-08},
+  abstract = {This paper contains a new approach toward a theory of robust estimation; it treats in detail the asymptotic theory of estimating a location parameter for contaminated normal distributions, and exhibits estimators--intermediaries between sample mean and sample median--that are asymptotically most robust (in a sense to be specified) among all translation invariant estimators. For the general background, see Tukey (1960) (p. 448 ff.) Let \$x\_1, {\textbackslash}cdots, x\_n\$ be independent random variables with common distribution function \$F(t - {\textbackslash}xi)\$. The problem is to estimate the location parameter \${\textbackslash}xi\$, but with the complication that the prototype distribution \$F(t)\$ is only approximately known. I shall primarily be concerned with the model of indeterminacy \$F = (1 - {\textbackslash}epsilon){\textbackslash}Phi + {\textbackslash}epsilon H\$, where \$0 {\textbackslash}leqq {\textbackslash}epsilon {$<$} 1\$ is a known number, \${\textbackslash}Phi(t) = (2{\textbackslash}pi){\textasciicircum}\{-{\textbackslash}frac\{1\}\{2\}\} {\textbackslash}int{\textasciicircum}t\_\{-{\textbackslash}infty\} {\textbackslash}exp(-{\textbackslash}frac\{1\}\{2\}s{\textasciicircum}2) ds\$ is the standard normal cumulative and \$H\$ is an unknown contaminating distribution. This model arises for instance if the observations are assumed to be normal with variance 1, but a fraction \${\textbackslash}epsilon\$ of them is affected by gross errors. Later on, I shall also consider other models of indeterminacy, e.g., \${\textbackslash}sup\_t {\textbar}F(t) - {\textbackslash}Phi(t){\textbar} {\textbackslash}leqq {\textbackslash}epsilon\$. Some inconvenience is caused by the fact that location and scale parameters are not uniquely determined: in general, for fixed \${\textbackslash}epsilon\$, there will be several values of \${\textbackslash}xi\$ and \${\textbackslash}sigma\$ such that \${\textbackslash}sup\_t{\textbar}F(t) - {\textbackslash}Phi((t - {\textbackslash}xi)/{\textbackslash}sigma){\textbar} {\textbackslash}leqq {\textbackslash}epsilon\$, and similarly for the contaminated case. Although this inherent and unavoidable indeterminacy is small if \${\textbackslash}epsilon\$ is small and is rather irrelevant for practical purposes, it poses awkward problems for the theory, especially for optimality questions. To remove this difficulty, one may either (i) restrict attention to symmetric distributions, and estimate the location of the center of symmetry (this works for \${\textbackslash}xi\$ but not for \${\textbackslash}sigma\$); or (ii) one may define the parameter to be estimated in terms of the estimator itself, namely by its asymptotic value for sample size \$n {\textbackslash}rightarrow {\textbackslash}infty\$; or (iii) one may define the parameters by arbitrarily chosen functionals of the distribution (e.g., by the expectation, or the median of \$F\$). All three possibilities have unsatisfactory aspects, and I shall usually choose the variant which is mathematically most convenient. It is interesting to look back to the very origin of the theory of estimation, namely to Gauss and his theory of least squares. Gauss was fully aware that his main reason for assuming an underlying normal distribution and a quadratic loss function was mathematical, i.e., computational, convenience. In later times, this was often forgotten, partly because of the central limit theorem. However, if one wants to be honest, the central limit theorem can at most explain why many distributions occurring in practice are approximately normal. The stress is on the word "approximately." This raises a question which could have been asked already by Gauss, but which was, as far as I know, only raised a few years ago (notably by Tukey): What happens if the true distribution deviates slightly from the assumed normal one? As is now well known, the sample mean then may have a catastrophically bad performance: seemingly quite mild deviations may already explode its variance. Tukey and others proposed several more robust substitutes--trimmed means, Winsorized means, etc.--and explored their performance for a few typical violations of normality. A general theory of robust estimation is still lacking; it is hoped that the present paper will furnish the first few steps toward such a theory. At the core of the method of least squares lies the idea to minimize the sum of the squared "errors," that is, to adjust the unknown parameters such that the sum of the squares of the differences between observed and computed values is minimized. In the simplest case, with which we are concerned here, namely the estimation of a location parameter, one has to minimize the expression \${\textbackslash}sum\_i (x\_i - T){\textasciicircum}2\$; this is of course achieved by the sample mean \$T = {\textbackslash}sum\_i x\_i/n\$. I should like to emphasize that no loss function is involved here; I am only describing how the least squares estimator is defined, and neither the underlying family of distributions nor the true value of the parameter to be estimated enters so far. It is quite natural to ask whether one can obtain more robustness by minimizing another function of the errors than the sum of their squares. We shall therefore concentrate our attention to estimators that can be defined by a minimum principle of the form (for a location parameter): \$T = T\_n(x\_1, {\textbackslash}cdots, x\_n) minimizes {\textbackslash}sum\_i {\textbackslash}rho(x\_i - T),\$ {\textbackslash}begin\{equation*\} {\textbackslash}tag\{M\} where {\textbackslash}rho is a non-constant function. {\textbackslash}end\{equation*\} Of course, this definition generalizes at once to more general least squares type problems, where several parameters have to be determined. This class of estimators contains in particular (i) the sample mean \$({\textbackslash}rho(t) = t{\textasciicircum}2)\$, (ii) the sample median \$({\textbackslash}rho(t) = {\textbar}t{\textbar})\$, and more generally, (iii) all maximum likelihood estimators \$({\textbackslash}rho(t) = -{\textbackslash}log f(t)\$, where \$f\$ is the assumed density of the untranslated distribution). These (\$M\$)-estimators, as I shall call them for short, have rather pleasant asymptotic properties; sufficient conditions for asymptotic normality and an explicit expression for their asymptotic variance will be given. How should one judge the robustness of an estimator \$T\_n(x) = T\_n(x\_1, {\textbackslash}cdots, x\_n)\$? Since ill effects from contamination are mainly felt for large sample sizes, it seems that one should primarily optimize large sample robustness properties. Therefore, a convenient measure of robustness for asymptotically normal estimators seems to be the supremum of the asymptotic variance \$(n {\textbackslash}rightarrow {\textbackslash}infty)\$ when \$F\$ ranges over some suitable set of underlying distributions, in particular over the set of all \$F = (1 - {\textbackslash}epsilon){\textbackslash}Phi + {\textbackslash}epsilon H\$ for fixed \${\textbackslash}epsilon\$ and symmetric \$H\$. On second thought, it turns out that the asymptotic variance is not only easier to handle, but that even for moderate values of \$n\$ it is a better measure of performance than the actual variance, because (i) the actual variance of an estimator depends very much on the behavior of the tails of \$H\$, and the supremum of the actual variance is infinite for any estimator whose value is always contained in the convex hull of the observations. (ii) If an estimator is asymptotically normal, then the important central part of its distribution and confidence intervals for moderate confidence levels can better be approximated in terms of the asymptotic variance than in terms of the actual variance. If we adopt this measure of robustness, and if we restrict attention to (\$M\$)-estimators, then it will be shown that the most robust estimator is uniquely determined and corresponds to the following \${\textbackslash}rho:{\textbackslash}rho(t) = {\textbackslash}frac\{1\}\{2\}t{\textasciicircum}2\$ for \${\textbar}t{\textbar} {$<$} k, {\textbackslash}rho(t) = k{\textbar}t{\textbar} - {\textbackslash}frac\{1\}\{2\}k{\textasciicircum}2\$ for \${\textbar}t{\textbar} {\textbackslash}geqq k\$, with \$k\$ depending on \${\textbackslash}epsilon\$. This estimator is most robust even among all translation invariant estimators. Sample mean \$(k = {\textbackslash}infty)\$ and sample median \$(k = 0)\$ are limiting cases corresponding to \${\textbackslash}epsilon = 0\$ and \${\textbackslash}epsilon = 1\$, respectively, and the estimator is closely related and asymptotically equivalent to Winsorizing. I recall the definition of Winsorizing: assume that the observations have been ordered, \$x\_1 {\textbackslash}leqq x\_2 {\textbackslash}leqq {\textbackslash}cdots {\textbackslash}leqq x\_n\$, then the statistic \$T = n{\textasciicircum}\{-1\}(gx\_\{g + 1\} + x\_\{g + 1\} + x\_\{g + 2\} + {\textbackslash}cdots + x\_\{n - h\} + hx\_\{n - h\})\$ is called the Winsorized mean, obtained by Winsorizing the \$g\$ leftmost and the \$h\$ rightmost observations. The above most robust (\$M\$)-estimators can be described by the same formula, except that in the first and in the last summand, the factors \$x\_\{g + 1\}\$ and \$x\_\{n - h\}\$ have to be replaced by some numbers \$u, v\$ satisfying \$x\_g {\textbackslash}leqq u {\textbackslash}leqq x\_\{g + 1\}\$ and \$x\_\{n - h\} {\textbackslash}leqq v {\textbackslash}leqq x\_\{n - h + 1\}\$, respectively; \$g, h, u\$ and \$v\$ depend on the sample. In fact, this (\$M\$)-estimator is the maximum likelihood estimator corresponding to a unique least favorable distribution \$F\_0\$ with density \$f\_0(t) = (1 - {\textbackslash}epsilon)(2{\textbackslash}pi){\textasciicircum}\{-{\textbackslash}frac\{1\}\{2\}\}e{\textasciicircum}\{-{\textbackslash}rho(t)\}\$. This \$f\_0\$ behaves like a normal density for small \$t\$, like an exponential density for large \$t\$. At least for me, this was rather surprising--I would have expected an \$f\_0\$ with much heavier tails. This result is a particular case of a more general one that can be stated roughly as follows: Assume that \$F\$ belongs to some convex set \$C\$ of distribution functions. Then the most robust (\$M\$)-estimator for the set \$C\$ coincides with the maximum likelihood estimator for the unique \$F\_0 {\textbackslash}varepsilon C\$ which has the smallest Fisher information number \$I(F) = {\textbackslash}int (f'/f){\textasciicircum}2f dt\$ among all \$F {\textbackslash}varepsilon C\$. Miscellaneous related problems will also be treated: the case of non-symmetric contaminating distributions; the most robust estimator for the model of indeterminacy \${\textbackslash}sup\_t{\textbar}F(t) - {\textbackslash}Phi(t){\textbar} {\textbackslash}leqq {\textbackslash}epsilon\$; robust estimation of a scale parameter; how to estimate location, if scale and \${\textbackslash}epsilon\$ are unknown; numerical computation of the estimators; more general estimators, e.g., minimizing \${\textbackslash}sum\_\{i {$<$} j\} {\textbackslash}rho(x\_i - T, x\_j - T)\$, where \${\textbackslash}rho\$ is a function of two arguments. Questions of small sample size theory will not be touched in this paper.}
+}
+
 @article{jamil2025pairwise,
   title = {Pairwise Likelihood Estimation and Limited-Information Goodness-of-Fit Test Statistics for Binary Factor Analysis Models under Complex Survey Sampling},
   author = {Jamil, Haziq and Moustaki, Irini and Skinner, Chris},
@@ -164,6 +185,54 @@
   abstract = {Maydeu-Olivares and Joe (J. Am. Stat. Assoc. 100:1009--1020, 2005; Psychometrika 71:713--732, 2006) introduced classes of chi-square tests for (sparse) multidimensional multinomial data based on low-order marginal proportions. Our extension provides general conditions under which quadratic forms in linear functions of cell residuals are asymptotically chi-square. The new statistics need not be based on margins, and can be used for one-dimensional multinomials. We also provide theory that explains why limited information statistics have good power, regardless of sparseness. We show how quadratic-form statistics can be constructed that are more powerful than X2 and yet, have approximate chi-square null distribution in finite samples with large models. Examples with models for truncated count data and binary item response data are used to illustrate the theory.},
   langid = {english},
   keywords = {categorical data analysis,cell-focusing,discrete data,item response theory,overdispersion,overlapping cells,Poisson models,quadratic form statistics,Rasch models,score test,sparse contingency tables,zero-inflation}
+}
+
+@article{joreskog1990new,
+  title = {New Developments in {{LISREL}}: Analysis of Ordinal Variables Using Polychoric Correlations and Weighted Least Squares},
+  shorttitle = {New Developments in {{LISREL}}},
+  author = {J{\"o}reskog, Karl G.},
+  year = {1990},
+  month = nov,
+  journal = {Quality and Quantity},
+  volume = {24},
+  number = {4},
+  pages = {387--404},
+  issn = {1573-7845},
+  doi = {10.1007/BF00152012},
+  urldate = {2025-07-08},
+  langid = {english},
+  keywords = {Ordinal Variable,Polychoric Correlation}
+}
+
+@book{joreskog1993lisrel,
+  title = {{{LISREL}} 8:  {{Structural}} Equation Modeling with the {{SIMPLIS}} Command Language},
+  shorttitle = {{{LISREL}} 8},
+  author = {J{\"o}reskog, Karl G. and S{\"o}rbom, Dag},
+  year = {1993},
+  series = {{{LISREL}} 8:  {{Structural}} Equation Modeling with the {{SIMPLIS}} Command Language},
+  pages = {xvi, 202},
+  publisher = {Lawrence Erlbaum Associates, Inc},
+  address = {Hillsdale, NJ, US},
+  abstract = {This book introduces [the SIMPLIS command] language for structural equation modeling.  The book is written for students and researchers with limited mathematical and statistical training who need to use structural equation models to analyze their data and also for those who have tried but failed to learn the LISREL command language. . . . The objective of this book is to demonstrate that structural equation modeling can be done without all the technical jargon with which it has been associated. . . . Although the SIMPLIS language makes it much easier to specify models and to carry out the analysis, the substantive specification and interpretation remain the same as with the LISREL command language.  The SIMPLIS command language can be used with LISREL 8. (PsycINFO Database Record (c) 2016 APA, all rights reserved)},
+  isbn = {978-0-89498-033-6 978-0-8058-1442-2},
+  keywords = {Computer Software,Mathematical Modeling,Statistical Analysis}
+}
+
+@article{joreskog1994estimation,
+  title = {On the {{Estimation}} of {{Polychoric Correlations}} and Their {{Asymptotic Covariance Matrix}}},
+  author = {J{\"o}reskog, Karl G.},
+  year = {1994},
+  month = sep,
+  journal = {Psychometrika},
+  volume = {59},
+  number = {3},
+  pages = {381--389},
+  issn = {0033-3123, 1860-0980},
+  doi = {10.1007/BF02296131},
+  urldate = {2025-07-08},
+  abstract = {A general theory for parametric inference in contingency tables is outlined. Estimation of polychoric correlations is seen as a special case of this theory. The asymptotic covariance matrix of the estimated polychoric correlations is derived for the case when the thresholds are estimated from the univariate marginals and the polychoric correlations are estimated from the bivariate marginals for given thresholds. Computational aspects are also discussed.},
+  copyright = {https://www.cambridge.org/core/terms},
+  langid = {english}
 }
 
 @article{joreskog2001factor,
@@ -208,6 +277,22 @@
   langid = {english}
 }
 
+@article{lee1995twostage,
+  title = {A Two-Stage Estimation of Structural Equation Models with Continuous and Polytomous Variables},
+  author = {Lee, Sik-Yum and Poon, Wai-Yin and Bentler, P. M.},
+  year = {1995},
+  journal = {British Journal of Mathematical and Statistical Psychology},
+  volume = {48},
+  number = {2},
+  pages = {339--358},
+  issn = {2044-8317},
+  doi = {10.1111/j.2044-8317.1995.tb01067.x},
+  urldate = {2025-07-08},
+  abstract = {This paper develops a computationally efficient procedure for analysis of structural equation models with continuous and polytomous variables. A partition maximum likelihood approach is used to obtain the first stage estimates of the thresholds and the polyserial and polychoric correlations in the underlying correlation matrix. Then, based on the joint asymptotic distribution of the first stage estimator and an appropriate weight matrix, a generalized least squares approach is employed to estimate the structural parameters in the correlation structure. Asymptotic properties of the estimators are derived. Some simulation studies are conducted to study the empirical behaviours and robustness of the procedure, and compare it with some existing methods.},
+  copyright = {1995 The British Psychological Society},
+  langid = {english}
+}
+
 @article{li2016confirmatory,
   title = {Confirmatory Factor Analysis with Ordinal Data: {{Comparing}} Robust Maximum Likelihood and Diagonally Weighted Least Squares},
   shorttitle = {Confirmatory Factor Analysis with Ordinal Data},
@@ -239,6 +324,25 @@
   doi = {10.1177/014662169401800305},
   urldate = {2024-11-29},
   abstract = {Several item response models have been proposed for fitting Likert-type data. Thissen \& Steinberg (1986) classified most of these models into difference models and divide-by-total models. Although they have differ ent mathematical forms, divide-by-total and difference models with the same number of parameters seem to provide very similar fit to the data. The ideal observer method was used to compare two models with the same number of parameters---Samejima's (1969) graded re sponse model (a difference model) and Thissen \& Steinberg's (1986) extension of Masters' (1982) partial credit model (a divide-by-total model)---to investigate whether difference models or divide-by-total models should be preferred for fitting Likert-type data. The models were found to be very similar under the condi tions investigated, which included scale lengths from 5 to 25 items (five-option items were used) and calibra tion samples of 250 to 3,000. The results suggest that both models fit approximately equally well in most practical applications. Index terms: graded response model, IRT, Likert scales, partial credit model, poly chotomous models, psychometrics.},
+  copyright = {https://journals.sagepub.com/page/policies/text-and-data-mining-license},
+  langid = {english}
+}
+
+@article{maydeu2001multidimensional,
+  title = {Multidimensional {{Item Response Theory Modeling}} of {{Binary Data}}: {{Large Sample Properties}} of {{NOHARM Estimates}}},
+  shorttitle = {Multidimensional {{Item Response Theory Modeling}} of {{Binary Data}}},
+  author = {{Maydeu-Olivares}, Albert},
+  year = {2001},
+  month = mar,
+  journal = {Journal of Educational and Behavioral Statistics},
+  volume = {26},
+  number = {1},
+  pages = {51--71},
+  publisher = {American Educational Research Association (AERA)},
+  issn = {1076-9986, 1935-1054},
+  doi = {10.3102/10769986026001051},
+  urldate = {2025-07-08},
+  abstract = {NOHARM is a program that performs factor analysis for dichotomous variables assuming that these arise from an underlying multinormal distribution. Parameter estimates are obtained by minimizing an unweighted least squares function of the first- and second-order marginal proportions. Here, large sample standard errors for restricted as well as rotated unrestricted factor solutions are given. Also a test of the goodness of fit of the model to the first- and second-order marginals of the contingency table is proposed. In a simulation study, it was found that for small models, accurate parameter estimates, standard errors, and goodness-of-fit tests can be obtained with as few as 100 observations. Furthermore, NOHARM estimates, standard errors, and goodness-of-fit tests are comparable to those obtained using a related LISREL procedure.},
   copyright = {https://journals.sagepub.com/page/policies/text-and-data-mining-license},
   langid = {english}
 }
@@ -283,6 +387,23 @@
   abstract = {We introduce a family of goodness-of-fit statistics for testing composite null hypotheses in multidimensional contingency tables. These statistics are quadratic forms in marginal residuals up to order r. They are asymptotically chi-square under the null hypothesis when parameters are estimated using any asymptotically normal consistent estimator. For a widely used item response model, when r is small and multidimensional tables are sparse, the proposed statistics have accurate empirical Type I errors, unlike Pearson's X2. For this model in nonsparse situations, the proposed statistics are also more powerful than X2. In addition, the proposed statistics are asymptotically chi-square when applied to subtables, and can be used for a piecewise goodness-of-fit assessment to determine the source of misfit in poorly fitting models.},
   langid = {english},
   keywords = {Applied Statistics,Biostatistics,categorical data analysis,composite likelihood,item response theory,Lisrel,Mathematical Statistics,Multivariate Analysis,multivariate discrete data,multivariate multinomial distribution,Statistical Theory and Methods,Statistics}
+}
+
+@article{maydeu2006limiteda,
+  title = {Limited Information Estimation and Testing of Discretized Multivariate Normal Structural Models},
+  author = {{Maydeu-Olivares}, Albert},
+  year = {2006},
+  month = mar,
+  journal = {Psychometrika},
+  volume = {71},
+  number = {1},
+  pages = {57--77},
+  issn = {1860-0980},
+  doi = {10.1007/s11336-005-0773-4},
+  urldate = {2025-07-08},
+  abstract = {Discretized multivariate normal structural models are often estimated using multistage estimation procedures. The asymptotic properties of parameter estimates, standard errors, and tests of structural restrictions on thresholds and polychoric correlations are well known. It was not clear how to assess the overall discrepancy between the contingency table and the model for these estimators. It is shown that the overall discrepancy can be decomposed into a distributional discrepancy and a structural discrepancy. A test of the overall model specification is proposed, as well as a test of the distributional specification (i.e., discretized multivariate normality). Also, the small sample performance of overall, distributional, and structural tests, as well as of parameter estimates and standard errors is investigated under conditions of correct model specification and also under mild structural and/or distributional misspecification. It is found that relatively small samples are needed for parameter estimates, standard errors, and structural tests. Larger samples are needed for the distributional and overall tests. Furthermore, parameter estimates, standard errors, and structural tests are surprisingly robust to distributional misspecification.},
+  langid = {english},
+  keywords = {categorical data analysis,data sparseness,Econometrics,GLS,goodness-of-fit,IRT,limited information estimation,LISREL,Model Theory,Multivariate Analysis,Non-parametric Inference,polychoric correlations,pseudo-maximum likelihood estimation,Statistics,Structural Anthropology,structural equation models,WLS estimation}
 }
 
 @inproceedings{maydeu2008overview,
@@ -331,17 +452,85 @@
   keywords = {first and second order proportions,generalized least-squares,multiple factor model,tetrachoric correlations}
 }
 
-@article{muthen1993goodness,
-  title = {Goodness of Fit with Categorical and Other Nonnormal Variables},
-  author = {Muth{\'e}n, Bengt O.},
-  year = {1993},
-  journal = {SAGE Focus Editions},
-  volume = {154},
-  pages = {205--205},
-  publisher = {Sage Publications}
+@article{muthen1981simultaneous,
+  title = {Simultaneous Factor Analysis of Dichotomous Variables in Several Groups},
+  author = {Muth{\'e}n, Bengt and Christoffersson, Anders},
+  year = {1981},
+  month = dec,
+  journal = {Psychometrika},
+  volume = {46},
+  number = {4},
+  pages = {407--419},
+  issn = {1860-0980},
+  doi = {10.1007/BF02293798},
+  urldate = {2025-07-08},
+  abstract = {A new method is proposed for a simultaneous factor analysis of dichotomous responses from several groups of individuals. The method makes it possible to compare factor loading pattern, factor variances and covariances, and factor means over groups. The method uses information from first and second order proportions and estimates the model by generalized least-squares. Hypotheses regarding different degrees of invariance over groups may be evaluated by a large-sample chi-square test.},
+  langid = {english},
+  keywords = {factor means,Five Factor Model,group comparisons,invariant measurement parameters,Mixed Methods,Multivariate Analysis,Psychometrics,Quantitative Psychology,Statistical Theory and Methods}
 }
 
-@inproceedings{rao1979chi,
+@article{muthen1984general,
+  title = {A General Structural Equation Model with Dichotomous, Ordered Categorical, and Continuous Latent Variable Indicators},
+  author = {Muth{\'e}n, Bengt},
+  year = {1984},
+  month = mar,
+  journal = {Psychometrika},
+  volume = {49},
+  number = {1},
+  pages = {115--132},
+  issn = {1860-0980},
+  doi = {10.1007/BF02294210},
+  urldate = {2025-07-08},
+  abstract = {A structural equation model is proposed with a generalized measurement part, allowing for dichotomous and ordered categorical variables (indicators) in addition to continuous ones. A computationally feasible three-stage estimator is proposed for any combination of observed variable types. This approach provides large-sample chi-square tests of fit and standard errors of estimates for situations not previously covered. Two multiple-indicator modeling examples are given. One is a simultaneous analysis of two groups with a structural equation model underlying skewed Likert variables. The second is a longitudinal model with a structural model for multivariate probit regressions.},
+  langid = {english},
+  keywords = {Five Factor Model,generalized least-squares,Mixed Methods,Model Theory,Multivariate Analysis,polychoric correlations,probit regressions,Psychometrics,Social Indicators,weight matrix}
+}
+
+@incollection{muthen1993goodness,
+  title = {Goodness of Fit with Categorical and Other Nonnormal Variables},
+  booktitle = {Testing Structural Equation Models},
+  author = {Muth{\'e}n, Bengt O. and Bollen, Kenneth A. and Long, J. S.},
+  year = {1993},
+  volume = {154},
+  pages = {205--234},
+  publisher = {Sage},
+  address = {Newbury Park, CA}
+}
+
+@article{muthen1995technical,
+  title = {Technical {{Aspects}} of {{Muth{\'e}n}}'s {{Liscomp Approach}} to {{Estimation}} of {{Latent Variable Relations}} with a {{Comprehensive Measurement Model}}},
+  author = {Muth{\'e}n, Bengt O. and Satorra, Albert},
+  year = {1995},
+  month = dec,
+  journal = {Psychometrika},
+  volume = {60},
+  number = {4},
+  pages = {489--503},
+  publisher = {Cambridge University Press (CUP)},
+  issn = {0033-3123, 1860-0980},
+  doi = {10.1007/bf02294325},
+  urldate = {2025-07-08},
+  abstract = {Muth{\'e}n (1984) formulated a general model and estimation procedure for structural equation modeling with a mixture of dichotomous, ordered categorical, and continuous measures of latent variables. A general three-stage procedure was developed to obtain estimates, standard errors, and a chi-square measure of fit for a given structural model. While the last step uses generalized least-squares estimation to fit a structural model, the first two steps involve the computation of the statistics used in this model fitting. A key component in the procedure was the development of a GLS weight matrix corresponding to the asymptotic covariance matrix of the sample statistics computed in the first two stages. This paper extends the description of the asymptotics involved and shows how the Muth{\'e}n formulas can be derived. The emphasis is placed on showing the asymptotic normality of the estimates obtained in the first and second stage and the validity of the weight matrix used in the GLS estimation of the third stage.},
+  copyright = {https://www.cambridge.org/core/terms},
+  langid = {english}
+}
+
+@incollection{newey1994large,
+  title = {Large Sample Estimation and Hypothesis Testing},
+  booktitle = {Handbook of {{Econometrics}}},
+  author = {Newey, Whitney K. and McFadden, Daniel},
+  editor = {Engle, R. F. and McFadden, D. L.},
+  year = {1994},
+  month = jan,
+  volume = {4},
+  pages = {2111--2245},
+  publisher = {Elsevier},
+  doi = {10.1016/S1573-4412(05)80005-4},
+  urldate = {2025-07-08},
+  abstract = {Asymptotic distribution theory is the primary method used to examine the properties of econometric estimators and tests. We present conditions for obtaining cosistency and asymptotic normality of a very general class of estimators (extremum estimators). Consistent asymptotic variance estimators are given to enable approximation of the asymptotic distribution. Asymptotic efficiency is another desirable property then considered. Throughout the chapter, the general results are also specialized to common econometric estimators (e.g. MLE and GMM), and in specific examples we work through the conditions for the various results in detail. The results are also extended to two-step estimators (with finite-dimensional parameter estimation in the first step), estimators derived from nonsmooth objective functions, and semiparametric two-step estimators (with nonparametric estimation of an infinite-dimensional parameter in the first step). Finally, the trinity of test statistics is considered within the quite general setting of GMM estimation, and numerous examples are given.}
+}
+
+@inproceedings{rao1979chisquared,
   title = {Chi-Squared Tests for Analysis of Categorical Data from Complex Surveys},
   booktitle = {Proceedings of the {{American}} Statistical Association, Section on Survey Research Methods},
   author = {Rao, Jon N K and Scott, Alastair John},
@@ -367,7 +556,7 @@
   abstract = {The effect of stratification and clustering on the asymptotic distributions of standard Pearson chi-squared test statistics for goodness of fit (simple hypothesis) and independence in a two-way contingency table, denoted as X\textsuperscript{2} and X\textsuperscript{2}\textsubscript{1}, respectively, is investigated. It is shown that both X\textsuperscript{2} and X\textsuperscript{2}\textsubscript{1} are asymptotically distributed as weighted sums of independent {$\chi$}\textsubscript{1}\textsuperscript{2} random variables. The weights are then related to the familiar design effects (deffs) used by survey samplers. A simple correction to X\textsuperscript{2}, which requires only the knowledge of variance estimates (or deffs) for individual cells in the goodness-of-fit problem, is proposed and empirical results on the performance of corrected X\textsuperscript{2} provided. Empirical work on X\textsuperscript{2}\textsubscript{1} indicated that the distortion of nominal significance level is substantially smaller with X\textsuperscript{2}\textsubscript{1} than with X\textsuperscript{2}. Some results under simple models for clustering are also given.}
 }
 
-@article{rao1984chi,
+@article{rao1984chisquared,
   title = {On Chi-Squared Tests for Multiway Contingency Tables with Cell Proportions Estimated from Survey Data},
   author = {Rao, Jon N K and Scott, Alastair John},
   year = {1984},
@@ -414,6 +603,19 @@
   year = {1992}
 }
 
+@book{vandervaart1998asymptotic,
+  title = {Asymptotic {{Statistics}}},
+  author = {{van der Vaart}, A. W.},
+  year = {1998},
+  series = {Cambridge {{Series}} in {{Statistical}} and {{Probabilistic Mathematics}}},
+  publisher = {Cambridge University Press},
+  address = {Cambridge},
+  doi = {10.1017/CBO9780511802256},
+  urldate = {2024-06-26},
+  abstract = {This book is an introduction to the field of asymptotic statistics. The treatment is both practical and mathematically rigorous. In addition to most of the standard topics of an asymptotics course, including likelihood inference, M-estimation, the theory of asymptotic efficiency, U-statistics, and rank procedures, the book also presents recent research topics such as semiparametric models, the bootstrap, and empirical processes and their applications. The topics are organized from the central idea of approximation by limit experiments, which gives the book one of its unifying themes. This entails mainly the local approximation of the classical i.i.d. set up with smooth parameters by location experiments involving a single, normally distributed observation. Thus, even the standard subjects of asymptotic statistics are presented in a novel way. Suitable as a graduate or Master's level statistics text, this book will also give researchers an overview of research in asymptotic statistics.},
+  isbn = {978-0-521-78450-4}
+}
+
 @article{varin2011overview,
   title = {An Overview of Composite Likelihood Methods},
   author = {Varin, Cristiano and Reid, Nancy and Firth, David},
@@ -423,7 +625,7 @@
   publisher = {JSTOR}
 }
 
-@article{zhao.joe05,
+@article{zhao2005composite,
   title = {Composite Likelihood Estimation in Multivariate Data Analysis},
   author = {{Zhao} and {Y} and Joe, H.},
   year = {2005},

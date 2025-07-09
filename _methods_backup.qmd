@@ -1,0 +1,161 @@
+---
+bibliography: refs.bib
+csl: apa.csl
+---
+
+{{< include _extensions/_maths_shortcuts.qmd >}}
+
+### Parameter estimation
+
+Suppose that a sample $\mathcal Y = \{\by^{(s)}\}_{s=1}^n$ is obtained, where $\by^{(s)} = (y_1^{(s)},\ldots,y_p^{(s)})^\top$ represents the $p$-dimensional ordinal-data observation from subject $s\in\{1,\dots,n\}$.
+As a remark, samples may not necessarily be independent, and in such cases, corresponding sampling weights $\omega_s$ can be used to account for the sampling design [@jamil2025pairwise], and most of what will be discussed below can be adapted to account for this.
+
+Many methods exist to estimate the parameters $\theta$ of the CFA model, but we are most interested in those that yield a $\sqrt{n}$-consistent and asymptotically normal estimator.
+Specifically, we assume that $\hat\theta$ satisfies
+$$
+\sqrt{n}(\hat\theta - \theta) = \bQ_n \cdot \sqrt{n}(\bp - \bpi(\theta)) + o_p(1),
+$$
+where the term $\bp = (\pi_1,\ldots,\pi_R)^\top$ is the vector of empirical joint response proportions, and $\bQ_n$ is some *influence matrix* that performs asymptotic linearisation from the joint response proportions $\bp$ to the parameters $\theta$.
+
+Define $n_r = \sum_{s=1}^n [\mathbf y^{(s)} = \mathbf c_r]$, the frequency count of the response pattern $\mathbf c_r$ in the sample $\mathcal Y$.
+In maximum likelihood estimation, the log-likelihood function given by 
+$$
+\ell(\theta) = \sum_{r=1}^R n_r \log \pi_r(\theta)
+$$
+is maximised, resulting in the estimating equations
+$$
+U(\theta) = n\left(\frac{\partial \bpi(\theta)}{\partial\theta^\top}\right)^\top \diag(\bpi(\theta))^{-1} (\bp - \bpi(\theta)).
+$${#eq-esteq-mle}
+Instead of maximising the log-likelihood, one can also minimise the discrepancy 
+$$
+F(\theta)= (\bp - \bpi(\theta))^\top \diag(\bpi(\theta))^{-1} (\bp - \bpi(\theta)),
+$$
+leading to a divergence-based estimator known as the *minimum chi-square* estimator.
+This has estimating equations of the form given in @eq-esteq-mle (up to a constant factor 2), yielding similar estimates.
+Both the MLE and minimum chi-square estimator are known was full information methods, since they use all available information in the data to estimate the parameters.
+
+The downside to full information methods is that they require the full joint response probabilities $\bpi$, which involves overcoming a potentially large dimensional integral @eq-joint-resp-prob-integral for an exponentially large number of response patterns.
+To circumvent this, one can use *limited information* methods that only require lower-order moments of the data such as the univariate and bivariate information.
+For instance, the analogue of ML estimation is to use composite likelihood methods such as pairwise likelihood methods, which aim to maximise 
+$$
+\ell_{\text P}(\theta) = \sum_{i<j}\sum_{k}\sum_{k'} n^{(ij)}_{kk'} \log \pi^{(ij)}_{kk'}(\theta),
+$$
+where $n^{(ij)}_{kk'} = \sum_{s=1}^n [y_i =k,y_j=k']$ is the frequency count of the response patterns $(y_i=k,y_j=k')$ in the sample $\mathcal Y$.
+This leads to the estimating equations
+$$
+U(\theta) = n \left(\frac{\partial \tilde\bpi(\theta)}{\partial\theta^\top}\right)^\top \diag(\tilde\bpi(\theta))^{-1} (\tilde\bp - \tilde\bpi(\theta)),
+$$
+where the tilde notation emphasises pairwise quantities being used.
+A striking resemblance is seen between @eq-esteq-mle and the pairwise estimating equations.
+
+Another widely used limited information method is the *weighted least squares* (DWLS) estimator, which minimises the discrepancy between the lower-order empirical and model-implied moments
+$$
+F(\theta) = (\bs - \bsigma(\theta))^\top \bW (\bs - \bsigma(\theta)).
+$$
+Here, the sample moments $\bs$ refers to the half-vectorised empirical polychoric correlation matrix, $\bsigma(\theta) = \operatorname{vech}(\bSigma_{\by^*})$, and $W$ is a chosen weight matrix.
+Note that thresholds may either be included as part of the moments by appending them to the vectors $\bs$ and $\bsigma(\theta)$, or they may be estimated separately as part of a two-step procedure.
+Obvious choices for $\bW=\bI$ leading to unweighted least squares (UWLS), $\bW=\Gamma^{-1}$, the inverse of the asymptotic covariance matrix of the polychoric correlations, leading to asymptotically efficient weighted least squares (WLS), or $\bW = \diag(\sigma(\theta))^{-1}$, leading to diagonally weighted least squares (DWLS).
+The estimating equations are then given by
+$$
+U(\theta) = 2 \left(\frac{\partial \bsigma(\theta)}{\partial\theta^\top}\right)^\top \bW (\bs - \bsigma(\theta)).
+$$
+
+$$
+\sqrt{n}(\hat\theta - \theta) \approx \left( \frac{\partial \bpi(\theta)}{\partial \theta^\top}^\top W \frac{\partial \bpi(\theta)}{\partial \theta} \right)^{-1} \frac{\partial \bpi(\theta)}{\partial \theta^\top}^\top W \cdot \sqrt{n}(\bp - \bpi(\theta))
+$$
+
+
+
+
+
+
+
+
+
+Many methods exist...
+
+- This includes minimum variance or best asymptotic  normal (BAN) estimators such as the maximum likelihood estimator (MLE) or the  minimum chi-square estimator. It also includes the limited information estimators  for IRT models: those implemented in programs such as LISREL, EQS, MPLUS,  or NOHARM, and those proposed by Christoffersson (1975) and J ̈oreskog and  Moustaki (2001).
+- Also, the limited information estimators considered by Christoffersson (1975), J ̈oreskog (1994); see also Maydeu-Olivares (2006), J ̈oreskog and Moustaki (2001), Lee, Poon, and Bentler (1995), Maydeu-Olivares (2001b), and Muth ́en (1978, 1984, 1993) are special cases of this framework.
+
+They have in common that the estimating equations take the same basic form 
+$$
+U(\theta) = n\bDelta_\theta^\top \bW_\theta \bmm_n(\theta)
+$$
+where $\bDelta_\theta$ is the Jacobian matrix containing the derivatives of the model moments with respect to the parameters, $\bW_\theta$ is a weight matrix, and $\bmm_n(\theta)$ is the vector of differences between the observed and model-implied moments.
+M-estimators $\hat\theta$ solves $U(\hat\theta) = \bzero$.
+For these estimators, define the *sensitivity matrix* as
+$$
+\bH(\theta) = \E\left[ - \frac{1}{n} \frac{\partial U(\theta)}{\partial\theta} \right] = \bDelta_\theta^\top \bW_\theta \bDelta_\theta,
+$$
+for a correctly specified model.
+Consider the Taylor expansion of $U(\theta)$ around the true parameter value $\theta$:
+$$
+0 = U(\hat\theta) = U(\theta) + \frac{\partial U(\theta)}{\partial\theta} (\hat\theta - \theta) + o_p(n^{-1/2}).
+$$
+Immediately we see that
+$$
+\begin{align*}
+\sqrt{n}(\hat\theta - \theta) 
+&= - \left( \frac{\partial U(\theta)}{\partial\theta} \right)^{-1} U(\theta) + o_p(1) \\
+&= - \bH(\theta)^{-1} \bDelta_\theta^\top \bW_\theta \bmm_n(\theta) + o_p(1) \\
+\end{align*}
+$$
+
+
+
+We consider a general M-estimator defined by the estimating equations  
+$$
+U(\theta)
+= n\,\bDelta_{\theta}^{T}W_{\theta}\,m_{n}(\theta),
+\quad
+\hat\theta:\;U(\hat\theta)=0,
+$$  
+where
+
+- $m_{n}(\theta)=p-\pi(\theta)$ is the vector of moment discrepancies.
+- $\bDelta_{\theta}=\dfrac{\partial\pi(\theta)}{\partial\theta}$ is the $r\times m$ Jacobian of the model-implied moments.
+- $W_{\theta}$ is an $r\times r$ weight matrix.
+
+Under correct specification, define the *sensitivity* (expected information) matrix  
+$$
+H(\theta)
+=\mathbb{E}\biggl[-\frac{1}{n}\frac{\partial U(\theta)}{\partial\theta}\biggr]
+=\bDelta_{\theta}^{T}W_{\theta}\,\bDelta_{\theta}.
+$$
+
+A first-order Taylor expansion of $U_n(\theta)$ around the true $\theta$ gives  
+$$
+0 = U_n(\hat\theta)
+  = U_n(\theta)
+    + A_n\,(\hat\theta - \theta)
+    + o_p(\sqrt{n}),
+$$  
+where  
+$$
+A_n
+= \frac{\partial U_n(\theta)}{\partial\theta}\Big|_{\theta}
+= \sum_{i=1}^n \frac{\partial\psi(Y_i;\theta)}{\partial\theta}
+$$  
+is the *observed* Jacobian of the estimating equations.  Under regularity, the Law of Large Numbers implies  
+$$
+\frac{1}{n}\,A_n
+\;\xrightarrow{p}\;
+-\,H_{\rm unit}(\theta),
+$$  
+with  
+$$
+H_{\rm unit}(\theta)
+= E\Bigl[-\tfrac{1}{n}A_n\Bigr]
+= \Delta_\theta^{T}\,W_\theta\,\Delta_\theta.
+$$  
+
+Re-arranging the Taylor expansion and then replacing $A_n/n$ by $-H_{\rm unit}(\theta)$ in probability gives  
+$$
+\sqrt{n}\,(\hat\theta - \theta)
+= -\bigl(A_n/n\bigr)^{-1}\;\frac{1}{\sqrt{n}}\,U_n(\theta)
++ o_p(1)
+\;\xrightarrow{p}\;
+H_{\rm unit}(\theta)^{-1}\,\Delta_\theta^{T}\,W_\theta\;\sqrt{n}\,m_n(\theta)
++ o_p(1).
+$$
+
