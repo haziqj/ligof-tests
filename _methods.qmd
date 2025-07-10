@@ -1,9 +1,10 @@
----
-bibliography: refs.bib
-csl: apa.csl
----
 
-{{< include _extensions/_maths_shortcuts.qmd >}}
+<!-- --- -->
+<!-- bibliography: refs.bib -->
+<!-- csl: apa.csl -->
+<!-- --- -->
+
+<!-- {{< include _extensions/_maths_shortcuts.qmd >}} -->
 
 ```{r}
 #| include: false
@@ -209,12 +210,6 @@ $$
 \bH(\theta) = \bDelta(\theta)^{\top} \bW_{\theta}  \bDelta(\theta).
 $$
 A first-order Taylor expansion of $U_n(\theta)$ around $\theta$ and with a little rearranging and multiplying through by $\sqrt n$ gives  
-<!-- $$ -->
-<!-- 0 = U_n(\hat\theta) -->
-<!--   = U_n(\theta) -->
-<!--     + \frac{\partial U(\theta)}{\partial\theta}(\hat\theta - \theta) -->
-<!--     + o_p(\sqrt{n}). -->
-<!-- $$   -->
 $$
 \sqrt{n}\,(\hat\theta - \theta)
 =
@@ -248,23 +243,13 @@ Such a transformation was described by @muthen1978contributions in the context o
 Let $\bG := \partial g / \partial \bp$ be the Jacobian of the transformation.
 Then,
 $$
-\begin{align*}
-\sqrt n (\bm - \bmu(\theta)) 
+\begin{aligned}
+\sqrt n (\bmm - \bmu(\theta)) 
 &= \sqrt n \big(g(\bp) - g(\bpi(\theta))\big) \\
 &= \bG \sqrt n \big(\bp - \bpi(\theta)\big) + o_p(1).
-\end{align*}
+\end{aligned}
 $$
 Plugging this into the above equation lets us see the form of the influence matrix as $\bQ_n = \tilde\bQ_n \bG$.
-
-
-
-
-
-
-
-
-
-
 
 ### Distribution of residuals
 
