@@ -182,11 +182,10 @@ Specifically,
 $$
 \sqrt{n}(\hat\theta - \theta_0) \xrightarrow{\text D} \N(\bzero, \bV),
 $$
-where the asymptotic variance is given by the sandwich formula
+where the asymptotic variance is given by the sandwich formula $\bV = H^{-1} J H^{-T}$, with
 $$
-V = H^{-1} J H^{-T}, \quad
-H = \E \left[ \nabla_\theta^2 F(Y,\theta) \right], \quad
-J = \E \left[ \nabla_\theta F(Y,\theta) \nabla_\theta F(Y,\theta) ^\top \right].
+\bH = \E \left[ - \nabla_\theta^2 F(Y,\theta) \right], \quad
+\bJ = \E \left[ \nabla_\theta F(Y,\theta) \nabla_\theta F(Y,\theta) ^\top \right].
 $$
 These properties make M-estimation particularly appealing in settings where the data are ordinal and the working model may be misspecified, as is often the case in large-scale psychometric applications. 
 For a detailed treatment of the asymptotic theory of M-estimators in econometric and semiparametric contexts, see Newey and McFadden (1994).
@@ -200,58 +199,63 @@ Table of objective functions and their derivatives.
 :::
 
 Achieving the desired form stated in @eq-theta-consistent requires an asymptotic linearisation argument.
-For CFA models, a general M-estimator defined by the estimating equations  
+For CFA models, a general M-estimator $\hat\theta$ for $\theta$ is obtained by solving the set of estimating equations
 $$
-U(\theta)
-= n\,\bDelta_{\theta}^{T}W_{\theta}\,m_{n}(\theta),
-\quad
-\hat\theta:\;U(\hat\theta)=0,
+U(\theta) := n \bDelta(\theta)^\top \bW_{\theta} (\bmm - \mu(\theta)) = 0
 $$  
-where
-
-- $m_{n}(\theta)=p-\pi(\theta)$ is the vector of moment discrepancies.
-- $\bDelta_{\theta}=\dfrac{\partial\pi(\theta)}{\partial\theta}$ is the $r\times m$ Jacobian of the model-implied moments.
-- $W_{\theta}$ is an $r\times r$ weight matrix.
-
-Under correct specification, the sensitivity matrix takes the form
+where $\bmm$ is a vector of sample "moments", $\mu(\theta)$ is the vector of model-implied moments, $\bDelta(\theta)$ is the Jacobian of the model-implied moments with respect to $\theta$, and $\bW_{\theta}$ is a weight matrix which may or may not depend on the parameters. 
+Under correct model specification, the sensitivity matrix takes the form
 $$
-H(\theta)=\bDelta_{\theta}^{T}W_{\theta}\,\bDelta_{\theta}.
+\bH(\theta) = \bDelta(\theta)^{\top} \bW_{\theta}  \bDelta(\theta).
 $$
-A first-order Taylor expansion of $U_n(\theta)$ around the true $\theta$ gives  
-$$
-0 = U_n(\hat\theta)
-  = U_n(\theta)
-    + A_n\,(\hat\theta - \theta)
-    + o_p(\sqrt{n}),
-$$  
-where  
-$$
-A_n
-= \frac{\partial U_n(\theta)}{\partial\theta}\Big|_{\theta}
-= \sum_{i=1}^n \frac{\partial\psi(Y_i;\theta)}{\partial\theta}
-$$  
-is the *observed* Jacobian of the estimating equations.  Under regularity, the Law of Large Numbers implies  
-$$
-\frac{1}{n}\,A_n
-\;\xrightarrow{p}\;
--\,H_{\rm unit}(\theta),
-$$  
-with  
-$$
-H_{\rm unit}(\theta)
-= E\Bigl[-\tfrac{1}{n}A_n\Bigr]
-= \Delta_\theta^{T}\,W_\theta\,\Delta_\theta.
-$$  
-
-Re-arranging the Taylor expansion and then replacing $A_n/n$ by $-H_{\rm unit}(\theta)$ in probability gives  
+A first-order Taylor expansion of $U_n(\theta)$ around $\theta$ and with a little rearranging and multiplying through by $\sqrt n$ gives  
+<!-- $$ -->
+<!-- 0 = U_n(\hat\theta) -->
+<!--   = U_n(\theta) -->
+<!--     + \frac{\partial U(\theta)}{\partial\theta}(\hat\theta - \theta) -->
+<!--     + o_p(\sqrt{n}). -->
+<!-- $$   -->
 $$
 \sqrt{n}\,(\hat\theta - \theta)
-= -\bigl(A_n/n\bigr)^{-1}\;\frac{1}{\sqrt{n}}\,U_n(\theta)
-+ o_p(1)
-\;\xrightarrow{p}\;
-H_{\rm unit}(\theta)^{-1}\,\Delta_\theta^{T}\,W_\theta\;\sqrt{n}\,m_n(\theta)
-+ o_p(1).
+=
+\left[ - \frac{1}{n} \frac{\partial U(\theta)}{\partial\theta} \right]^{-1}
+\bDelta(\theta)^\top \bW_{\theta} \cdot \sqrt n (\bmm - \mu(\theta))
++ o_p(1),
 $$
+where the observed Hessian $-\frac{1}{n}\partial U(\theta) / \partial\theta \xrightarrow{\text P} \bH(\theta)$ as $n \to \infty$.
+Taking limits, we now see the influence matrix for CFA taking the form
+$$
+\tilde \bQ_n = \left[ - \frac{1}{n} \frac{\partial U(\theta)}{\partial\theta} \right]^{-1}
+\bDelta(\theta)^\top \bW_{\theta} \xrightarrow{\text P} \bH(\theta)^{-1} \bDelta(\theta)^\top \bW_{\theta} \quad \text{ as } n\to\infty.
+$$
+
+For certain estimators like maximum likelihood, the influence matrix directly fits in with the $R$-vector of moment differences $\bmm - \mu(\theta) = \bp - \bpi(\theta)$.
+Incidentally, in this case, the influence matrix is $\cI^{-1} \bDelta_\pi \bD_\pi \in \bbR^{t \times R}$, where $\cI= \bDelta^\top \bD^{-1} \bDelta^\top$ is the unit Fisher information, $\bDelta_\pi= (\partial \bpi / \partial \theta)^\top$ is the Jacobian of the joint response probabilities with respect to the parameters, and $\bD_\pi = \diag(\bpi)$ is a diagonal matrix of the joint response probabilities, agreeing with results in @maydeu2005limited.
+It can be further shown that $\E[\tilde\bQ_n]$ simplifies to $\bDelta_\pi^\top \cI^{-1} \bDelta_\pi$. 
+
+In other cases, we need to post multiply the influence matrix $\tilde\bQ_n$ by an appropriate matrix so that it fits into the matrix-vector multiplication.
+This depends on the vector of moment differences.
+When dealing with pairwise likelihood, then an appropriate design matrix must be constructed to extract the pairwise probabilities from the joint response probabilities [@jamil2025pairwise].
+When dealing with lower-order moments such as uni- and bi-variate moments, a similar thing is done.
+These represent cases where there is a linear relationship $g$ going from the moments $\bmm$ and $\bmu$ to the response probabilities $\bp$ and $\bpi$.
+In cases where the transformation $g: \bp \mapsto \bmm$ is not linear, such as the commonly used WLS methods, then we appeal to the Delta method.
+In the DWLS case, the transformation is
+$$
+g: \bp \mapsto (\bs_1, \bs_2)^\top
+$$
+where $\bs_1$ are thresholds and $\bs_2$ are the polychoric correlations.
+Such a transformation was described by @muthen1978contributions in the context of dichotomous data, but extends to the case of ordinal data too.
+Let $\bG := \partial g / \partial \bp$ be the Jacobian of the transformation.
+Then,
+$$
+\begin{align*}
+\sqrt n (\bm - \bmu(\theta)) 
+&= \sqrt n \big(g(\bp) - g(\bpi(\theta))\big) \\
+&= \bG \sqrt n \big(\bp - \bpi(\theta)\big) + o_p(1).
+\end{align*}
+$$
+Plugging this into the above equation lets us see the form of the influence matrix as $\bQ_n = \tilde\bQ_n \bG$.
+
 
 
 
