@@ -1,10 +1,9 @@
+---
+bibliography: refs.bib
+csl: apa.csl
+---
 
-<!-- --- -->
-<!-- bibliography: refs.bib -->
-<!-- csl: apa.csl -->
-<!-- --- -->
-
-<!-- {{< include _extensions/_maths_shortcuts.qmd >}} -->
+{{< include _extensions/_maths_shortcuts.qmd >}}
 
 ```{r}
 #| include: false
@@ -160,36 +159,41 @@ Suppose that a sample $\mathcal Y = \{\by^{(s)}\}_{s=1}^n$ is obtained, where $\
 Many methods exist to estimate the parameters $\theta$ of the CFA model, but we are most interested in those that yield a $\sqrt{n}$-consistent and asymptotically normal estimator.
 Specifically, we assume that $\hat\theta$ satisfies
 $$
-\sqrt{n}(\hat\theta - \theta) = \bQ_n \cdot \sqrt{n}(\bp - \bpi(\theta)) + o_p(1),
+\begin{aligned}
+\sqrt{n}(\hat\theta - \theta) = \hat\bQ_n \cdot \sqrt{n}(\bp - \bpi(\theta)) + o_p(1),
+\end{aligned}
 $${#eq-theta-consistent}
-where the term $\bp = (\pi_1,\ldots,\pi_R)^\top$ is the vector of empirical joint response proportions, and $\bQ_n$ is some *influence matrix* that performs asymptotic linearisation from the joint response proportions $\bp$ to the parameters $\theta$.
+where the term $\bp = (\pi_1,\ldots,\pi_R)^\top$ is the vector of empirical joint response proportions, and $\hat\bQ_n \xrightarrow{\text P} \bQ$ as $n\to\infty$ is some *influence matrix* that performs asymptotic linearisation from the joint response proportions $\bp$ to the parameters $\theta$.
 This includes a wide range of likelihood and pseudo-likelihood based methods and also generalised least squares (GLS) based methods, with the latter popularly implemented as a 3-stage procedure in software.
 The result also holds true whether full information methods (i.e., estimation using joint response probabilities) or limited information methods (i.e., using a lower-order subset of the response probabilities) are employed.
 
 A neat way of viewing the parameter estimation is that most of these methods are a class of M-estimators.
-M-estimation provides a general and flexible framework for parameter estimation, in which estimators are obtained by minimizing an objective function $F(\theta)$, typically expressed as an empirical average $\sum_{i=1}^n F(Y_i, \theta)$, or, equivalently, by solving a system of estimating equations $\sum_{i=1}^n \nabla_\theta F(Y_i, \theta) = \bzero$, where $\nabla_\theta F = \partial F / \partial \theta$. 
+M-estimation provides a general and flexible framework for parameter estimation, in which estimators are obtained by minimizing an objective function $F(\theta)$, typically expressed as an empirical average $\sum_{s=1}^n F(\by_s, \theta)$, or, equivalently, by solving a system of estimating equations $\sum_{s=1}^n \nabla_\theta F(\by_s, \theta) = \bzero$, where $\nabla_\theta F = \partial F / \partial \theta$. 
 This formulation encompasses a wide range of classical and robust procedures, including maximum likelihood, least squares, and weighted least squares methods mentioned above.
 
 In the context of confirmatory factor analysis (CFA) with ordinal indicators, the estimating equations typically arise from a discrepancy function defined on thresholds and polychoric correlations, and M-estimation offers a principled way to derive estimators even when the full likelihood is computationally intractable. 
 A central assumption in this framework is that there exists a parameter $\theta_0 \in \Theta$ such that the population moment condition
-$\E[\nabla_\theta F(Y, \theta_0)] = 0$
+$\E[\nabla_\theta F(\by, \theta_0)] = 0$
 holds. 
 This condition is not a consequence of the data, but rather a theoretical premise about the underlying data-generating mechanism. 
 It defines the parameter value to which the estimator is expected to converge. 
 In a correctly specified model, $\theta_0$ corresponds to the true parameter; in the presence of misspecification, it instead represents the value that best satisfies the moment condition within the assumed model class.
 
-Under standard regularity conditions—such as continuity of $\nabla_\theta F$ in $\theta$, measurability, and uniform convergence of empirical averages—the M-estimator $\hat\theta$ is consistent and asymptotically normal (Huber, 1964; van der Vaart, 1998). 
+Under standard regularity conditions—such as continuity of $\nabla_\theta F$ in $\theta$, measurability, and uniform convergence of empirical averages—the M-estimator $\hat\theta$ is consistent and asymptotically normal [@huber1964robust;@vandervaart1998asymptotic]. 
 Specifically,
 $$
-\sqrt{n}(\hat\theta - \theta_0) \xrightarrow{\text D} \N(\bzero, \bV),
+\sqrt{n}(\hat\theta - \theta) \xrightarrow{\text D} \N(\bzero, \bV(\theta)),
 $$
-where the asymptotic variance is given by the sandwich formula $\bV = H^{-1} J H^{-T}$, with
+where the asymptotic variance is given by the sandwich formula $\bV(\theta) = \cH(\theta)^{-1} \cJ(\theta) \cH(\theta)^{-T}$, with
 $$
-\bH = \E \left[ - \nabla_\theta^2 F(Y,\theta) \right], \quad
-\bJ = \E \left[ \nabla_\theta F(Y,\theta) \nabla_\theta F(Y,\theta) ^\top \right].
+\cH(\theta) = \E \left[ - \nabla_\theta^2 \, F(\by,\theta) \right], \quad
+\cJ(\theta) = \E \left[ \nabla_\theta \,F(\by,\theta) \ \nabla_\theta \, F(Y,\theta) ^\top \right].
 $$
+The matrix $\cH$ is known as the *sensitivity matrix* and is estimated consistently by $\hat\bH_n = -\frac{1}{n} \sum_{s=1}^n \nabla_\theta^2 \, F(\by_s, \theta)$.
+The matrix $\cJ$ is known as the *variability matrix* and is estimated consistently by $\hat\bJ_n = \frac{1}{n} \sum_{s=1}^n \nabla_\theta \, F(\by_s, \theta) \nabla_\theta \, F(\by_s, \theta)^\top$.
+
 These properties make M-estimation particularly appealing in settings where the data are ordinal and the working model may be misspecified, as is often the case in large-scale psychometric applications. 
-For a detailed treatment of the asymptotic theory of M-estimators in econometric and semiparametric contexts, see Newey and McFadden (1994).
+For a detailed treatment of the asymptotic theory of M-estimators in econometric and semiparametric contexts, see @newey1994large.
 For the commonly used techniques to estimate CFA, the table below gives an overview for the form that $F$ and its derivatives take.
 
 ::: {#tbl-objfun-deriv}
@@ -253,9 +257,47 @@ Plugging this into the above equation lets us see the form of the influence matr
 
 ### Distribution of residuals
 
+Let $p_r = n_r / n$ be the $r$th entry of the $R$-vector of sample proportions $\bp$, where $n_r$ is the number of times the response pattern $\mathbf c_r$ was observed in the sample $\mathcal Y$.
+The random vector $\bn = (n_1,\dots,n_R)^\top$ follows a multinomial distribution with parameters $n$, $R$, and $\bpi$, with $\E(\bn)=n\bpi$ and variance
+$$
+\Var(\bn) = n (\diag(\bpi) - \bpi \bpi^\top) = n \bSigma.
+$$
+It is widely known [@agresti2002categorical] for iid samples that
 $$
 \sqrt{n} (\bp - \bpi) \xrightarrow{D} {\N}_R(\bzero, \bSigma)
 $$ {#eq-clt-prop}
+as $n\to\infty$, which is a consequence of the central limit theorem.
+Note that this also works for the case of weighted samples in complex sampling designs, but $\bSigma$ need not take a multinomial form in such cases [@fuller2009introduction].
+
+Consider testing the composite null hypothesis of $\text{H}_0: \bpi = \bpi(\theta_0)$ against the alternative $\text{H}_1:  \bpi \neq \bpi(\theta_0)$.
+To do so, use the univariate and bivariate residuals $\hat\be_2 = \bT_2(\bp - \bpi(\hat\theta))$ as the basis for the test statistic.
+Now we derive the asymptotic distribution of this quantity.
+Write
+$$
+\begin{aligned}
+\sqrt n \, \hat\be_2 
+&= \sqrt n \bT_2(\bp - \bpi(\theta_0)) - \sqrt n \bT_2(\bpi(\hat\theta) - \bpi(\theta_0)) \\
+&= \sqrt n (\bp_2 - \bpi_2(\theta_0)) - \sqrt n \bDelta_{2,\pi} (\hat\theta - \theta_0) + o_p(1),
+\end{aligned}
+$$
+where we had considered a Taylor expansion of $\bpi(\hat\theta)$ around $\theta_0$ to get to the second line, and defined $\bDelta_{2,\pi} = \bT_2\Delta_{2,\pi}$.
+Now, for $\sqrt n$-consistent estimators satisfying @eq-theta-consistent, we have that
+$$
+\begin{aligned}
+\sqrt n \, \hat\be_2 
+&= \sqrt n (\bp_2 - \bpi_2(\theta_0)) -  \bDelta_{2,\pi} \hat\bQ_n \bT_2^{-1} \cdot \sqrt{n}(\bp_2 - \bpi_2(\theta)) + o_p(1) \\
+&= (\bI - \bDelta_{2,\pi} \hat\bQ_n \bT_2^{+}) \cdot \sqrt n (\bp_2 - \bpi_2(\theta_0)) + o_p(1).
+\end{aligned}
+$$
+where $\bT_2^{+}$ is the pseudo-inverse of $\bT_2$, i.e. the matrix $\bA$ that satisfies $\bT_2 \bA = \bA^\top \bT_2 = \bI$.
+Therefore, we can see that the residuals $\hat\be_2$ are asymptotically normal with mean $\bzero$ and variance $\bOmega_2$, where
+$$
+\begin{aligned}
+\bOmega_2 = (\bI - \bDelta_{2,\pi} \bQ \bT_2^+) \bSigma_2 (\bI - \bDelta_{2,\pi}  \bQ \bT_2^{+})^\top,
+\end{aligned}
+$$
+and $\bSigma_2 = \bT_2 \bSigma \bT_2^\top$ is the covariance matrix of the lower-order moments.
+
 
 ### Wald-type tests
 
