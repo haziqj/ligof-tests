@@ -467,26 +467,28 @@ model, but we are most interested in those that yield a
 \(\sqrt{n}\)-consistent and asymptotically normal estimator.
 Specifically, we assume that \(\hat\theta\) satisfies
 \begin{equation}\phantomsection\label{eq-theta-consistent}{
-\sqrt{n}(\hat\theta - \theta) = \bQ_n \cdot \sqrt{n}(\bp - \bpi(\theta)) + o_p(1),
+\begin{aligned}
+\sqrt{n}(\hat\theta - \theta) = \hat\bQ_n \cdot \sqrt{n}(\bp - \bpi(\theta)) + o_p(1),
+\end{aligned}
 }\end{equation} where the term \(\bp = (\pi_1,\ldots,\pi_R)^\top\) is
-the vector of empirical joint response proportions, and \(\bQ_n\) is
-some \emph{influence matrix} that performs asymptotic linearisation from
-the joint response proportions \(\bp\) to the parameters \(\theta\).
-This includes a wide range of likelihood and pseudo-likelihood based
-methods and also generalised least squares (GLS) based methods, with the
-latter popularly implemented as a 3-stage procedure in software. The
-result also holds true whether full information methods (i.e.,
-estimation using joint response probabilities) or limited information
-methods (i.e., using a lower-order subset of the response probabilities)
-are employed.
+the vector of empirical joint response proportions, and
+\(\hat\bQ_n \xrightarrow{\text P} \bQ\) as \(n\to\infty\) is some
+\emph{influence matrix} that performs asymptotic linearisation from the
+joint response proportions \(\bp\) to the parameters \(\theta\). This
+includes a wide range of likelihood and pseudo-likelihood based methods
+and also generalised least squares (GLS) based methods, with the latter
+popularly implemented as a 3-stage procedure in software. The result
+also holds true whether full information methods (i.e., estimation using
+joint response probabilities) or limited information methods (i.e.,
+using a lower-order subset of the response probabilities) are employed.
 
 A neat way of viewing the parameter estimation is that most of these
 methods are a class of M-estimators. M-estimation provides a general and
 flexible framework for parameter estimation, in which estimators are
 obtained by minimizing an objective function \(F(\theta)\), typically
-expressed as an empirical average \(\sum_{i=1}^n F(Y_i, \theta)\), or,
+expressed as an empirical average \(\sum_{s=1}^n F(\by_s, \theta)\), or,
 equivalently, by solving a system of estimating equations
-\(\sum_{i=1}^n \nabla_\theta F(Y_i, \theta) = \bzero\), where
+\(\sum_{s=1}^n \nabla_\theta F(\by_s, \theta) = \bzero\), where
 \(\nabla_\theta F = \partial F / \partial \theta\). This formulation
 encompasses a wide range of classical and robust procedures, including
 maximum likelihood, least squares, and weighted least squares methods
@@ -499,8 +501,8 @@ M-estimation offers a principled way to derive estimators even when the
 full likelihood is computationally intractable. A central assumption in
 this framework is that there exists a parameter \(\theta_0 \in \Theta\)
 such that the population moment condition
-\(\E[\nabla_\theta F(Y, \theta_0)] = 0\) holds. This condition is not a
-consequence of the data, but rather a theoretical premise about the
+\(\E[\nabla_\theta F(\by, \theta_0)] = 0\) holds. This condition is not
+a consequence of the data, but rather a theoretical premise about the
 underlying data-generating mechanism. It defines the parameter value to
 which the estimator is expected to converge. In a correctly specified
 model, \(\theta_0\) corresponds to the true parameter; in the presence
@@ -512,16 +514,23 @@ Under standard regularity conditions---such as continuity of
 convergence of empirical averages---the M-estimator \(\hat\theta\) is
 consistent and asymptotically normal (Huber, 1964; van der Vaart, 1998).
 Specifically, \[
-\sqrt{n}(\hat\theta - \theta_0) \xrightarrow{\text D} \N(\bzero, \bV),
+\sqrt{n}(\hat\theta - \theta) \xrightarrow{\text D} \N(\bzero, \bV(\theta)),
 \] where the asymptotic variance is given by the sandwich formula
-\(\bV = H^{-1} J H^{-T}\), with \[
-\bH = \E \left[ - \nabla_\theta^2 F(Y,\theta) \right], \quad
-\bJ = \E \left[ \nabla_\theta F(Y,\theta) \nabla_\theta F(Y,\theta) ^\top \right].
-\] These properties make M-estimation particularly appealing in settings
+\(\bV(\theta) = \cH(\theta)^{-1} \cJ(\theta) \cH(\theta)^{-T}\), with \[
+\cH(\theta) = \E \left[ - \nabla_\theta^2 \, F(\by,\theta) \right], \quad
+\cJ(\theta) = \E \left[ \nabla_\theta \,F(\by,\theta) \ \nabla_\theta \, F(Y,\theta) ^\top \right].
+\] The matrix \(\cH\) is known as the \emph{sensitivity matrix} and is
+estimated consistently by
+\(\hat\bH_n = -\frac{1}{n} \sum_{s=1}^n \nabla_\theta^2 \, F(\by_s, \theta)\).
+The matrix \(\cJ\) is known as the \emph{variability matrix} and is
+estimated consistently by
+\(\hat\bJ_n = \frac{1}{n} \sum_{s=1}^n \nabla_\theta \, F(\by_s, \theta) \nabla_\theta \, F(\by_s, \theta)^\top\).
+
+These properties make M-estimation particularly appealing in settings
 where the data are ordinal and the working model may be misspecified, as
 is often the case in large-scale psychometric applications. For a
 detailed treatment of the asymptotic theory of M-estimators in
-econometric and semiparametric contexts, see Newey and McFadden (1994).
+econometric and semiparametric contexts, see Newey \& McFadden (1994).
 For the commonly used techniques to estimate CFA, the table below gives
 an overview for the form that \(F\) and its derivatives take.
 
@@ -609,18 +618,144 @@ influence matrix as \(\bQ_n = \tilde\bQ_n \bG\).
 
 \subsection{Distribution of residuals}\label{distribution-of-residuals}
 
+Let \(p_r = n_r / n\) be the \(r\)th entry of the \(R\)-vector of sample
+proportions \(\bp\), where \(n_r\) is the number of times the response
+pattern \(\mathbf c_r\) was observed in the sample \(\mathcal Y\). The
+random vector \(\bn = (n_1,\dots,n_R)^\top\) follows a multinomial
+distribution with parameters \(n\), \(R\), and \(\bpi\), with
+\(\E(\bn)=n\bpi\) and variance \[
+\Var(\bn) = n (\diag(\bpi) - \bpi \bpi^\top) = n \bSigma.
+\] It is widely known (Agresti, 2002) for iid samples that
 \begin{equation}\phantomsection\label{eq-clt-prop}{
 \sqrt{n} (\bp - \bpi) \xrightarrow{D} {\N}_R(\bzero, \bSigma)
-}\end{equation}
+}\end{equation} as \(n\to\infty\), which is a consequence of the central
+limit theorem. Note that this also works for the case of weighted
+samples in complex sampling designs, but \(\bSigma\) need not take a
+multinomial form in such cases (Fuller, 2009).
+
+Consider testing the composite null hypothesis of
+\(\text{H}_0: \bpi = \bpi(\theta_0)\) against the alternative
+\(\text{H}_1:  \bpi \neq \bpi(\theta_0)\). To do so, use the univariate
+and bivariate residuals \(\hat\be_2 = \bT_2(\bp - \bpi(\hat\theta))\) as
+the basis for the test statistic. Now we derive the asymptotic
+distribution of this quantity. Write \[
+\begin{aligned}
+\sqrt n \, \hat\be_2 
+&= \sqrt n \bT_2(\bp - \bpi(\theta_0)) - \sqrt n \bT_2(\bpi(\hat\theta) - \bpi(\theta_0)) \\
+&= \sqrt n (\bp_2 - \bpi_2(\theta_0)) - \sqrt n \bDelta_{2,\pi} (\hat\theta - \theta_0) + o_p(1),
+\end{aligned}
+\] where we had considered a Taylor expansion of \(\bpi(\hat\theta)\)
+around \(\theta_0\) to get to the second line, and defined
+\(\bDelta_{2,\pi} = \bT_2\Delta_{2,\pi}\). Now, for
+\(\sqrt n\)-consistent estimators satisfying
+Equation~\ref{eq-theta-consistent}, we have that \[
+\begin{aligned}
+\sqrt n \, \hat\be_2 
+&= \sqrt n (\bp_2 - \bpi_2(\theta_0)) -  \bDelta_{2,\pi} \hat\bQ_n \bT_2^{-1} \cdot \sqrt{n}(\bp_2 - \bpi_2(\theta)) + o_p(1) \\
+&= (\bI - \bDelta_{2,\pi} \hat\bQ_n \bT_2^{+}) \cdot \sqrt n (\bp_2 - \bpi_2(\theta_0)) + o_p(1),
+\end{aligned}
+\] where \(\bT_2^{+}\) is the pseudo-inverse of \(\bT_2\), i.e.~the
+matrix \(\bA\) that satisfies \(\bT_2 \bA = \bA^\top \bT_2 = \bI\).
+Therefore, we can see that the residuals \(\hat\be_2\) are
+asymptotically normal with mean \(\bzero\) and variance \(\bOmega_2\),
+where \[
+\begin{aligned}
+\bOmega_2 = (\bI - \bDelta_{2,\pi} \bQ \bT_2^+) \bSigma_2 (\bI - \bDelta_{2,\pi}  \bQ \bT_2^{+})^\top,
+\end{aligned}
+\] and \(\bSigma_2 = \bT_2 \bSigma \bT_2^\top\) is the covariance matrix
+of the lower-order moments.
 
 \subsection{Wald-type tests}\label{wald-type-tests}
 
-\subsection{Pearson-type tests}\label{pearson-type-tests}
+Given as \(\hat\be_2 \xrightarrow{\text D} \N_S(\bzero, \bOmega_2)\), we
+can construct a Wald test statistic for the null hypothesis
+\(\text{H}_0: \bpi = \bpi(\theta_0)\) as \[
+X^2 = n \, \hat\be_2^\top \hat\bOmega_2^{-1} \hat\be_2,
+\] where \(\hat\bOmega_2\) is a consistent estimator of \(\bOmega_2\).
+This test statistic is asymptotically distributed as chi square under
+the null hypothesis, with degrees of freedom equal to \(S-t\), i.e.~the
+number of lower-order moments used in the test minus the number of
+parameters estimated.
 
-\subsection{General GOF tests}\label{general-gof-tests}
+The computational challenges here are in the estimation of
+\(\hat\bOmega_2\) as well as the inversion of the matrix. Addressing the
+second issue first, suppose an estimator \(\hat\bOmega_2\) is available,
+then the Moore-Penrose pseudoinverse \(\hat\bOmega_2^+\) can be computed
+using the singular value decomposition (SVD) of \(\hat\bOmega_2\). This
+sidesteps any numerical instabilities that may occur when inverting the
+matrix directly, since the rank of \(\bOmega_2\) may be deficient
+(Reiser, 1996), although inversion can still be computationally
+challenging when the dimension \(S\) is large.
 
-\subsection{Estimation of degrees of
-freedom}\label{estimation-of-degrees-of-freedom}
+Jamil et al. (2025) instead proposed a diagonal Wald test, in which
+\(\diag(\hat\bOmega_2)^{-1}\) is used instead of the full matrix
+inverse. Since inverting a diagonal matrix is straightforward compared
+to the full (pseudo) inverse, this is indeed computationally efficient.
+However, simulation stadies show that this is not as powerful as the
+full Wald test, in the context of pairwise likelihood estimation of
+binary CFA models.
+
+On the estimation of \(\bOmega_2\), which involves estimation of the
+\(\bQ\) matrix, which may be involved depending on the estimation method
+used. A very attractive proposal by Maydeu-Olivares and colleagues
+(Maydeu-Olivares \& Joe, 2005, 2006, 2008) is to consider using a matrix
+\(\bXi\) such that \(\bOmega_2\) is a generalised inverse of \(\bXi\),
+i.e.~\(\bXi = \bXi \bOmega_2 \bXi\). By denoting
+\(\bDelta_{2,\pi}^\perp\) to be an \(S\times (S-t)\) orthogonal
+complement to \(\bDelta_{2,\pi}\) satisfying
+\(\bDelta_{2,\pi}^\perp \bDelta_{2,\pi}^\top = \bzero\), it can be shown
+that \(X^2 = \hat\be_2^\top \hat\bXi \hat\be_2\) converges to the Wald
+test statistic with similar degrees of freedom (Jamil et al., 2025),
+where \[
+\bXi = \bDelta_{2,\pi}^\perp \big( (\bDelta_{2,\pi}^\perp)^\top \bSigma_2 \bDelta_{2,\pi}^\perp \big)^{-1} (\bDelta_{2,\pi})^\top.
+\] This is advantageous in that it does not require the estimation of
+\(\bQ\), and only requires the Jacobian \(\bDelta_{2,\pi}\) as well as a
+consistent estimator for \(\bSigma_2\), which can be obtained from a
+plug-in estimator using the model-implied probabilities
+\(\bpi(\hat\theta)\).
+
+\subsection{Pearson-type tests and general LIGOF
+tests}\label{pearson-type-tests-and-general-ligof-tests}
+
+Wald-type tests may behave unstably and has poor small-sample behaviour
+(Jamil et al., 2025). As an alternative, a Pearson-type test can be
+constructed using the Pearson residuals \[
+\begin{aligned}
+X^2 
+&= n \, \hat\be_2^\top \diag(\bpi_2(\hat\theta))^{-1} \hat\be_2 \\
+&= 
+n \sum_{i,k} \frac{p_k^{(i)} - \pi_k^{(i)}(\hat\theta)}{\pi_k^{(i)}(\hat\theta)} +
+n \sum_{i<j}\sum_{k<l} \frac{p_{k,l}^{(ij)} - \pi_{k,l}^{(ij)}(\hat\theta)}{\pi_{k,l}^{(ij)}(\hat\theta)},
+\end{aligned}
+\] where \(p_k^{(i)}\) and \(p_{k,l}^{(ij)}\) are the sample estimates
+for the univariate and bivariate response probabilities defined earlier.
+Similar test statistics were studied by Cai et al. (2006) and
+Bartholomew \& Leung (2002), where the latter considered only bivariate
+margins. The Pearson test statistic does not follow an asymptotic
+chi-square distribution because of the dependence of the summands in the
+above equation. It does however converge to a sum of scaled chi-square
+variables \(\sum_{s=1}^S \delta_s Z_s\), where each
+\(Z_s \iid \chi^2_1\) and \(\delta_s\) are the eigenvalues of
+\(M=\bOmega_2^{-1/2} \diag(\bpi_2(\hat\theta))^{-1} \bOmega_2^{-1/2}\).
+
+For calculation of p-values, a moment matching procedure can be employed
+(Jamil et al., 2025; Maydeu-Olivares \& Joe, 2008), where the first
+three moments of \(X^2\) are matched to the first three moments of some
+chi-square random variate, which is then used as the reference
+distribution to conduct the test. The moments of \(X^2\) are estimated
+using trace product formulae involving \(\diag(\bpi_2(\hat\theta))\) as
+well as \(\hat\bOmega_2\). Though the Pearson test looks as if the
+\(\bOmega_2\) matrix is not required, it is actually required to compute
+the p-values.
+
+More generally, any LIGOF test statistic can be constructed using
+\(X^2 = \hat\be_2^\top \hat\bXi \hat\be_2\), where
+\(\hat\bXi \xrightarrow{\text D} \bXi\) is some \(S\times S\) weight
+matrix that can be arbitrarily chosen. We saw earlier that the Wald test
+involves \(\hat\bXi=\hat\bOmega_2^{+}\), while the Pearson test involves
+\(\hat\bXi = \diag(\bpi_2(\hat\theta))^{-1}\). Other choices for this
+weight matrix are \(\hat\bXi = \bI\) (RSS test) or
+\(\hat\bXi = \hat\bSigma_2^{-1}\) (Multinomial test).
 
 \section{References}\label{references}
 
@@ -631,6 +766,31 @@ freedom}\label{estimation-of-degrees-of-freedom}
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-agresti2002categorical}
+Agresti, A. (2002). \emph{Categorical data analysis} (2nd ed).
+Wiley-Interscience.
+
+\bibitem[\citeproctext]{ref-bartholomew2002goodness}
+Bartholomew, D. J., \& Leung, S. O. (2002). A goodness of fit test for
+sparse 2p contingency tables. \emph{British Journal of Mathematical and
+Statistical Psychology}, \emph{55}(1), 1--15.
+
+\bibitem[\citeproctext]{ref-cai2006limitedinformation}
+Cai, Li., Maydeu-Olivares, A., Coffman, D. L., \& Thissen, David.
+(2006). Limited-information goodness-of-fit testing of item response
+theory models for sparse 2 tables. \emph{British Journal of Mathematical
+and Statistical Psychology}, \emph{59}(1), 173--194.
+\url{https://doi.org/10.1348/000711005X66419}
+
+\bibitem[\citeproctext]{ref-fuller2009introduction}
+Fuller, W. A. (2009). \emph{Introduction to statistical time series}.
+John Wiley \& Sons.
+
+\bibitem[\citeproctext]{ref-huber1964robust}
+Huber, P. J. (1964). Robust {Estimation} of a {Location Parameter}.
+\emph{The Annals of Mathematical Statistics}, \emph{35}(1), 73--101.
+\url{https://doi.org/10.1214/aoms/1177703732}
+
 \bibitem[\citeproctext]{ref-jamil2025pairwise}
 Jamil, H., Moustaki, I., \& Skinner, C. (2025). Pairwise likelihood
 estimation and limited-information goodness-of-fit test statistics for
@@ -656,15 +816,32 @@ Goodness-of-fit Testing} in {Multidimensional Contingency Tables}.
 \emph{Psychometrika}, \emph{71}(4), 713--732.
 \url{https://doi.org/10.1007/s11336-005-1295-9}
 
+\bibitem[\citeproctext]{ref-maydeu2008overview}
+Maydeu-Olivares, A., \& Joe, H. (2008). An overview of limited
+information goodness-of-fit testing in multidimensional contingency
+tables. In K. Shigemasu, A. Okada, T. Imaizumi, \& T. Hoshino (Eds.),
+\emph{New {Trends} in {Psychometrics}} (pp. 253--262). Universal Academy
+Press.
+
 \bibitem[\citeproctext]{ref-muthen1978contributions}
 Muthén, B. (1978). Contributions to factor analysis of dichotomous
 variables. \emph{Psychometrika}, \emph{43}(4), 551--560.
 \url{https://doi.org/10.1007/BF02293813}
 
+\bibitem[\citeproctext]{ref-newey1994large}
+Newey, W. K., \& McFadden, D. (1994). Large sample estimation and
+hypothesis testing. In R. F. Engle \& D. L. McFadden (Eds.),
+\emph{Handbook of {Econometrics}} (Vol. 4, pp. 2111--2245). Elsevier.
+\url{https://doi.org/10.1016/S1573-4412(05)80005-4}
+
 \bibitem[\citeproctext]{ref-reiser1996analysis}
 Reiser, M. (1996). Analysis of residuals for the multionmial item
 response model. \emph{Psychometrika}, \emph{61}(3), 509--528.
 \url{https://doi.org/10.1007/BF02294552}
+
+\bibitem[\citeproctext]{ref-vandervaart1998asymptotic}
+van der Vaart, A. W. (1998). \emph{Asymptotic {Statistics}}. Cambridge
+University Press. \url{https://doi.org/10.1017/CBO9780511802256}
 
 \end{CSLReferences}
 
