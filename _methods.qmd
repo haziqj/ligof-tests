@@ -256,6 +256,20 @@ $$
 $$
 Plugging this into the above equation lets us see the form of the influence matrix as $\bQ_n = \tilde\bQ_n \bG$.
 
+When estimating $\theta$ using limited information methods (up to second order moments in $\bmm$, e.g. univariate and bivariate moments), then it would be better off finding a transformation $g_2: \bp_2 \mapsto \bmm$.
+Letting $\bG_2 := \partial g_2 / \partial \bp_2$, we have
+$$
+\begin{aligned}
+\sqrt n (\bmm - \bmu(\theta)) 
+&= \sqrt n \big(g(\bp_2) - g(\bpi_2(\theta))\big) \\
+&= \bG_2 \sqrt n \big(\bp_2 - \bpi_2(\theta)\big) + o_p(1),
+\end{aligned}
+$$
+and so the influence matrix uses $\bG_2$ instead of $\bG$.
+In fact, **there is no hope using full information methods here, because the transformation would not be uniquely defined.**
+This is equivalent to wanting to find the inverse transformation $\bp_2 = \bT_2 \bp$, or asking "can we build the full joint probabilities from the lower-order moments?".
+One can see that this is logically not doable.
+
 ### Distribution of residuals
 
 Let $p_r = n_r / n$ be the $r$th entry of the $R$-vector of sample proportions $\bp$, where $n_r$ is the number of times the response pattern $\mathbf c_r$ was observed in the sample $\mathcal Y$.
@@ -276,28 +290,34 @@ Now we derive the asymptotic distribution of this quantity.
 Write
 $$
 \begin{aligned}
-\sqrt n \, \hat\be_2 
-&= \sqrt n \bT_2(\bp - \bpi(\theta_0)) - \sqrt n \bT_2(\bpi(\hat\theta) - \bpi(\theta_0)) \\
-&= \sqrt n (\bp_2 - \bpi_2(\theta_0)) - \sqrt n \bDelta_{2,\pi} (\hat\theta - \theta_0) + o_p(1),
+\sqrt n \, \hat\be_2
+&= \sqrt n \, (\bp_2 - \bpi_2(\theta_0)) - \sqrt n \, (\bpi_2(\hat\theta) - \bpi_2(\theta_0)) \\
+&= \sqrt n \, (\bp_2 - \bpi_2(\theta_0)) - \sqrt n \, \bDelta_{2,\pi} (\hat\theta - \theta_0) + o_p(1),
 \end{aligned}
 $$
 where we had considered a Taylor expansion of $\bpi(\hat\theta)$ around $\theta_0$ to get to the second line, and defined $\bDelta_{2,\pi} = \bT_2\Delta_{2,\pi}$.
 Now, for $\sqrt n$-consistent estimators satisfying @eq-theta-consistent, we have that
 $$
 \begin{aligned}
-\sqrt n \, \hat\be_2 
-&= \sqrt n (\bp_2 - \bpi_2(\theta_0)) -  \bDelta_{2,\pi} \hat\bQ_n \bT_2^{-1} \cdot \sqrt{n}(\bp_2 - \bpi_2(\theta)) + o_p(1) \\
-&= (\bI - \bDelta_{2,\pi} \hat\bQ_n \bT_2^{+}) \cdot \sqrt n (\bp_2 - \bpi_2(\theta_0)) + o_p(1),
+\sqrt n \, \hat\be_2
+&= \sqrt n \, (\bp - \bpi(\theta_0)) -  \bDelta_{\pi} \hat\bQ_n  \cdot \sqrt{n} \, (\bp - \bpi(\theta_0)) + o_p(1) \\
+&= (\bI - \bDelta_{\pi} \hat\bQ_n) \cdot \sqrt n \, (\bp - \bpi(\theta_0)) + o_p(1),
 \end{aligned}
 $$
-where $\bT_2^{+}$ is the pseudo-inverse of $\bT_2$, i.e. the matrix $\bA$ that satisfies $\bT_2 \bA = \bA^\top \bT_2 = \bI$.
-Therefore, we can see that the residuals $\hat\be_2$ are asymptotically normal with mean $\bzero$ and variance $\bOmega_2$, where
+so it is clear that $\hat\be$ is asymptotically normal by the CLT [@eq-clt-prop].
+Let $\operatorname{avar}(\hat\be) = \bOmega$.
+Then, since $\hat\be_2 = \bT_2 \hat\be$, the lower-order residuals are also asymptotically normal with zero mean and variance $\bOmega_2 = \bT_2 \bOmega \bT_2^\top$.
+The full form of the asymptotic variance is
 $$
 \begin{aligned}
-\bOmega_2 = (\bI - \bDelta_{2,\pi} \bQ \bT_2^+) \bSigma_2 (\bI - \bDelta_{2,\pi}  \bQ \bT_2^{+})^\top,
+\bOmega_2 = 
+  \bSigma_2 
+  - \bDelta_{2,\pi} \bQ \bSigma \bT_2^\top
+  - \bT_2 \bSigma \bDelta_{2,\pi}^\top \bQ^\top
+  + \bDelta_{2,\pi} \bQ \bSigma \bQ^\top \bDelta_{2,\pi}^\top,
 \end{aligned}
 $$
-and $\bSigma_2 = \bT_2 \bSigma \bT_2^\top$ is the covariance matrix of the lower-order moments.
+where $\bSigma_2 = \bT_2 \bSigma \bT_2^\top$ is the covariance matrix of the lower-order moments.
 
 ### Wald-type tests
 

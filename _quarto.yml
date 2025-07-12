@@ -1,13 +1,13 @@
 project:
   type: manuscript
   output-dir: docs/
-  post-render:
-    - _cleanup.R
+  # post-render:
+  #   - _cleanup.R
 
 manuscript:
   article: manuscript.qmd
 
-notebook-links: false
+# notebook-links: false
 
 format:
   html:
@@ -49,7 +49,7 @@ format:
 
 execute:
   echo: false
-  cache: false
+  cache: true
   freeze: auto
   warning: false
 

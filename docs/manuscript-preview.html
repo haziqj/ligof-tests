@@ -332,6 +332,12 @@
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(readr<span class="sc">::</span><span class="fu">read_file</span>(<span class="st">"_extensions/maths_shortcuts.tex"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="introduction" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
+<ul>
+<li>Focus on limited information methods that use up to second-order moments of the data.</li>
+<li>This synergises well with the LIGOF tests which also use up to second-order moments.</li>
+<li><strong>IF</strong> full information tests are used, then there is still the computational burden of computing the full multinomial matrix <span class="math inline">\({\boldsymbol\Sigma}\)</span> which grows exponentially with the number of variables. Using limited information methods to estimate the parameters offers a way to avoid this.</li>
+<li>Besides, most software uses limited information methods to estimate the parameters of ordinal factor models, such as the <code>{lavaan}</code> package in R, Mplus, Stata, and LISREL.</li>
+</ul>
 </section>
 <section id="methods" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="methods"><span class="header-section-number">2</span> Methods</h2>
@@ -412,23 +418,23 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
 <div class="quarto-layout-row">
 <div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="cell-output-display">
-<div id="guvnqpbfjj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#guvnqpbfjj table {
+<div id="ndmiemyqwr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ndmiemyqwr table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#guvnqpbfjj thead, #guvnqpbfjj tbody, #guvnqpbfjj tfoot, #guvnqpbfjj tr, #guvnqpbfjj td, #guvnqpbfjj th {
+#ndmiemyqwr thead, #ndmiemyqwr tbody, #ndmiemyqwr tfoot, #ndmiemyqwr tr, #ndmiemyqwr td, #ndmiemyqwr th {
   border-style: none;
 }
 
-#guvnqpbfjj p {
+#ndmiemyqwr p {
   margin: 0;
   padding: 0;
 }
 
-#guvnqpbfjj .gt_table {
+#ndmiemyqwr .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -454,12 +460,12 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-left-color: #D3D3D3;
 }
 
-#guvnqpbfjj .gt_caption {
+#ndmiemyqwr .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#guvnqpbfjj .gt_title {
+#ndmiemyqwr .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -471,7 +477,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-bottom-width: 0;
 }
 
-#guvnqpbfjj .gt_subtitle {
+#ndmiemyqwr .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -483,7 +489,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-top-width: 0;
 }
 
-#guvnqpbfjj .gt_heading {
+#ndmiemyqwr .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -495,13 +501,13 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-right-color: #D3D3D3;
 }
 
-#guvnqpbfjj .gt_bottom_border {
+#ndmiemyqwr .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#guvnqpbfjj .gt_col_headings {
+#ndmiemyqwr .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -516,7 +522,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-right-color: #D3D3D3;
 }
 
-#guvnqpbfjj .gt_col_heading {
+#ndmiemyqwr .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -536,7 +542,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   overflow-x: hidden;
 }
 
-#guvnqpbfjj .gt_column_spanner_outer {
+#ndmiemyqwr .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -548,15 +554,15 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 4px;
 }
 
-#guvnqpbfjj .gt_column_spanner_outer:first-child {
+#ndmiemyqwr .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#guvnqpbfjj .gt_column_spanner_outer:last-child {
+#ndmiemyqwr .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#guvnqpbfjj .gt_column_spanner {
+#ndmiemyqwr .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -568,11 +574,11 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   width: 100%;
 }
 
-#guvnqpbfjj .gt_spanner_row {
+#ndmiemyqwr .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#guvnqpbfjj .gt_group_heading {
+#ndmiemyqwr .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -598,7 +604,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   text-align: left;
 }
 
-#guvnqpbfjj .gt_empty_group_heading {
+#ndmiemyqwr .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -613,15 +619,15 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   vertical-align: middle;
 }
 
-#guvnqpbfjj .gt_from_md > :first-child {
+#ndmiemyqwr .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#guvnqpbfjj .gt_from_md > :last-child {
+#ndmiemyqwr .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#guvnqpbfjj .gt_row {
+#ndmiemyqwr .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -640,7 +646,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   overflow-x: hidden;
 }
 
-#guvnqpbfjj .gt_stub {
+#ndmiemyqwr .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -653,7 +659,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 5px;
 }
 
-#guvnqpbfjj .gt_stub_row_group {
+#ndmiemyqwr .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -667,15 +673,15 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   vertical-align: top;
 }
 
-#guvnqpbfjj .gt_row_group_first td {
+#ndmiemyqwr .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#guvnqpbfjj .gt_row_group_first th {
+#ndmiemyqwr .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#guvnqpbfjj .gt_summary_row {
+#ndmiemyqwr .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -685,16 +691,16 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 5px;
 }
 
-#guvnqpbfjj .gt_first_summary_row {
+#ndmiemyqwr .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#guvnqpbfjj .gt_first_summary_row.thick {
+#ndmiemyqwr .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#guvnqpbfjj .gt_last_summary_row {
+#ndmiemyqwr .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -704,7 +710,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-bottom-color: #D3D3D3;
 }
 
-#guvnqpbfjj .gt_grand_summary_row {
+#ndmiemyqwr .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -714,7 +720,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 5px;
 }
 
-#guvnqpbfjj .gt_first_grand_summary_row {
+#ndmiemyqwr .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -724,7 +730,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-top-color: #D3D3D3;
 }
 
-#guvnqpbfjj .gt_last_grand_summary_row_top {
+#ndmiemyqwr .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -734,11 +740,11 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-bottom-color: #D3D3D3;
 }
 
-#guvnqpbfjj .gt_striped {
+#ndmiemyqwr .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#guvnqpbfjj .gt_table_body {
+#ndmiemyqwr .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -747,7 +753,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-bottom-color: #D3D3D3;
 }
 
-#guvnqpbfjj .gt_footnotes {
+#ndmiemyqwr .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -761,7 +767,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-right-color: #D3D3D3;
 }
 
-#guvnqpbfjj .gt_footnote {
+#ndmiemyqwr .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -770,7 +776,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 5px;
 }
 
-#guvnqpbfjj .gt_sourcenotes {
+#ndmiemyqwr .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -784,7 +790,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-right-color: #D3D3D3;
 }
 
-#guvnqpbfjj .gt_sourcenote {
+#ndmiemyqwr .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -792,72 +798,72 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 5px;
 }
 
-#guvnqpbfjj .gt_left {
+#ndmiemyqwr .gt_left {
   text-align: left;
 }
 
-#guvnqpbfjj .gt_center {
+#ndmiemyqwr .gt_center {
   text-align: center;
 }
 
-#guvnqpbfjj .gt_right {
+#ndmiemyqwr .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#guvnqpbfjj .gt_font_normal {
+#ndmiemyqwr .gt_font_normal {
   font-weight: normal;
 }
 
-#guvnqpbfjj .gt_font_bold {
+#ndmiemyqwr .gt_font_bold {
   font-weight: bold;
 }
 
-#guvnqpbfjj .gt_font_italic {
+#ndmiemyqwr .gt_font_italic {
   font-style: italic;
 }
 
-#guvnqpbfjj .gt_super {
+#ndmiemyqwr .gt_super {
   font-size: 65%;
 }
 
-#guvnqpbfjj .gt_footnote_marks {
+#ndmiemyqwr .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#guvnqpbfjj .gt_asterisk {
+#ndmiemyqwr .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#guvnqpbfjj .gt_indent_1 {
+#ndmiemyqwr .gt_indent_1 {
   text-indent: 5px;
 }
 
-#guvnqpbfjj .gt_indent_2 {
+#ndmiemyqwr .gt_indent_2 {
   text-indent: 10px;
 }
 
-#guvnqpbfjj .gt_indent_3 {
+#ndmiemyqwr .gt_indent_3 {
   text-indent: 15px;
 }
 
-#guvnqpbfjj .gt_indent_4 {
+#ndmiemyqwr .gt_indent_4 {
   text-indent: 20px;
 }
 
-#guvnqpbfjj .gt_indent_5 {
+#ndmiemyqwr .gt_indent_5 {
   text-indent: 25px;
 }
 
-#guvnqpbfjj .katex-display {
+#ndmiemyqwr .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#guvnqpbfjj div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#ndmiemyqwr div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -926,23 +932,23 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
 </div></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="cell-output-display">
-<div id="tahgqwngyo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#tahgqwngyo table {
+<div id="rlurwoeajx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#rlurwoeajx table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#tahgqwngyo thead, #tahgqwngyo tbody, #tahgqwngyo tfoot, #tahgqwngyo tr, #tahgqwngyo td, #tahgqwngyo th {
+#rlurwoeajx thead, #rlurwoeajx tbody, #rlurwoeajx tfoot, #rlurwoeajx tr, #rlurwoeajx td, #rlurwoeajx th {
   border-style: none;
 }
 
-#tahgqwngyo p {
+#rlurwoeajx p {
   margin: 0;
   padding: 0;
 }
 
-#tahgqwngyo .gt_table {
+#rlurwoeajx .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -968,12 +974,12 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-left-color: #D3D3D3;
 }
 
-#tahgqwngyo .gt_caption {
+#rlurwoeajx .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#tahgqwngyo .gt_title {
+#rlurwoeajx .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -985,7 +991,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-bottom-width: 0;
 }
 
-#tahgqwngyo .gt_subtitle {
+#rlurwoeajx .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -997,7 +1003,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-top-width: 0;
 }
 
-#tahgqwngyo .gt_heading {
+#rlurwoeajx .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1009,13 +1015,13 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-right-color: #D3D3D3;
 }
 
-#tahgqwngyo .gt_bottom_border {
+#rlurwoeajx .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#tahgqwngyo .gt_col_headings {
+#rlurwoeajx .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1030,7 +1036,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-right-color: #D3D3D3;
 }
 
-#tahgqwngyo .gt_col_heading {
+#rlurwoeajx .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1050,7 +1056,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   overflow-x: hidden;
 }
 
-#tahgqwngyo .gt_column_spanner_outer {
+#rlurwoeajx .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1062,15 +1068,15 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 4px;
 }
 
-#tahgqwngyo .gt_column_spanner_outer:first-child {
+#rlurwoeajx .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#tahgqwngyo .gt_column_spanner_outer:last-child {
+#rlurwoeajx .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#tahgqwngyo .gt_column_spanner {
+#rlurwoeajx .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1082,11 +1088,11 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   width: 100%;
 }
 
-#tahgqwngyo .gt_spanner_row {
+#rlurwoeajx .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#tahgqwngyo .gt_group_heading {
+#rlurwoeajx .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1112,7 +1118,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   text-align: left;
 }
 
-#tahgqwngyo .gt_empty_group_heading {
+#rlurwoeajx .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1127,15 +1133,15 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   vertical-align: middle;
 }
 
-#tahgqwngyo .gt_from_md > :first-child {
+#rlurwoeajx .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#tahgqwngyo .gt_from_md > :last-child {
+#rlurwoeajx .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#tahgqwngyo .gt_row {
+#rlurwoeajx .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1154,7 +1160,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   overflow-x: hidden;
 }
 
-#tahgqwngyo .gt_stub {
+#rlurwoeajx .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1167,7 +1173,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 5px;
 }
 
-#tahgqwngyo .gt_stub_row_group {
+#rlurwoeajx .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1181,15 +1187,15 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   vertical-align: top;
 }
 
-#tahgqwngyo .gt_row_group_first td {
+#rlurwoeajx .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#tahgqwngyo .gt_row_group_first th {
+#rlurwoeajx .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#tahgqwngyo .gt_summary_row {
+#rlurwoeajx .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1199,16 +1205,16 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 5px;
 }
 
-#tahgqwngyo .gt_first_summary_row {
+#rlurwoeajx .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#tahgqwngyo .gt_first_summary_row.thick {
+#rlurwoeajx .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#tahgqwngyo .gt_last_summary_row {
+#rlurwoeajx .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1218,7 +1224,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-bottom-color: #D3D3D3;
 }
 
-#tahgqwngyo .gt_grand_summary_row {
+#rlurwoeajx .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1228,7 +1234,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 5px;
 }
 
-#tahgqwngyo .gt_first_grand_summary_row {
+#rlurwoeajx .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1238,7 +1244,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-top-color: #D3D3D3;
 }
 
-#tahgqwngyo .gt_last_grand_summary_row_top {
+#rlurwoeajx .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1248,11 +1254,11 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-bottom-color: #D3D3D3;
 }
 
-#tahgqwngyo .gt_striped {
+#rlurwoeajx .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#tahgqwngyo .gt_table_body {
+#rlurwoeajx .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1261,7 +1267,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-bottom-color: #D3D3D3;
 }
 
-#tahgqwngyo .gt_footnotes {
+#rlurwoeajx .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1275,7 +1281,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-right-color: #D3D3D3;
 }
 
-#tahgqwngyo .gt_footnote {
+#rlurwoeajx .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1284,7 +1290,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 5px;
 }
 
-#tahgqwngyo .gt_sourcenotes {
+#rlurwoeajx .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1298,7 +1304,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-right-color: #D3D3D3;
 }
 
-#tahgqwngyo .gt_sourcenote {
+#rlurwoeajx .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1306,72 +1312,72 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 5px;
 }
 
-#tahgqwngyo .gt_left {
+#rlurwoeajx .gt_left {
   text-align: left;
 }
 
-#tahgqwngyo .gt_center {
+#rlurwoeajx .gt_center {
   text-align: center;
 }
 
-#tahgqwngyo .gt_right {
+#rlurwoeajx .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#tahgqwngyo .gt_font_normal {
+#rlurwoeajx .gt_font_normal {
   font-weight: normal;
 }
 
-#tahgqwngyo .gt_font_bold {
+#rlurwoeajx .gt_font_bold {
   font-weight: bold;
 }
 
-#tahgqwngyo .gt_font_italic {
+#rlurwoeajx .gt_font_italic {
   font-style: italic;
 }
 
-#tahgqwngyo .gt_super {
+#rlurwoeajx .gt_super {
   font-size: 65%;
 }
 
-#tahgqwngyo .gt_footnote_marks {
+#rlurwoeajx .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#tahgqwngyo .gt_asterisk {
+#rlurwoeajx .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#tahgqwngyo .gt_indent_1 {
+#rlurwoeajx .gt_indent_1 {
   text-indent: 5px;
 }
 
-#tahgqwngyo .gt_indent_2 {
+#rlurwoeajx .gt_indent_2 {
   text-indent: 10px;
 }
 
-#tahgqwngyo .gt_indent_3 {
+#rlurwoeajx .gt_indent_3 {
   text-indent: 15px;
 }
 
-#tahgqwngyo .gt_indent_4 {
+#rlurwoeajx .gt_indent_4 {
   text-indent: 20px;
 }
 
-#tahgqwngyo .gt_indent_5 {
+#rlurwoeajx .gt_indent_5 {
   text-indent: 25px;
 }
 
-#tahgqwngyo .katex-display {
+#rlurwoeajx .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#tahgqwngyo div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#rlurwoeajx div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1593,6 +1599,13 @@ g: {\mathbf p}\mapsto ({\mathbf s}_1, {\mathbf s}_2)^\top
 &amp;= {\mathbf G}\sqrt n \big({\mathbf p}- {\boldsymbol\pi}(\theta)\big) + o_p(1).
 \end{aligned}
 \]</span> Plugging this into the above equation lets us see the form of the influence matrix as <span class="math inline">\({\mathbf Q}_n = \tilde{\mathbf Q}_n {\mathbf G}\)</span>.</p>
+<p>When estimating <span class="math inline">\(\theta\)</span> using limited information methods (up to second order moments in <span class="math inline">\({\mathbf m}\)</span>, e.g.&nbsp;univariate and bivariate moments), then it would be better off finding a transformation <span class="math inline">\(g_2: {\mathbf p}_2 \mapsto {\mathbf m}\)</span>. Letting <span class="math inline">\({\mathbf G}_2 := \partial g_2 / \partial {\mathbf p}_2\)</span>, we have <span class="math display">\[
+\begin{aligned}
+\sqrt n ({\mathbf m}- {\boldsymbol\mu}(\theta))
+&amp;= \sqrt n \big(g({\mathbf p}_2) - g({\boldsymbol\pi}_2(\theta))\big) \\
+&amp;= {\mathbf G}_2 \sqrt n \big({\mathbf p}_2 - {\boldsymbol\pi}_2(\theta)\big) + o_p(1),
+\end{aligned}
+\]</span> and so the influence matrix uses <span class="math inline">\({\mathbf G}_2\)</span> instead of <span class="math inline">\({\mathbf G}\)</span>. In fact, <strong>there is no hope using full information methods here, because the transformation would not be uniquely defined.</strong> This is equivalent to wanting to find the inverse transformation <span class="math inline">\({\mathbf p}_2 = {\mathbf T}_2 {\mathbf p}\)</span>, or asking “can we build the full joint probabilities from the lower-order moments?”. One can see that this is logically not doable.</p>
 </section>
 <section id="distribution-of-residuals" class="level3" data-number="2.4">
 <h3 data-number="2.4" class="anchored" data-anchor-id="distribution-of-residuals"><span class="header-section-number">2.4</span> Distribution of residuals</h3>
@@ -1604,20 +1617,24 @@ g: {\mathbf p}\mapsto ({\mathbf s}_1, {\mathbf s}_2)^\top
 <p>Consider testing the composite null hypothesis of <span class="math inline">\(\text{H}_0: {\boldsymbol\pi}= {\boldsymbol\pi}(\theta_0)\)</span> against the alternative <span class="math inline">\(\text{H}_1:  {\boldsymbol\pi}\neq {\boldsymbol\pi}(\theta_0)\)</span>. To do so, use the univariate and bivariate residuals <span class="math inline">\(\hat{\mathbf e}_2 = {\mathbf T}_2({\mathbf p}- {\boldsymbol\pi}(\hat\theta))\)</span> as the basis for the test statistic. Now we derive the asymptotic distribution of this quantity. Write <span class="math display">\[
 \begin{aligned}
 \sqrt n \, \hat{\mathbf e}_2
-&amp;= \sqrt n {\mathbf T}_2({\mathbf p}- {\boldsymbol\pi}(\theta_0)) - \sqrt n {\mathbf T}_2({\boldsymbol\pi}(\hat\theta) - {\boldsymbol\pi}(\theta_0)) \\
-&amp;= \sqrt n ({\mathbf p}_2 - {\boldsymbol\pi}_2(\theta_0)) - \sqrt n {\boldsymbol\Delta}_{2,\pi} (\hat\theta - \theta_0) + o_p(1),
+&amp;= \sqrt n \, ({\mathbf p}_2 - {\boldsymbol\pi}_2(\theta_0)) - \sqrt n \, ({\boldsymbol\pi}_2(\hat\theta) - {\boldsymbol\pi}_2(\theta_0)) \\
+&amp;= \sqrt n \, ({\mathbf p}_2 - {\boldsymbol\pi}_2(\theta_0)) - \sqrt n \, {\boldsymbol\Delta}_{2,\pi} (\hat\theta - \theta_0) + o_p(1),
 \end{aligned}
 \]</span> where we had considered a Taylor expansion of <span class="math inline">\({\boldsymbol\pi}(\hat\theta)\)</span> around <span class="math inline">\(\theta_0\)</span> to get to the second line, and defined <span class="math inline">\({\boldsymbol\Delta}_{2,\pi} = {\mathbf T}_2\Delta_{2,\pi}\)</span>. Now, for <span class="math inline">\(\sqrt n\)</span>-consistent estimators satisfying <a href="#eq-theta-consistent" class="quarto-xref">Equation&nbsp;3</a>, we have that <span class="math display">\[
 \begin{aligned}
 \sqrt n \, \hat{\mathbf e}_2
-&amp;= \sqrt n ({\mathbf p}_2 - {\boldsymbol\pi}_2(\theta_0)) -  {\boldsymbol\Delta}_{2,\pi} \hat{\mathbf Q}_n {\mathbf T}_2^{-1} \cdot \sqrt{n}({\mathbf p}_2 - {\boldsymbol\pi}_2(\theta)) + o_p(1) \\
-&amp;= ({\mathbf I}- {\boldsymbol\Delta}_{2,\pi} \hat{\mathbf Q}_n {\mathbf T}_2^{+}) \cdot \sqrt n ({\mathbf p}_2 - {\boldsymbol\pi}_2(\theta_0)) + o_p(1),
+&amp;= \sqrt n \, ({\mathbf p}- {\boldsymbol\pi}(\theta_0)) -  {\boldsymbol\Delta}_{\pi} \hat{\mathbf Q}_n  \cdot \sqrt{n} \, ({\mathbf p}- {\boldsymbol\pi}(\theta_0)) + o_p(1) \\
+&amp;= ({\mathbf I}- {\boldsymbol\Delta}_{\pi} \hat{\mathbf Q}_n) \cdot \sqrt n \, ({\mathbf p}- {\boldsymbol\pi}(\theta_0)) + o_p(1),
 \end{aligned}
-\]</span> where <span class="math inline">\({\mathbf T}_2^{+}\)</span> is the pseudo-inverse of <span class="math inline">\({\mathbf T}_2\)</span>, i.e.&nbsp;the matrix <span class="math inline">\({\mathbf A}\)</span> that satisfies <span class="math inline">\({\mathbf T}_2 {\mathbf A}= {\mathbf A}^\top {\mathbf T}_2 = {\mathbf I}\)</span>. Therefore, we can see that the residuals <span class="math inline">\(\hat{\mathbf e}_2\)</span> are asymptotically normal with mean <span class="math inline">\({\mathbf 0}\)</span> and variance <span class="math inline">\({\boldsymbol\Omega}_2\)</span>, where <span class="math display">\[
+\]</span> so it is clear that <span class="math inline">\(\hat{\mathbf e}\)</span> is asymptotically normal by the CLT <a href="#eq-clt-prop" class="quarto-xref">Equation&nbsp;4</a>. Let <span class="math inline">\(\operatorname{avar}(\hat{\mathbf e}) = {\boldsymbol\Omega}\)</span>. Then, since <span class="math inline">\(\hat{\mathbf e}_2 = {\mathbf T}_2 \hat{\mathbf e}\)</span>, the lower-order residuals are also asymptotically normal with zero mean and variance <span class="math inline">\({\boldsymbol\Omega}_2 = {\mathbf T}_2 {\boldsymbol\Omega}{\mathbf T}_2^\top\)</span>. The full form of the asymptotic variance is <span class="math display">\[
 \begin{aligned}
-{\boldsymbol\Omega}_2 = ({\mathbf I}- {\boldsymbol\Delta}_{2,\pi} {\mathbf Q}{\mathbf T}_2^+) {\boldsymbol\Sigma}_2 ({\mathbf I}- {\boldsymbol\Delta}_{2,\pi}  {\mathbf Q}{\mathbf T}_2^{+})^\top,
+{\boldsymbol\Omega}_2 =
+  {\boldsymbol\Sigma}_2
+  - {\boldsymbol\Delta}_{2,\pi} {\mathbf Q}{\boldsymbol\Sigma}{\mathbf T}_2^\top
+  - {\mathbf T}_2 {\boldsymbol\Sigma}{\boldsymbol\Delta}_{2,\pi}^\top {\mathbf Q}^\top
+  + {\boldsymbol\Delta}_{2,\pi} {\mathbf Q}{\boldsymbol\Sigma}{\mathbf Q}^\top {\boldsymbol\Delta}_{2,\pi}^\top,
 \end{aligned}
-\]</span> and <span class="math inline">\({\boldsymbol\Sigma}_2 = {\mathbf T}_2 {\boldsymbol\Sigma}{\mathbf T}_2^\top\)</span> is the covariance matrix of the lower-order moments.</p>
+\]</span> where <span class="math inline">\({\boldsymbol\Sigma}_2 = {\mathbf T}_2 {\boldsymbol\Sigma}{\mathbf T}_2^\top\)</span> is the covariance matrix of the lower-order moments.</p>
 </section>
 <section id="wald-type-tests" class="level3" data-number="2.5">
 <h3 data-number="2.5" class="anchored" data-anchor-id="wald-type-tests"><span class="header-section-number">2.5</span> Wald-type tests</h3>

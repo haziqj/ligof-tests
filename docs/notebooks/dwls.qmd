@@ -1,0 +1,108 @@
+---
+title: Diagonally Weighted Least Squares
+author: Haziq Jamil
+grid:
+  sidebar-width: 200px
+  body-width: 900px
+  margin-width: 0px
+  gutter-width: 1.5em
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r}
+#| include: false
+here::i_am("notebooks/dwls.qmd")
+source(here::here("notebooks/ligof.R"))
+```
+
+
+By default, `{lavaan}` uses `estimator = "WLSMV"` for ordinal data, which uses DWLS to estimate the parameters plus a meand and variance correction for the standard errors.
+
+## M2 statistic
+
+In our paper, we describe this is as the variance-covariance free Wald test (WaldVCF).
+
+```{r}
+M2_test <- function(lavobject) {
+  
+  n <- nobs(lavobject)
+  Delta2 <- create_Delta2_matrix(lavobject)
+  Delta2comp <- mcompanion::null_complement(Delta2)
+  Sigma2 <- lavaan.bingof:::create_Sigma2_matrix(lavobject)
+  with(lavaan.bingof::get_uni_bi_moments(lavobject), {
+    p2_hat <<- c(pdot1, pdot2)
+    pi2_hat <<- c(pidot1, pidot2)
+  })
+  e2_hat <- p2_hat - pi2_hat
+
+  C2 <-
+    Delta2comp %*%
+    MASS::ginv(t(Delta2comp) %*% Sigma2 %*% Delta2comp) %*%
+    t(Delta2comp)
+
+  M2 <- n * colSums(e2_hat * (C2 %*% e2_hat))
+  df <- nrow(Delta2) - ncol(Delta2)
+  pval <- pchisq(M2, df, lower.tail = FALSE)
+
+  tibble(M2 = M2, df = df, pval = pval)
+}
+
+M2_test(fit)
+```
+
+## Verification
+
+```{r}
+library(furrr)
+plan(multisession)
+B <- 2000  # no. of simulations
+
+sim_fun <- function(i) {
+  dat <- simulate_data(n = 1000)
+  fit <- cfa("f1 =~ y1 + y2 + y3 + y4 + y5", dat, std.lv = TRUE)
+  M2_test(fit)
+}
+
+res <- future_map(seq_len(B), sim_fun, .progress = TRUE, 
+                  .options = furrr_options(seed = TRUE))
+```
+
+```{r}
+bind_rows(res) |>
+  ggplot(aes(sample = M2)) +
+  stat_qq(distribution = qchisq, dparams = list(df = 5)) +
+  stat_qq_line(distribution = qchisq, dparams = list(df = 5)) +
+  labs(
+    title = "QQ-plot of M2 against chi-square distribution with 5 df",
+    x = "Theoretical quantiles",
+    y = "Sample quantiles"
+  ) +
+  theme_bw()
+```
+
+```{r}
+bind_rows(res) |>
+  ggplot(aes(x = M2, y = ..density..)) +
+  geom_histogram(col = "gray90") +
+  geom_line(
+    data = tibble(x = seq(0, 20, 0.1), y = dchisq(x, df = 5)),
+    aes(x, y),
+    col = "red3",
+    linewidth = 1
+  ) +
+  theme_bw()
+```
+
+```{r}
+bind_rows(res) |>
+  ggplot(aes(x = pval, y = ..density..)) +
+  geom_histogram(binwidth = 0.05, boundary = 0, col = "white") +
+  geom_hline(yintercept = 1, col = "red3", linetype = "dashed") +
+  theme_bw()
+```
+
+
+
+

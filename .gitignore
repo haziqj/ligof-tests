@@ -8,3 +8,6 @@ _freeze/
 /.quarto/
 /*_files
 _*.html
+*_cache/
+/notebooks/*_cache
+/notebooks/*_files

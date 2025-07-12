@@ -53,6 +53,12 @@ csl: apa.csl
 
 ## Introduction
 
+- Focus on limited information methods that use up to second-order moments of the data. 
+- This synergises well with the LIGOF tests which also use up to second-order moments.
+- **IF** full information tests are used, then there is still the computational burden of computing the full multinomial matrix $\bSigma$ which grows exponentially with the number of variables. Using limited information methods to estimate the parameters offers a way to avoid this.
+- Besides, most software uses limited information methods to estimate the parameters of ordinal factor models, such as the `{lavaan}` package in R, Mplus, Stata, and LISREL.
+
+
 ## Methods
 
 {{< include _methods.qmd >}}

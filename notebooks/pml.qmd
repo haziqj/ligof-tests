@@ -1,0 +1,304 @@
+---
+title: Pairwise Maximum Likelihood
+author: Haziq Jamil
+grid:
+  sidebar-width: 200px
+  body-width: 900px
+  margin-width: 0px
+  gutter-width: 1.5em
+editor_options: 
+  chunk_output_type: console
+execute:
+  cache: true
+---
+
+
+```{r}
+#| include: false
+here::i_am("notebooks/pml.qmd")
+source(here::here("notebooks/ligof.R"))
+```
+
+We can use the `estimator = "PML"` argument in `{lavaan}` to fit a model using pairwise maximum likelihood (PML) estimation. 
+
+```{r}
+fit <- cfa("f1 =~ y1 + y2 + y3 + y4 + y5", data = dat, estimator = "PML", 
+           std.lv = TRUE)
+coef(fit)
+```
+
+Alternatively, we can use the addon package `{lavaan.pl}` for more efficient PML estimation.
+
+```{r}
+library(lavaan.pl)
+# fit <- lavaan.pl::cfa("f1 =~ y1 + y2 + y3 + y4 + y5", data = dat, std.lv = TRUE)
+coef(fit)
+```
+
+## $\mathbf T_2$ matrix
+
+This is the design matrix that maps all joint probabilities to univariate and bivariate moments.
+
+```{r}
+CREATE_T2_MAT <- function(m) {
+  # m: integer vector of length p, where m[i] = number of categories of variable i
+  p <- length(m)
+  # 1) all joint patterns (rows = ∏ m[i], cols = p)
+  patterns <- expand.grid(rev(lapply(m, seq_len)), KEEP.OUT.ATTRS = FALSE, stringsAsFactors = FALSE)
+  patterns <- patterns[, rev(seq_len(p))] # reverse to match y1, y2, ...
+  n_pat <- nrow(patterns)
+  
+  # 2) precompute total number of rows: sum_i (m[i]-1) + sum_{i<j} (m[i]-1)*(m[j]-1)
+  uni_rows <- sum(m - 1)
+  biv_rows <- 0L
+  for(i in seq_len(p-1)) for(j in (i+1):p)
+    biv_rows <- biv_rows + (m[i]-1)*(m[j]-1)
+  total_rows <- uni_rows + biv_rows
+  
+  # 3) allocate
+  out <- matrix(0L, nrow = total_rows, ncol = n_pat)
+  rn  <- character(total_rows)
+  
+  # 4) fill univariate indicator rows
+  r <- 1L
+  for(i in seq_len(p)) {
+    for(cat in 2:m[i]) {
+      out[r, ] <- as.integer(patterns[[i]] == cat)
+      rn[r]   <- paste0("Y", i, "=", cat)
+      r       <- r + 1L
+    }
+  }
+  
+  # 5) fill bivariate indicator rows
+  for(i in seq_len(p-1)) for(j in (i+1):p) {
+    for(c1 in 2:m[i]) for(c2 in 2:m[j]) {
+      out[r, ] <- as.integer(patterns[[i]] == c1 & patterns[[j]] == c2)
+      rn[r]   <- paste0("Y", i, "=", c1, ",Y", j, "=", c2)
+      r       <- r + 1L
+    }
+  }
+  
+  rownames(out) <- rn
+  colnames(out) <- apply(patterns, 1, paste0, collapse = "")
+  out
+}
+CREATE_T2_MAT(rep(2, 5))
+```
+
+
+## Influence matrix
+
+To estimate the influence matrix, we need a couple of ingredients:
+
+- Inverse Hessian matrix evaluated at the PML estimates
+- Jacobian $\partial \boldsymbol\pi_{\text{pair}}(\theta) / \partial\theta$ evaluated at the PML estimates
+- Weight matrix $\operatorname{diag}(\boldsymbol\pi_{\text{pair}}(\theta))^{-1}$
+- $\boldsymbol G$ transformation matrix which brings $\boldsymbol\pi_{\text{pair}} \mapsto \boldsymbol \pi$
+
+```{r}
+# Inverse Hessian
+Hinv <- lavaan:::lav_model_information_observed(
+  lavmodel = fit@Model,
+  lavsamplestats = fit@SampleStats,
+  lavdata = fit@Data,
+  lavoptions = fit@Options,  
+  lavcache = fit@Cache, 
+  lavimplied = fit@Implied,
+  inverted = TRUE
+)
+round(Hinv, 3)
+
+# Jacobian -- for PML, there are 4 x (5C2) = 40 rows corresponding to pairwise
+# probabilities.
+Delta <- lavaan.bingof:::get_Delta_mats(fit)$Delta_til
+round(Delta, 3)
+
+# Weight matrix
+W <- diag(1 / unlist(lavaan:::lav_tables_pairwise_model_pi(fit)))
+diag(W)
+
+# Transformation matrix -- in Jamil et al. (2025), this is the design matrix
+# called B such that G = B %*% T2
+B  <- lavaan.bingof:::Beta_mat_design(nvar = 5)
+T2 <- lavaan.bingof:::create_T2_mat(p = 5)
+# G <- B %*% T2
+# Matrix::Matrix(G, sparse = TRUE)
+G2 <- B
+Matrix::Matrix(G2, sparse = TRUE)
+
+# Influence matrix
+Q <- Hinv %*% t(Delta) %*% W %*% G2
+round(Q, 3)
+
+tinytest::expect_equal(
+  Q,
+  lavaan.bingof:::test_begin(fit, NULL, FALSE)$B2
+)
+```
+
+## $\boldsymbol\Omega_2$ matrix
+
+This is the (asymptotic) variance-covariance matrix of the univariate and bivariate moments.
+
+```{r}
+Delta2 <- create_Delta2_matrix(fit)
+Sigma2 <- lavaan.bingof:::create_Sigma2_matrix(fit)
+D2Q <- Delta2 %*% Q
+
+Omega2 <- 
+  Sigma2 -
+  D2Q %*% Sigma2 -
+  Sigma2 %*% t(D2Q) +
+  D2Q %*% Sigma2 %*% t(D2Q)
+
+Matrix::Matrix(Omega2) |> 
+  round(3)
+
+tinytest::expect_equal(
+  Omega2,
+  lavaan.bingof:::test_begin(fit, NULL, FALSE)$Omega2
+)
+```
+
+## Wald and Pearson test
+
+
+```{r}
+ligof_test <- function(lavobject) {
+  
+  n <- nobs(lavobject)
+  Delta2 <- create_Delta2_matrix(lavobject)
+  # Delta2 <- lavaan.bingof:::get_Delta_mats(lavobject)$Delta2
+  Sigma2 <- lavaan.bingof:::create_Sigma2_matrix(lavobject, method = "theoretical")
+  uni_bi_moments <- lavaan.bingof::get_uni_bi_moments(lavobject)
+  p2_hat <- with(uni_bi_moments, c(pdot1, pdot2))
+  pi2_hat <- with(uni_bi_moments, c(pidot1, pidot2))
+  e2_hat <- p2_hat - pi2_hat
+
+  # Build influence matrix
+  Hinv <- lavaan:::lav_model_information_observed(
+    lavmodel = lavobject@Model,
+    lavsamplestats = lavobject@SampleStats,
+    lavdata = lavobject@Data,
+    lavoptions = lavobject@Options,  
+    lavcache = lavobject@Cache, 
+    lavimplied = lavobject@Implied,
+    inverted = TRUE
+  )
+  Delta <- lavaan.bingof:::get_Delta_mats(lavobject)$Delta_til
+  W <- diag(1 / unlist(lavaan:::lav_tables_pairwise_model_pi(lavobject)))
+  G2 <- lavaan.bingof:::Beta_mat_design(nvar = 5)
+  Q <- Hinv %*% t(Delta) %*% W %*% G2
+  
+  # Build Omega2 matrix
+  D2Q <- Delta2 %*% Q
+  Omega2 <- 
+    Sigma2 -
+    D2Q %*% Sigma2 -
+    Sigma2 %*% t(D2Q) +
+    D2Q %*% Sigma2 %*% t(D2Q)
+  Omega2 <- (Omega2 + t(Omega2)) / 2
+
+  out <- list()
+  
+  # Wald test
+  Xi <- MASS::ginv(Omega2)
+  X2 <- n * colSums(e2_hat * (Xi %*% e2_hat))
+  df <- Matrix::rankMatrix(Omega2) - ncol(Delta2)
+  pval <- pchisq(X2, df, lower.tail = FALSE)
+  out$Wald <- tibble(X2 = X2, df = df, pval = pval)
+  # out$WaldLB <- lavaan.bingof::Wald_test(lavobject) |> select(X2, df, pval)
+  
+  # Pearson test
+  Xi <- diag(1 / pi2_hat)
+  X2 <- n * colSums(e2_hat * (Xi %*% e2_hat))
+  df <- nrow(Delta2) - ncol(Delta2)
+  out$Pearson <- 
+    lavaan.bingof:::moment_match(X2, Xi, Omega2, df, 3) |>
+    as_tibble()
+  out$Pearson$pval <- pchisq(out$Pearson$X2, df, lower.tail = FALSE)
+  # out$PearsonLB <- lavaan.bingof::Pearson_test(lavobject) |> select(X2, df, pval)
+
+  out
+}
+
+ligof_test(fit)
+```
+
+## Verification
+
+```{r}
+library(furrr)
+plan(multisession)
+B <- 2000  # no. of simulations
+
+sim_fun <- function(i) {
+  set.seed(i)
+  dat <- simulate_data(n = 1000)
+  fit <- lavaan::cfa("f1 =~ y1 + y2 + y3 + y4 + y5", dat, std.lv = TRUE, estimator = "PML")
+  ligof_test(fit) |>
+    bind_rows(.id = "name") |>
+    mutate(sim = i, name = factor(name, levels = c("Wald", "Pearson"))) |>
+    select(sim, everything())
+}
+
+res <- future_map(seq_len(B), sim_fun, .progress = TRUE,
+                  .options = furrr_options(seed = TRUE))
+```
+
+```{r}
+bind_rows(res) |>
+  mutate(
+    df = mean(df),
+    observed = sort(X2),
+    expected = qchisq(ppoints(n()), df = df),
+    .by = name
+  ) |>
+  ggplot(aes(expected, observed, col = name)) +
+  geom_point() +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  labs(
+    title = "QQ-plot of M2 against chi-square distribution with 5 df",
+    x = "Theoretical quantiles",
+    y = "Sample quantiles"
+  ) +
+  coord_cartesian(xlim = c(0, 20), ylim = c(0, 20)) +
+  theme_bw()
+```
+
+```{r}
+bind_rows(res) |>
+  ggplot(aes(x = X2, y = ..density.., fill = name)) +
+  geom_histogram(col = "gray90") +
+  geom_line(
+    data = 
+      bind_rows(res) |>
+      group_by(name) |>
+      summarise(df = mean(df), .groups = "keep") |>
+      mutate(
+        x = list(seq(0, 20, 0.1)),
+        y = map(x, \(x) dchisq(x, df = first(df))),
+        .groups = "drop"
+      ) |>
+      unnest(c(x, y)),
+    aes(x, y),
+    linewidth = 1
+  ) +
+  facet_wrap(name ~ ., scales = "free_y") + 
+  labs(fill = NULL) +
+  theme_bw()
+```
+
+```{r}
+bind_rows(res) |>
+  ggplot(aes(x = pval, y = ..density.., fill = name)) +
+  geom_histogram(binwidth = 0.05, boundary = 0, col = "white") +
+  geom_hline(yintercept = 1, linetype = "dashed") +
+  facet_wrap(name ~ ., scales = "free_y") + 
+  labs(fill = NULL) +
+  theme_bw()
+```
+
+
+
+
