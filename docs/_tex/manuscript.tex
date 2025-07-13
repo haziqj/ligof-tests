@@ -140,14 +140,12 @@
 
 
 \usepackage{booktabs}
-\usepackage{caption}
 \usepackage{longtable}
-\usepackage{colortbl}
 \usepackage{array}
-\usepackage{anyfontsize}
 \usepackage{multirow}
 \usepackage{wrapfig}
 \usepackage{float}
+\usepackage{colortbl}
 \usepackage{pdflscape}
 \usepackage{tabu}
 \usepackage{threeparttable}
@@ -155,6 +153,8 @@
 \usepackage[normalem]{ulem}
 \usepackage{makecell}
 \usepackage{xcolor}
+\usepackage{caption}
+\usepackage{anyfontsize}
 \KOMAoption{captions}{tableheading}
 \include{_extensions/maths_shortcuts.tex}
 \makeatletter
@@ -251,6 +251,17 @@ The implementation is available as an R package called
   Besides, most software uses limited information methods to estimate
   the parameters of ordinal factor models, such as the
   \texttt{\{lavaan\}} package in R, Mplus, Stata, and LISREL.
+\item
+  Sometimes, GLS methods involve a fit function which are themselves
+  asymptotically chi square, and this can be used for testing fit.
+  However, more popular versions use thresholds and polychoric
+  correlations, and in this case it is not possible to detect sources of
+  misfit.
+\item
+  It would appear that calculation of LIGOF tests statistics involve
+  quantities that are already computed in the process of estimating the
+  parameters of the model, so it is not computationally burdensome to
+  compute these tests.
 \end{itemize}
 
 \section{Methods}\label{methods}

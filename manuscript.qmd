@@ -67,6 +67,8 @@ library(gt)
 -   This synergises well with the LIGOF tests which also use up to second-order moments.
 -   **IF** full information tests are used, then there is still the computational burden of computing the full multinomial matrix $\bSigma$ which grows exponentially with the number of variables. Using limited information methods to estimate the parameters offers a way to avoid this.
 -   Besides, most software uses limited information methods to estimate the parameters of ordinal factor models, such as the `{lavaan}` package in R, Mplus, Stata, and LISREL.
+-   Sometimes, GLS methods involve a fit function which are themselves asymptotically chi square, and this can be used for testing fit. However, more popular versions use thresholds and polychoric correlations, and in this case it is not possible to detect sources of misfit.
+-   It would appear that calculation of LIGOF tests statistics involve quantities that are already computed in the process of estimating the parameters of the model, so it is not computationally burdensome to compute these tests.
 
 ## Methods
 

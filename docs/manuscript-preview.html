@@ -365,6 +365,8 @@ The following object is masked from 'package:dplyr':
 <li>This synergises well with the LIGOF tests which also use up to second-order moments.</li>
 <li><strong>IF</strong> full information tests are used, then there is still the computational burden of computing the full multinomial matrix <span class="math inline">\({\boldsymbol\Sigma}\)</span> which grows exponentially with the number of variables. Using limited information methods to estimate the parameters offers a way to avoid this.</li>
 <li>Besides, most software uses limited information methods to estimate the parameters of ordinal factor models, such as the <code>{lavaan}</code> package in R, Mplus, Stata, and LISREL.</li>
+<li>Sometimes, GLS methods involve a fit function which are themselves asymptotically chi square, and this can be used for testing fit. However, more popular versions use thresholds and polychoric correlations, and in this case it is not possible to detect sources of misfit.</li>
+<li>It would appear that calculation of LIGOF tests statistics involve quantities that are already computed in the process of estimating the parameters of the model, so it is not computationally burdensome to compute these tests.</li>
 </ul>
 </section>
 <section id="methods" class="level2" data-number="2">
@@ -416,23 +418,23 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
 <div class="quarto-layout-row">
 <div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="cell-output-display">
-<div id="ndmiemyqwr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ndmiemyqwr table {
+<div id="adxovqnhaj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#adxovqnhaj table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ndmiemyqwr thead, #ndmiemyqwr tbody, #ndmiemyqwr tfoot, #ndmiemyqwr tr, #ndmiemyqwr td, #ndmiemyqwr th {
+#adxovqnhaj thead, #adxovqnhaj tbody, #adxovqnhaj tfoot, #adxovqnhaj tr, #adxovqnhaj td, #adxovqnhaj th {
   border-style: none;
 }
 
-#ndmiemyqwr p {
+#adxovqnhaj p {
   margin: 0;
   padding: 0;
 }
 
-#ndmiemyqwr .gt_table {
+#adxovqnhaj .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -458,12 +460,12 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-left-color: #D3D3D3;
 }
 
-#ndmiemyqwr .gt_caption {
+#adxovqnhaj .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ndmiemyqwr .gt_title {
+#adxovqnhaj .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -475,7 +477,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-bottom-width: 0;
 }
 
-#ndmiemyqwr .gt_subtitle {
+#adxovqnhaj .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -487,7 +489,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-top-width: 0;
 }
 
-#ndmiemyqwr .gt_heading {
+#adxovqnhaj .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -499,13 +501,13 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-right-color: #D3D3D3;
 }
 
-#ndmiemyqwr .gt_bottom_border {
+#adxovqnhaj .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ndmiemyqwr .gt_col_headings {
+#adxovqnhaj .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -520,7 +522,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-right-color: #D3D3D3;
 }
 
-#ndmiemyqwr .gt_col_heading {
+#adxovqnhaj .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -540,7 +542,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   overflow-x: hidden;
 }
 
-#ndmiemyqwr .gt_column_spanner_outer {
+#adxovqnhaj .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -552,15 +554,15 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 4px;
 }
 
-#ndmiemyqwr .gt_column_spanner_outer:first-child {
+#adxovqnhaj .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ndmiemyqwr .gt_column_spanner_outer:last-child {
+#adxovqnhaj .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ndmiemyqwr .gt_column_spanner {
+#adxovqnhaj .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -572,11 +574,11 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   width: 100%;
 }
 
-#ndmiemyqwr .gt_spanner_row {
+#adxovqnhaj .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ndmiemyqwr .gt_group_heading {
+#adxovqnhaj .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -602,7 +604,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   text-align: left;
 }
 
-#ndmiemyqwr .gt_empty_group_heading {
+#adxovqnhaj .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -617,15 +619,15 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   vertical-align: middle;
 }
 
-#ndmiemyqwr .gt_from_md > :first-child {
+#adxovqnhaj .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ndmiemyqwr .gt_from_md > :last-child {
+#adxovqnhaj .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ndmiemyqwr .gt_row {
+#adxovqnhaj .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -644,7 +646,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   overflow-x: hidden;
 }
 
-#ndmiemyqwr .gt_stub {
+#adxovqnhaj .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -657,7 +659,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 5px;
 }
 
-#ndmiemyqwr .gt_stub_row_group {
+#adxovqnhaj .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -671,15 +673,15 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   vertical-align: top;
 }
 
-#ndmiemyqwr .gt_row_group_first td {
+#adxovqnhaj .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ndmiemyqwr .gt_row_group_first th {
+#adxovqnhaj .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ndmiemyqwr .gt_summary_row {
+#adxovqnhaj .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -689,16 +691,16 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 5px;
 }
 
-#ndmiemyqwr .gt_first_summary_row {
+#adxovqnhaj .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ndmiemyqwr .gt_first_summary_row.thick {
+#adxovqnhaj .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ndmiemyqwr .gt_last_summary_row {
+#adxovqnhaj .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -708,7 +710,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-bottom-color: #D3D3D3;
 }
 
-#ndmiemyqwr .gt_grand_summary_row {
+#adxovqnhaj .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -718,7 +720,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 5px;
 }
 
-#ndmiemyqwr .gt_first_grand_summary_row {
+#adxovqnhaj .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -728,7 +730,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-top-color: #D3D3D3;
 }
 
-#ndmiemyqwr .gt_last_grand_summary_row_top {
+#adxovqnhaj .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -738,11 +740,11 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-bottom-color: #D3D3D3;
 }
 
-#ndmiemyqwr .gt_striped {
+#adxovqnhaj .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ndmiemyqwr .gt_table_body {
+#adxovqnhaj .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -751,7 +753,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-bottom-color: #D3D3D3;
 }
 
-#ndmiemyqwr .gt_footnotes {
+#adxovqnhaj .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -765,7 +767,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-right-color: #D3D3D3;
 }
 
-#ndmiemyqwr .gt_footnote {
+#adxovqnhaj .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -774,7 +776,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 5px;
 }
 
-#ndmiemyqwr .gt_sourcenotes {
+#adxovqnhaj .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -788,7 +790,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-right-color: #D3D3D3;
 }
 
-#ndmiemyqwr .gt_sourcenote {
+#adxovqnhaj .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -796,72 +798,72 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 5px;
 }
 
-#ndmiemyqwr .gt_left {
+#adxovqnhaj .gt_left {
   text-align: left;
 }
 
-#ndmiemyqwr .gt_center {
+#adxovqnhaj .gt_center {
   text-align: center;
 }
 
-#ndmiemyqwr .gt_right {
+#adxovqnhaj .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ndmiemyqwr .gt_font_normal {
+#adxovqnhaj .gt_font_normal {
   font-weight: normal;
 }
 
-#ndmiemyqwr .gt_font_bold {
+#adxovqnhaj .gt_font_bold {
   font-weight: bold;
 }
 
-#ndmiemyqwr .gt_font_italic {
+#adxovqnhaj .gt_font_italic {
   font-style: italic;
 }
 
-#ndmiemyqwr .gt_super {
+#adxovqnhaj .gt_super {
   font-size: 65%;
 }
 
-#ndmiemyqwr .gt_footnote_marks {
+#adxovqnhaj .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ndmiemyqwr .gt_asterisk {
+#adxovqnhaj .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ndmiemyqwr .gt_indent_1 {
+#adxovqnhaj .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ndmiemyqwr .gt_indent_2 {
+#adxovqnhaj .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ndmiemyqwr .gt_indent_3 {
+#adxovqnhaj .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ndmiemyqwr .gt_indent_4 {
+#adxovqnhaj .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ndmiemyqwr .gt_indent_5 {
+#adxovqnhaj .gt_indent_5 {
   text-indent: 25px;
 }
 
-#ndmiemyqwr .katex-display {
+#adxovqnhaj .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#ndmiemyqwr div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#adxovqnhaj div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -930,23 +932,23 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
 </div></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="cell-output-display">
-<div id="rlurwoeajx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#rlurwoeajx table {
+<div id="xmwuhqknzl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#xmwuhqknzl table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#rlurwoeajx thead, #rlurwoeajx tbody, #rlurwoeajx tfoot, #rlurwoeajx tr, #rlurwoeajx td, #rlurwoeajx th {
+#xmwuhqknzl thead, #xmwuhqknzl tbody, #xmwuhqknzl tfoot, #xmwuhqknzl tr, #xmwuhqknzl td, #xmwuhqknzl th {
   border-style: none;
 }
 
-#rlurwoeajx p {
+#xmwuhqknzl p {
   margin: 0;
   padding: 0;
 }
 
-#rlurwoeajx .gt_table {
+#xmwuhqknzl .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -972,12 +974,12 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-left-color: #D3D3D3;
 }
 
-#rlurwoeajx .gt_caption {
+#xmwuhqknzl .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#rlurwoeajx .gt_title {
+#xmwuhqknzl .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -989,7 +991,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-bottom-width: 0;
 }
 
-#rlurwoeajx .gt_subtitle {
+#xmwuhqknzl .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1001,7 +1003,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-top-width: 0;
 }
 
-#rlurwoeajx .gt_heading {
+#xmwuhqknzl .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1013,13 +1015,13 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-right-color: #D3D3D3;
 }
 
-#rlurwoeajx .gt_bottom_border {
+#xmwuhqknzl .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#rlurwoeajx .gt_col_headings {
+#xmwuhqknzl .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1034,7 +1036,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-right-color: #D3D3D3;
 }
 
-#rlurwoeajx .gt_col_heading {
+#xmwuhqknzl .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1054,7 +1056,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   overflow-x: hidden;
 }
 
-#rlurwoeajx .gt_column_spanner_outer {
+#xmwuhqknzl .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1066,15 +1068,15 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 4px;
 }
 
-#rlurwoeajx .gt_column_spanner_outer:first-child {
+#xmwuhqknzl .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#rlurwoeajx .gt_column_spanner_outer:last-child {
+#xmwuhqknzl .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#rlurwoeajx .gt_column_spanner {
+#xmwuhqknzl .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1086,11 +1088,11 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   width: 100%;
 }
 
-#rlurwoeajx .gt_spanner_row {
+#xmwuhqknzl .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#rlurwoeajx .gt_group_heading {
+#xmwuhqknzl .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1116,7 +1118,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   text-align: left;
 }
 
-#rlurwoeajx .gt_empty_group_heading {
+#xmwuhqknzl .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1131,15 +1133,15 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   vertical-align: middle;
 }
 
-#rlurwoeajx .gt_from_md > :first-child {
+#xmwuhqknzl .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#rlurwoeajx .gt_from_md > :last-child {
+#xmwuhqknzl .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#rlurwoeajx .gt_row {
+#xmwuhqknzl .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1158,7 +1160,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   overflow-x: hidden;
 }
 
-#rlurwoeajx .gt_stub {
+#xmwuhqknzl .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1171,7 +1173,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 5px;
 }
 
-#rlurwoeajx .gt_stub_row_group {
+#xmwuhqknzl .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1185,15 +1187,15 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   vertical-align: top;
 }
 
-#rlurwoeajx .gt_row_group_first td {
+#xmwuhqknzl .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#rlurwoeajx .gt_row_group_first th {
+#xmwuhqknzl .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#rlurwoeajx .gt_summary_row {
+#xmwuhqknzl .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1203,16 +1205,16 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 5px;
 }
 
-#rlurwoeajx .gt_first_summary_row {
+#xmwuhqknzl .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#rlurwoeajx .gt_first_summary_row.thick {
+#xmwuhqknzl .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#rlurwoeajx .gt_last_summary_row {
+#xmwuhqknzl .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1222,7 +1224,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-bottom-color: #D3D3D3;
 }
 
-#rlurwoeajx .gt_grand_summary_row {
+#xmwuhqknzl .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1232,7 +1234,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 5px;
 }
 
-#rlurwoeajx .gt_first_grand_summary_row {
+#xmwuhqknzl .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1242,7 +1244,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-top-color: #D3D3D3;
 }
 
-#rlurwoeajx .gt_last_grand_summary_row_top {
+#xmwuhqknzl .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1252,11 +1254,11 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-bottom-color: #D3D3D3;
 }
 
-#rlurwoeajx .gt_striped {
+#xmwuhqknzl .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#rlurwoeajx .gt_table_body {
+#xmwuhqknzl .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1265,7 +1267,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-bottom-color: #D3D3D3;
 }
 
-#rlurwoeajx .gt_footnotes {
+#xmwuhqknzl .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1279,7 +1281,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-right-color: #D3D3D3;
 }
 
-#rlurwoeajx .gt_footnote {
+#xmwuhqknzl .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1288,7 +1290,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 5px;
 }
 
-#rlurwoeajx .gt_sourcenotes {
+#xmwuhqknzl .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1302,7 +1304,7 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   border-right-color: #D3D3D3;
 }
 
-#rlurwoeajx .gt_sourcenote {
+#xmwuhqknzl .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1310,72 +1312,72 @@ Table&nbsp;1: Response patterns for <span class="math inline">\(p=3\)</span> wit
   padding-right: 5px;
 }
 
-#rlurwoeajx .gt_left {
+#xmwuhqknzl .gt_left {
   text-align: left;
 }
 
-#rlurwoeajx .gt_center {
+#xmwuhqknzl .gt_center {
   text-align: center;
 }
 
-#rlurwoeajx .gt_right {
+#xmwuhqknzl .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#rlurwoeajx .gt_font_normal {
+#xmwuhqknzl .gt_font_normal {
   font-weight: normal;
 }
 
-#rlurwoeajx .gt_font_bold {
+#xmwuhqknzl .gt_font_bold {
   font-weight: bold;
 }
 
-#rlurwoeajx .gt_font_italic {
+#xmwuhqknzl .gt_font_italic {
   font-style: italic;
 }
 
-#rlurwoeajx .gt_super {
+#xmwuhqknzl .gt_super {
   font-size: 65%;
 }
 
-#rlurwoeajx .gt_footnote_marks {
+#xmwuhqknzl .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#rlurwoeajx .gt_asterisk {
+#xmwuhqknzl .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#rlurwoeajx .gt_indent_1 {
+#xmwuhqknzl .gt_indent_1 {
   text-indent: 5px;
 }
 
-#rlurwoeajx .gt_indent_2 {
+#xmwuhqknzl .gt_indent_2 {
   text-indent: 10px;
 }
 
-#rlurwoeajx .gt_indent_3 {
+#xmwuhqknzl .gt_indent_3 {
   text-indent: 15px;
 }
 
-#rlurwoeajx .gt_indent_4 {
+#xmwuhqknzl .gt_indent_4 {
   text-indent: 20px;
 }
 
-#rlurwoeajx .gt_indent_5 {
+#xmwuhqknzl .gt_indent_5 {
   text-indent: 25px;
 }
 
-#rlurwoeajx .katex-display {
+#xmwuhqknzl .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#rlurwoeajx div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#xmwuhqknzl div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1647,23 +1649,23 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
 </figcaption>
 <div aria-describedby="tbl-objfun-deriv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="htevwfjncj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#htevwfjncj table {
+<div id="dwiwezzhcv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#dwiwezzhcv table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#htevwfjncj thead, #htevwfjncj tbody, #htevwfjncj tfoot, #htevwfjncj tr, #htevwfjncj td, #htevwfjncj th {
+#dwiwezzhcv thead, #dwiwezzhcv tbody, #dwiwezzhcv tfoot, #dwiwezzhcv tr, #dwiwezzhcv td, #dwiwezzhcv th {
   border-style: none;
 }
 
-#htevwfjncj p {
+#dwiwezzhcv p {
   margin: 0;
   padding: 0;
 }
 
-#htevwfjncj .gt_table {
+#dwiwezzhcv .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1689,12 +1691,12 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   border-left-color: #D3D3D3;
 }
 
-#htevwfjncj .gt_caption {
+#dwiwezzhcv .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#htevwfjncj .gt_title {
+#dwiwezzhcv .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1706,7 +1708,7 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   border-bottom-width: 0;
 }
 
-#htevwfjncj .gt_subtitle {
+#dwiwezzhcv .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1718,7 +1720,7 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   border-top-width: 0;
 }
 
-#htevwfjncj .gt_heading {
+#dwiwezzhcv .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1730,13 +1732,13 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   border-right-color: #D3D3D3;
 }
 
-#htevwfjncj .gt_bottom_border {
+#dwiwezzhcv .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#htevwfjncj .gt_col_headings {
+#dwiwezzhcv .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1751,7 +1753,7 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   border-right-color: #D3D3D3;
 }
 
-#htevwfjncj .gt_col_heading {
+#dwiwezzhcv .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1771,7 +1773,7 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   overflow-x: hidden;
 }
 
-#htevwfjncj .gt_column_spanner_outer {
+#dwiwezzhcv .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1783,15 +1785,15 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   padding-right: 4px;
 }
 
-#htevwfjncj .gt_column_spanner_outer:first-child {
+#dwiwezzhcv .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#htevwfjncj .gt_column_spanner_outer:last-child {
+#dwiwezzhcv .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#htevwfjncj .gt_column_spanner {
+#dwiwezzhcv .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1803,11 +1805,11 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   width: 100%;
 }
 
-#htevwfjncj .gt_spanner_row {
+#dwiwezzhcv .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#htevwfjncj .gt_group_heading {
+#dwiwezzhcv .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1833,7 +1835,7 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   text-align: left;
 }
 
-#htevwfjncj .gt_empty_group_heading {
+#dwiwezzhcv .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1848,15 +1850,15 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   vertical-align: middle;
 }
 
-#htevwfjncj .gt_from_md > :first-child {
+#dwiwezzhcv .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#htevwfjncj .gt_from_md > :last-child {
+#dwiwezzhcv .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#htevwfjncj .gt_row {
+#dwiwezzhcv .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1875,7 +1877,7 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   overflow-x: hidden;
 }
 
-#htevwfjncj .gt_stub {
+#dwiwezzhcv .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1888,7 +1890,7 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   padding-right: 5px;
 }
 
-#htevwfjncj .gt_stub_row_group {
+#dwiwezzhcv .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1902,15 +1904,15 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   vertical-align: top;
 }
 
-#htevwfjncj .gt_row_group_first td {
+#dwiwezzhcv .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#htevwfjncj .gt_row_group_first th {
+#dwiwezzhcv .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#htevwfjncj .gt_summary_row {
+#dwiwezzhcv .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1920,16 +1922,16 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   padding-right: 5px;
 }
 
-#htevwfjncj .gt_first_summary_row {
+#dwiwezzhcv .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#htevwfjncj .gt_first_summary_row.thick {
+#dwiwezzhcv .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#htevwfjncj .gt_last_summary_row {
+#dwiwezzhcv .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1939,7 +1941,7 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   border-bottom-color: #D3D3D3;
 }
 
-#htevwfjncj .gt_grand_summary_row {
+#dwiwezzhcv .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1949,7 +1951,7 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   padding-right: 5px;
 }
 
-#htevwfjncj .gt_first_grand_summary_row {
+#dwiwezzhcv .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1959,7 +1961,7 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   border-top-color: #D3D3D3;
 }
 
-#htevwfjncj .gt_last_grand_summary_row_top {
+#dwiwezzhcv .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1969,11 +1971,11 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   border-bottom-color: #D3D3D3;
 }
 
-#htevwfjncj .gt_striped {
+#dwiwezzhcv .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#htevwfjncj .gt_table_body {
+#dwiwezzhcv .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1982,7 +1984,7 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   border-bottom-color: #D3D3D3;
 }
 
-#htevwfjncj .gt_footnotes {
+#dwiwezzhcv .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1996,7 +1998,7 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   border-right-color: #D3D3D3;
 }
 
-#htevwfjncj .gt_footnote {
+#dwiwezzhcv .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2005,7 +2007,7 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   padding-right: 5px;
 }
 
-#htevwfjncj .gt_sourcenotes {
+#dwiwezzhcv .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2019,7 +2021,7 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   border-right-color: #D3D3D3;
 }
 
-#htevwfjncj .gt_sourcenote {
+#dwiwezzhcv .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2027,72 +2029,72 @@ Table&nbsp;2: Objective functions and their derivatives for different estimators
   padding-right: 5px;
 }
 
-#htevwfjncj .gt_left {
+#dwiwezzhcv .gt_left {
   text-align: left;
 }
 
-#htevwfjncj .gt_center {
+#dwiwezzhcv .gt_center {
   text-align: center;
 }
 
-#htevwfjncj .gt_right {
+#dwiwezzhcv .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#htevwfjncj .gt_font_normal {
+#dwiwezzhcv .gt_font_normal {
   font-weight: normal;
 }
 
-#htevwfjncj .gt_font_bold {
+#dwiwezzhcv .gt_font_bold {
   font-weight: bold;
 }
 
-#htevwfjncj .gt_font_italic {
+#dwiwezzhcv .gt_font_italic {
   font-style: italic;
 }
 
-#htevwfjncj .gt_super {
+#dwiwezzhcv .gt_super {
   font-size: 65%;
 }
 
-#htevwfjncj .gt_footnote_marks {
+#dwiwezzhcv .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#htevwfjncj .gt_asterisk {
+#dwiwezzhcv .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#htevwfjncj .gt_indent_1 {
+#dwiwezzhcv .gt_indent_1 {
   text-indent: 5px;
 }
 
-#htevwfjncj .gt_indent_2 {
+#dwiwezzhcv .gt_indent_2 {
   text-indent: 10px;
 }
 
-#htevwfjncj .gt_indent_3 {
+#dwiwezzhcv .gt_indent_3 {
   text-indent: 15px;
 }
 
-#htevwfjncj .gt_indent_4 {
+#dwiwezzhcv .gt_indent_4 {
   text-indent: 20px;
 }
 
-#htevwfjncj .gt_indent_5 {
+#dwiwezzhcv .gt_indent_5 {
   text-indent: 25px;
 }
 
-#htevwfjncj .katex-display {
+#dwiwezzhcv .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#htevwfjncj div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#dwiwezzhcv div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
