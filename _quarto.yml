@@ -1,11 +1,15 @@
 project:
   type: manuscript
   output-dir: docs/
-  # post-render:
-  #   - _cleanup.R
+  post-render:
+    - _cleanup.R
 
 manuscript:
   article: manuscript.qmd
+  notebooks:
+    - notebook: notebooks/ligof.qmd
+    - notebook: notebooks/dwls.qmd
+    - notebook: notebooks/pml.qmd
 
 # notebook-links: false
 
@@ -18,6 +22,8 @@ format:
     lightbox: true
     # page-layout: full
     grid:
+      sidebar-width: 200px
+      body-width: 900px
       margin-width: 0px    
     # template-partials:
     #   - title-metadata.html
@@ -53,6 +59,9 @@ execute:
   freeze: auto
   warning: false
 
+editor:
+  markdown:
+    wrap: sentence
 editor_options: 
   chunk_output_type: console
 

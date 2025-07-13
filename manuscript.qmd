@@ -47,21 +47,504 @@ keywords:
 manuscript-url: https://haziqj.ml/ligof-tests
 bibliography: refs.bib
 csl: apa.csl
+editor:
+  markdown:
+    wrap: sentence
 ---
 
 {{< include _extensions/_maths_shortcuts.qmd >}}
 
+```{r}
+#| include: false
+library(tidyverse)
+library(kableExtra)
+library(gt)
+```
+
 ## Introduction
 
-- Focus on limited information methods that use up to second-order moments of the data. 
-- This synergises well with the LIGOF tests which also use up to second-order moments.
-- **IF** full information tests are used, then there is still the computational burden of computing the full multinomial matrix $\bSigma$ which grows exponentially with the number of variables. Using limited information methods to estimate the parameters offers a way to avoid this.
-- Besides, most software uses limited information methods to estimate the parameters of ordinal factor models, such as the `{lavaan}` package in R, Mplus, Stata, and LISREL.
-
+-   Focus on limited information methods that use up to second-order moments of the data.
+-   This synergises well with the LIGOF tests which also use up to second-order moments.
+-   **IF** full information tests are used, then there is still the computational burden of computing the full multinomial matrix $\bSigma$ which grows exponentially with the number of variables. Using limited information methods to estimate the parameters offers a way to avoid this.
+-   Besides, most software uses limited information methods to estimate the parameters of ordinal factor models, such as the `{lavaan}` package in R, Mplus, Stata, and LISREL.
 
 ## Methods
 
-{{< include _methods.qmd >}}
+### Ordinal data
+
+Consider the case of analysing multivariate data $\mathbf y = (y_{1}, \ldots, y_{p})^\top$, where each item $y_{i}$ is an ordinal random variable with $m_i$ categories, $i=1,\dots,p$.
+Let $\mathcal R = \{ \mathbf c = (c_1,\dots, c_p)^\top \mid c_i \in \{1,\dots, m_i\}\}$ be the set of all possible response patterns, and let $R=\prod_{i} m_i$ be the cardinality of this set.
+The joint probability of observing a response pattern $\mathbf c_r \in \mathcal R$ is given by $$
+\pi_r = \Pr(\mathbf y = \mathbf c_r) = \Pr(y_1 = \mathbf c_{r1}, \ldots, y_p = \mathbf c_{rp}), \hspace{2em} r = 1, \ldots, R,
+$$ {#eq-each-joint-resp-prob} with $\sum_r \pi_R = 1$.
+Collect all response probabilities into the vector $\boldsymbol \pi = (\pi_1, \ldots, \pi_R)^\top \in [0,1]^R$.
+An example with $p=3$, $m_1=2$, and $m_2=m_3=3$ is given below.
+In total, there are $R=2 \times 3 \times 3 = 18$ response patterns as shown in @tbl-response-patterns.
+
+```{r}
+#| include: false
+
+tab_rp <-
+  expand_grid(
+    y1 = 1:2,
+    y2 = 1:3,
+    y3 = 1:3
+  ) |> 
+  unite("pattern", everything(), sep = "", remove = FALSE) |>
+  mutate(r = row_number()) |>
+  select(r, starts_with("y"), pattern)
+```
+
+::: {#tbl-response-patterns layout-ncol="2"}
+```{r}
+#| html-table-processing: none
+#| echo: false
+tab_rp |>
+  slice(1:9) |>
+  gt() |>
+  cols_label(
+    r = md("$r$"),
+    y1 = md("$y_1$"),
+    y2 = md("$y_2$"),
+    y3 = md("$y_3$"),
+    pattern = "Pattern"
+  ) |>
+  tab_options(table.width = "80%")
+```
+
+```{r}
+#| html-table-processing: none
+#| echo: false
+tab_rp |>
+  slice(-(1:9)) |>
+  gt() |>
+  cols_label(
+    r = md("$r$"),
+    y1 = md("$y_1$"),
+    y2 = md("$y_2$"),
+    y3 = md("$y_3$"),
+    pattern = "Pattern"
+  ) |>
+  tab_options(table.width = "80%")
+```
+
+Response patterns for $p=3$ with $m_1=2$, and $m_2=m_3=3$.
+:::
+
+Later on we wish to use lower-order residuals to assess the fit of a model to the data, which first requires a description of lower-order moments and its connection to the joint response probabilities.
+Marginally, each $y_i$ can be viewed as a multinoulli random variable with event probabilities $\pi^{(i)}_k = \Pr(y_i = k)$, $k=1,\dots m_i$, that sum to one.
+Therefore, this univariate distribution is characterised by its $(m_i-1)$ *moments* $\pi^{(i)}_2,\dots,\pi^{(i)}_{m_i}$, with the first moment being redundant due to the sum to unity constraint.
+All univariate moments can be collected into the vector $\dot{\boldsymbol\pi}_1 = (\pi^{(i)}_k)^\top$ whose dimension is $S_1 = \sum_i (m_i-1)$.
+In a similar light, the bivariate distribution of $(y_i, y_j)$ is characterised by its $(m_i-1)(m_j-1)$ *joint moments* $\pi^{(ij)}_{k,l} = \Pr(y_i = k, y_j = l)$, $k=2,\dots,m_i$, $l=2,\dots,m_j$.
+Also collect all bivariate moments into the vector $\dot{\boldsymbol\pi}_2 = (\pi^{(ij)}_{k,l})^\top$ whose dimension is $S_2 = \sum_{i<j} (m_i-1)(m_j-1)$.
+Finally, denote by $\boldsymbol\pi_2 = (\dot\bpi_1^\top, \dot\bpi_2^\top)^\top$ the vector of multivariate moments up to order 2, which is a vector of length $S = S_1 + S_2$.
+
+Because the lower order moments are contained in the higher order moments, the vector $\boldsymbol\pi_2$ can be extracted from the joint probabilities $\bpi$ via a linear operation $\bpi_2 = \bT_2 \bpi$ [@jamil2025pairwise].
+As an example, continuing from the $p=3$ instance above, the moments for the first variable $y_1$, $\Pr(y_1=2)$ can be obtained by *summing* over all joint probabilities whose patterns contain $y_1=2$.
+The positions of these joint probabilities in the vector $\bpi$ are picked up by the first row of the matrix $\bT_2$.
+Similarly, the two bivariate moments of $(y_1,y_2)$, i.e. $\pi^{(12)}_{22}$ and $\pi^{(12)}_{23}$ are obtained by summing over the joint probabilities whose patterns contain $y_1=2$ and $y_2=2$, and $y_1=2$ and $y_2=3$, respectively.
+
+::: {#fig-T2-matrix}
+```{r}
+#| echo: false
+options(width = 100)
+create_T2_mat <- function(m) {
+  # m: integer vector of length p, where m[i] = number of categories of variable i
+  p <- length(m)
+  # 1) all joint patterns (rows = ∏ m[i], cols = p)
+  patterns <- expand.grid(rev(lapply(m, seq_len)), KEEP.OUT.ATTRS = FALSE, stringsAsFactors = FALSE)
+  patterns <- patterns[, rev(seq_len(p))] # reverse to match y1, y2, ...
+  n_pat <- nrow(patterns)
+  
+  # 2) precompute total number of rows: sum_i (m[i]-1) + sum_{i<j} (m[i]-1)*(m[j]-1)
+  uni_rows <- sum(m - 1)
+  biv_rows <- 0L
+  for(i in seq_len(p-1)) for(j in (i+1):p)
+    biv_rows <- biv_rows + (m[i]-1)*(m[j]-1)
+  total_rows <- uni_rows + biv_rows
+  
+  # 3) allocate
+  out <- matrix(0L, nrow = total_rows, ncol = n_pat)
+  rn  <- character(total_rows)
+  
+  # 4) fill univariate indicator rows
+  r <- 1L
+  for(i in seq_len(p)) {
+    for(cat in 2:m[i]) {
+      out[r, ] <- as.integer(patterns[[i]] == cat)
+      rn[r]   <- paste0("Y", i, "=", cat)
+      r       <- r + 1L
+    }
+  }
+  
+  # 5) fill bivariate indicator rows
+  for(i in seq_len(p-1)) for(j in (i+1):p) {
+    for(c1 in 2:m[i]) for(c2 in 2:m[j]) {
+      out[r, ] <- as.integer(patterns[[i]] == c1 & patterns[[j]] == c2)
+      rn[r]   <- paste0("Y", i, "=", c1, ",Y", j, "=", c2)
+      r       <- r + 1L
+    }
+  }
+  
+  rownames(out) <- rn
+  colnames(out) <- apply(patterns, 1, paste0, collapse = "")
+  out
+}
+create_T2_mat(c(2, 3, 3))
+```
+
+Matrix $\bT_2$ for the case of $p=3$ with $m_1=2$, and $m_2=m_3=3$.
+:::
+
+Note that this construction of lower-order moments generalises to any order $q \le p$, but the total number of moments up to order $q$ grows combinatorially in both $p$ and the category counts $m_i$, yielding design matrices $\mathbf{T}_q$ that can become computationally burdensome.
+Moreover, although we arbitrarily dropped the first moment in the foregoing construction, the choice of which category to omit is immaterial.
+This is because category probabilities sum to one, so excluding any one category produces a similar-dimensional parameterisation algebraically equivalent to excluding any other.
+For further details, consult @reiser1996analysis and @maydeu2006limited.
+
+### Confirmatory factor analysis
+
+The confirmatory factor analysis (CFA) model imposes a structure on the joint response probabilities by assuming that the $p$ observed variables are manifestations of a smaller set of $q$ latent variables.
+In this way, the CFA may be viewed as a data-reduction technique since, effectively, the correlations among variables are modelled by a pre-specific factor structure using lower-dimensional data summaries.
+
+CFA is typically used for continuous manifest variables, but it can also be applied to ordinal data.
+A common approach is the *underlying variable* (UV) approach, where the observed responses $y_i$ are assumed to be discretised versions of continuous latent variables $y_i^*$.
+The connection is made through 
+$$
+y_i = \begin{cases}
+1 & \ \ \tau_0^{(i)} < y^*_i < \tau_1^{(i)} \\
+2 &  \ \ \tau_{1}^{(i)} <  y^*_i < \tau_2^{(i)} \\
+3 &  \ \ \tau_{2}^{(i)} <  y^*_i < \tau_3^{(i)} \\
+\vdots &  \hphantom{\tau_{1}^{(i)} \leq \ \ \ } \vdots \\
+m_i & \tau_{m_i-1}^{(i)} < y^*_i < \tau_{m_i}^{(i)},
+\end{cases}
+$$ 
+with the *thresholds* $\tau_k^{(i)}$ for item $i$ satisfying the ordering 
+$$
+-\infty \equiv \tau_0^{(i)} < \tau_1^{(i)} < \tau_2^{(i)} < \cdots < \tau_{m_i-1}^{(i)} < \tau_m^{(i)} \equiv +\infty.
+$$ 
+Evidently, the model is invariant to a linear transformation, since scaling and shifting the underlying variables $y_i^*$ do not affect the outcome of the ordinal variable $y_i$.
+For this reason it is convenient to assume, for the purposes of model identifiability, a zero mean Gaussian distribution $\by^* \sim \N_p(\bzero,\bSigma_{\by^*})$, where $\bSigma_{\by^*}$ is a correlation matrix.
+
+The underlying continuous variables $\by^*$, unlike their discrete counterparts $\by$, are now suitable to be modelled using a factor analysis model.
+Here, the goal is to find a set of latent factors $\bfeta = (\eta_1,\dots,\eta_q)^\top \in \bbR^q$, with $q \ll p$, that sufficiently explain the covariance structure of the $p$-dimensional variable space.
+This is achieved by the relationship $$
+\by^* = \bLambda \bfeta + \bepsilon,
+$$ where $\bLambda$ is a (often sparse) $p \times q$ matrix of factor loadings, and $\bepsilon$ is a vector of residuals.
+Certain distributional assumptions are made, namely that $\bfeta \sim \N_q(\bzero,\bPsi)$ with $\bPsi$ a correlation matrix, $\bepsilon \sim \N_p(\bzero,\bTheta_{\bepsilon})$ with $\bTheta_{\bepsilon} = \bI - \diag(\bLambda \bPsi \bLambda^\top)$, and that $\Cov(\bfeta,\bepsilon) = \bzero$.
+Together, this implies that the polychoric correlation matrix of $\by$ is given by $$
+\bSigma_{\by^*} = \bLambda \bPsi \bLambda^\top + \bTheta_{\bepsilon} \in \bbR^{p\times p}.
+$$ As a remark, the UV approach is commonly employed in the context of confirmatory factor analysis (CFA) models due to the ease of modelling, though other approaches such as item response theory (IRT) models are also available [@joreskog2001factor].
+
+For this factor analysis model, the parameters of interest are the non-zero entries $\blambda$ of the loading matrix $\bLambda$, the unique non-diagonal entries $\bpsi$ in the factor correlation matrix $\bPsi$, and the thresholds $\btau^{(i)} = (\tau_1^{(i)},\dots,\tau_{m_i-1}^{(i)})^\top$ for each ordinal item $y_i$.
+Collectively, these parameters are denoted by $\theta = (\blambda^\top,\brho^\top,\btau^{(1)},\dots,\btau^{(p)})^\top$ belonging to some parameter space $\Theta$.
+Under this CFA model, each joint response probability $\pi_r$ from @eq-each-joint-resp-prob is now evaluated as a function of $\theta$: 
+$$
+\pi_r := \pi_r(\theta) = \idotsint \limits_{\mathcal C_r} \phi_p(\by^* \mid \bzero,\bSigma_{\by^*}) \, \dint\by^*,
+$$ {#eq-joint-resp-prob-integral} 
+where the $p$-dimensional integral is taken over the set $\mathcal C_r = \{ \by^* \in \bbR^p \mid y_i = \mathbf c_{ri}, i=1,\dots,p\}$, the set of all continuous values that yield the response pattern $\mathbf c_r$.
+
+### Consistent estimators for $\theta$
+
+Suppose that a sample $\mathcal Y = \{\by^{(h)}\}_{h=1}^n$ is obtained, where $\by^{(h)} = (y_1^{(h)},\ldots,y_p^{(h)})^\top$ represents the $p$-dimensional ordinal-data observation from subject $h\in\{1,\dots,n\}$.
+As a remark, samples may not necessarily be independent, and in such cases, corresponding sampling weights $\omega_s$ can be used to account for the sampling design [@jamil2025pairwise], and most of what will be discussed below can be adapted to account for this.
+
+Many methods exist to estimate the parameters $\theta$ of the CFA model, but we are most interested in those that yield a $\sqrt{n}$-consistent and asymptotically normal estimator.
+Specifically, we assume that $\hat\theta$ satisfies 
+$$
+\begin{aligned}
+\sqrt{n}(\hat\theta - \theta) = \hat\bQ \cdot \sqrt{n}(\bp - \bpi(\theta)) + o_p(1),
+\end{aligned}
+$$ {#eq-theta-consistent} 
+where the term $\bp = (p_1,\ldots,p_R)^\top$ is the vector of empirical joint response proportions, and $\hat\bQ \xrightarrow{\text P} \bQ$ as $n\to\infty$ is some *influence matrix* that performs asymptotic linearisation from the joint response proportions $\bp$ to the parameters $\theta$.
+This includes a wide range of likelihood-based [@lord1968analysis;@bock1970fitting] and pseudolikelihood-based [@katsikatsou2012pairwise;@alfonzetti2025pairwise] methods, as well as generalised least squares (GLS) based methods [@christoffersson1975factor;@muthen1978contributions;@muthen1984general;@joreskog1990new; @joreskog1994estimation;@joreskog2001factor], with GLS popularly implemented as a multi-stage estimation procedure in software.
+@eq-theta-consistent holds true whether full information methods (i.e., estimation using joint response probabilities) or limited information methods (i.e., using a lower-order subset of the response probabilities) are employed.
+
+A neat way of viewing the parameter estimation is that most of these methods are a class of M-estimators.
+M-estimation provides a general and flexible framework for parameter estimation, in which estimators are obtained by minimizing an objective function $F(\theta)$, typically expressed as an empirical average $\sum_{s=1}^n F(\by_s, \theta)$, or, equivalently, by solving a system of estimating equations $\sum_{s=1}^n \nabla_\theta F(\by_s, \theta) = \bzero$, where $\nabla_\theta F = \partial F / \partial \theta$.
+This formulation encompasses a wide range of classical and robust procedures, including maximum likelihood, least squares, and weighted least squares methods mentioned above.
+
+In the context of confirmatory factor analysis (CFA) with ordinal indicators, the estimating equations typically arise from a discrepancy function defined on thresholds and polychoric correlations, and M-estimation offers a principled way to derive estimators even when the full likelihood is computationally intractable.
+A central assumption in this framework is that there exists a parameter $\theta_0 \in \Theta$ such that the population moment condition $\E[\nabla_\theta F(\by, \theta_0)] = 0$ holds.
+This condition is not a consequence of the data, but rather a theoretical premise about the underlying data-generating mechanism.
+It defines the parameter value to which the estimator is expected to converge.
+In a correctly specified model, $\theta_0$ corresponds to the true parameter; in the presence of misspecification, it instead represents the value that best satisfies the moment condition within the assumed model class.
+
+Under standard regularity conditions—such as continuity of $\nabla_\theta F$ in $\theta$, measurability, and uniform convergence of empirical averages—the M-estimator $\hat\theta$ is consistent and asymptotically normal [@huber1964robust; @vandervaart1998asymptotic].
+Specifically, 
+$$
+\sqrt{n}(\hat\theta - \theta) \xrightarrow{\text D} \N(\bzero, \bV(\theta)),
+$$ 
+where the asymptotic variance is given by the sandwich formula $\bV(\theta) = \cH(\theta)^{-1} \cJ(\theta) \cH(\theta)^{-T}$, with 
+$$
+\cH(\theta) = \E \left[ - \nabla_\theta^2 \, F(\by,\theta) \right], \quad
+\cJ(\theta) = \E \left[ \nabla_\theta \,F(\by,\theta) \ \nabla_\theta \, F(Y,\theta) ^\top \right].
+$$ 
+The matrix $\cH$ is known as the *sensitivity matrix* and is estimated consistently by $\hat\bH = -\frac{1}{n} \sum_{s=1}^n \nabla_\theta^2 \, F(\by_s, \hat\theta)$.
+The matrix $\cJ$ is known as the *variability matrix* and is estimated consistently by $\hat\bJ = \frac{1}{n} \sum_{s=1}^n \nabla_\theta \, F(\by_s, \hat\theta) \nabla_\theta \, F(\by_s, \hat\theta)^\top$.
+
+These properties make M-estimation particularly appealing in settings where the data are ordinal and the working model may be misspecified, as is often the case in large-scale psychometric applications.
+For a detailed treatment of the asymptotic theory of M-estimators in econometric and semiparametric contexts, see @newey1994large.
+For the commonly used techniques to estimate CFA, the table below gives an overview for the form that $F$ and its derivatives take.
+
+```{r}
+#| html-table-processing: none
+#| label: tbl-objfun-deriv
+#| tbl-cap: Objective functions and their derivatives for different estimators.
+
+biblio <- bibtex::read.bib("refs.bib")
+
+library(gt)
+tab <- tibble(
+  est = c("ML", "PML", "UBN", "MCS", "MCS2", "ULS", "WLS", "DWLS"),
+  mminmu = c(
+    md("$\\mathbf p - \\boldsymbol\\pi(\\theta)$"),  # ML
+    md("$\\mathbf p_{\\text{pair}} - \\boldsymbol\\pi_{\\text{pair}}(\\theta)$"),  # PML
+    md("$\\mathbf p_2 - \\boldsymbol\\pi_2(\\theta)$"),  # UBN
+    md("$\\mathbf p - \\boldsymbol\\pi(\\theta)$"),  # MCS
+    md("$\\mathbf p_2 - \\boldsymbol\\pi_2(\\theta)$"),  # MCS2
+    md("$\\mathbf s - \\boldsymbol\\sigma(\\theta)$"),  # ULS
+    md("$\\mathbf s - \\boldsymbol\\sigma(\\theta)$"),  # WLS
+    md("$\\mathbf s - \\boldsymbol\\sigma(\\theta)$")   # DWLS
+  ),
+  Winv = c(
+    md("$\\operatorname{diag}(\\boldsymbol\\pi(\\theta))$"),  # ML
+    md("$\\operatorname{diag}(\\boldsymbol\\pi_{\\text{pair}}(\\theta))$"),  # PML
+    md("$\\operatorname{diag}(\\boldsymbol\\pi_2(\\theta))$"),  # UBN
+    md("$\\boldsymbol\\Sigma$"),  # MCS
+    md("$\\boldsymbol\\Sigma_2$"),  # MCS2
+    md("$\\mathbf I$"),  # ULS
+    md("$\\boldsymbol\\Gamma=\\operatorname{limvar}(\\mathbf s - \\boldsymbol\\sigma(\\theta))$"),  # WLS
+    md("$\\operatorname{diag}(\\boldsymbol\\Gamma)$")   # DWLS
+  ),
+  Delta = c(
+    md("$\\partial \\boldsymbol\\pi(\\theta) / \\partial \\theta$"),  # ML
+    md("$\\partial \\boldsymbol\\pi_{\\text{pair}}(\\theta) / \\partial \\theta$"),  # PML
+    md("$\\partial \\boldsymbol\\pi_2(\\theta) / \\partial \\theta$"),  # UBN
+    md("$\\partial \\boldsymbol\\pi(\\theta) / \\partial \\theta$"),  # MCS
+    md("$\\partial \\boldsymbol\\pi_2(\\theta) / \\partial \\theta$"),  # MCS2
+    md("$\\partial \\boldsymbol\\sigma(\\theta) / \\partial \\theta$"),  # ULS
+    md("$\\partial \\boldsymbol\\sigma(\\theta) / \\partial \\theta$"),  # WLS
+    md("$\\partial \\boldsymbol\\sigma(\\theta) / \\partial \\theta$")   # DWLS
+  )
+)
+gt(tab, rowname_col = "est") |>
+  fmt_markdown(columns = everything()) |>
+  cols_label(
+    est = "Estimator",
+    mminmu = md("$\\mathbf m - \\boldsymbol\\mu(\\theta)$"),
+    Winv = md("$\\mathbf W^{-1}$"),
+    Delta = md("$\\mathbf D(\\theta)$")
+  ) |>
+  tab_footnote(
+    footnote = paste("Maximum likelihood", 
+                     cite(c("lord1968analysis", "bock1970fitting"), biblio)),
+    locations = cells_stub(rows = "ML")
+  ) |>
+  tab_footnote(
+    footnote = paste0("Pairwise maximum likelihood ", 
+                     cite(c("katsikatsou2012pairwise"), biblio),
+                     ". $\\mathbf p_{\\text{pair}}$ and $\\boldsymbol\\pi_{\\text{pair}}(\\theta)$ vectors of sample and model-implied pairwise response probabilities, respectively."
+                     ) |> md(),
+    locations = cells_stub(rows = "PML")
+  ) |>  
+  tab_footnote(
+    footnote = paste("Underlying bivariate normal approach", 
+                     cite(c("joreskog2001factor"), biblio)),
+    locations = cells_stub(rows = "UBN")
+  ) |>    
+  tab_footnote(
+    footnote = paste("Minimum chi square", 
+                     cite(c("christoffersson1975factor", "muthen1978contributions"), biblio)),
+    locations = cells_stub(rows = c("MCS", "MCS2"))
+  ) |>   
+    tab_footnote(
+    footnote = paste0("Unweighted, weighted, or diagonally weighted least squares ", 
+                      cite(c("muthen1984general", "joreskog1990new",
+                             "joreskog1994estimation"), biblio),
+                      ". $\\mathbf s$ and $\\boldsymbol\\sigma(\\theta)$ vectors of sample and model-implied thresholds and polychoric correlations, respectively."
+                      ) |> md(),
+    locations = cells_stub(rows = c("ULS", "WLS", "DWLS"))
+  ) |>   
+  tab_options(table.width = pct(90))
+```
+
+Achieving the desired form stated in @eq-theta-consistent requires an asymptotic linearisation argument.
+For CFA models, a general M-estimator $\hat\theta$ for $\theta$ is obtained by solving the set of estimating equations 
+$$
+U(\theta) := n \bD(\theta)^\top \bW_{\theta} (\bmm - \mu(\theta)) = 0
+$$
+where $\bmm$ is a vector of sample moments, $\mu(\theta)$ is the vector of model-implied moments, $\bD(\theta)$ is the Jacobian of the model-implied moments with respect to $\theta$, and $\bW_{\theta}$ is a weight matrix which may or may not depend on the parameters.
+@tbl-objfun-deriv summarises these quantities for different estimators most commonly used for CFA.
+Under correct model specification, the sensitivity matrix takes the form 
+$$
+\cH(\theta) = \bD(\theta)^{\top} \bW_{\theta}  \bD(\theta).
+$$
+
+A first-order Taylor expansion of $U(\hat\theta)$ around $\theta$ with a little rearranging and multiplying through by $\sqrt n$ gives
+$$
+\sqrt{n}\,(\hat\theta - \theta)
+=
+\left[ - \frac{1}{n} \frac{\partial U(\theta)}{\partial\theta} \right]^{-1}
+\bD(\theta)^\top \bW_{\theta} \cdot \sqrt n (\bmm - \mu(\theta))
++ o_p(1),
+$$ where the observed Hessian $-\frac{1}{n}\partial U(\theta) / \partial\theta \xrightarrow{\text P} \cH(\theta)$ as $n \to \infty$.
+Taking limits, we see the influence matrix for CFA shaping up to involve
+$$
+\left[ - \frac{1}{n} \frac{\partial U(\theta)}{\partial\theta} \right]^{-1}
+\bD(\theta)^\top \bW_{\theta} \xrightarrow{\text P} \cH(\theta)^{-1} \bD(\theta)^\top \bW_{\theta} =: \tilde \bQ \quad \text{ as } n\to\infty.
+$$
+
+For certain full-information estimators like ML and MCS, $\tilde \bQ$ fits in to be premultiplied to the the $R$-vector of moment differences $\bmm - \bmu(\theta) = \bp - \bpi(\theta)$, and thus @eq-theta-consistent is satisfied.
+Incidentally, in the case of ML, the influence matrix is $\bQ = \cI^{-1} \bDelta \bW \in \bbR^{t \times R}$, where $\cI= \bDelta^\top \bW^{-1} \bDelta^\top$ is the unit Fisher information, $\bDelta= (\partial \bpi / \partial \theta)$ is the Jacobian of the joint response probabilities with respect to the parameters, and $\bW = \diag(\bpi)$ is a diagonal matrix of the joint response probabilities, agreeing with results in @maydeu2005limited.
+It can be further shown that $\bQ$ simplifies to $\bDelta^\top \cI^{-1} \bDelta$.
+
+In other cases, we need to post multiply the influence matrix $\tilde\bQ$ by an appropriate matrix so that it is able to conform to a matrix-vector multiplication with the joint probabilities as per @eq-theta-consistent.
+This depends on the vector of moment differences.
+Consider a transformation $g: \bp \mapsto \bmm$ that maps the joint response probabilities $\bp$ to the moments $\bmm$ (and likewise for the model implied moments), and let $\bG := \partial g / \partial \bp$ be the Jacobian of the transformation.
+When dealing with PML, UBN or MCS2, then the transformation is linear since the lower order moments are linear functions of the joint response probabilities.
+On the other hand, ULS, WLS, and DWLS methods specify a transformation that is not linear, where the joint probabilities are mapped to the thresholds and polychoric correlations.
+Such a transformation was described by @muthen1978contributions in the context of dichotomous data, but extends to the case of ordinal data too.
+In any case,
+$$
+\begin{aligned}
+\sqrt n (\bmm - \bmu(\theta)) 
+&= \sqrt n \big(g(\bp) - g(\bpi(\theta))\big) \\
+&= \bG \sqrt n \big(\bp - \bpi(\theta)\big) + o_p(1).
+\end{aligned}
+$${#eq-moments-transform}
+Plugging this into the above equation lets us see the form of the influence matrix as $\bQ = \cH(\theta)^{-1} \bD(\theta)^\top \bW_{\theta} \bG$.
+
+When using limited information methods, it would be sufficient to consider the lower-order moments transformation $g_2: \bp_2 \mapsto \bmm$ instead.
+For PML, UBN, and MCS2 this is clearly obvious.
+For ULS, WLS, and DWLS, this also makes sense because the the thresholds and polychoric correlations are functions of univariate and bivariate moments respectively.
+Letting $\bG_2 := \partial g_2 / \partial \bp_2$, we have 
+$$
+\begin{aligned}
+\sqrt n (\bmm - \bmu(\theta)) 
+&= \sqrt n \big(g(\bp_2) - g(\bpi_2(\theta))\big) \\
+&= \bG_2 \sqrt n \big(\bp_2 - \bpi_2(\theta)\big) + o_p(1) \\
+&= \bG_2\bT_2 \sqrt n \big(\bp - \bpi(\theta)\big) + o_p(1),
+\end{aligned}
+$${#eq-moments-transform2}
+and thus @eq-theta-consistent holds with the influence matrix $\bQ = \bQ_2\bT_2$, where $\bQ_2 = \mathcal H(\theta)^{-1} \bD(\theta)\bW_\theta \bG_2$.
+Consequently, when using limited information methods to estimate the parameters of a CFA model, it is sufficient to consider only consistency in relation to univariate and bivariate probabilities.
+We will see that this is useful when we come to the topic of residuals.
+
+<!-- and so the influence matrix uses $\bG_2$ instead of $\bG$. -->
+<!-- In fact, **there is no hope using full information methods here, because the transformation would not be uniquely defined.** This is equivalent to wanting to find the inverse transformation $\bp_2 = \bT_2 \bp$, or asking "can we build the full joint probabilities from the lower-order moments?". -->
+<!-- One can see that this is logically not doable. -->
+
+### Distribution of residuals
+
+Let $p_r = n_r / n$ be the $r$th entry of the $R$-vector of sample proportions $\bp$, where $n_r$ is the number of times the response pattern $\mathbf c_r$ was observed in the sample $\mathcal Y$.
+The random vector $\bn = (n_1,\dots,n_R)^\top$ follows a multinomial distribution with parameters $n$, $R$, and $\bpi$, with $\E(\bn)=n\bpi$ and variance 
+$$
+\Var(\bn) = n (\diag(\bpi) - \bpi \bpi^\top) = n \bSigma.
+$$ 
+It is widely known [@agresti2002categorical] for iid samples that $$
+\sqrt{n} (\bp - \bpi) \xrightarrow{D} {\N}_R(\bzero, \bSigma)
+$$ {#eq-clt-prop} as $n\to\infty$, which is a consequence of the central limit theorem.
+Note that this also works for the case of weighted samples in complex sampling designs, but $\bSigma$ need not take a multinomial form in such cases [@fuller2009introduction].
+
+Consider testing the composite null hypothesis of $\text{H}_0: \bpi = \bpi(\theta_0)$ against the alternative $\text{H}_1:  \bpi \neq \bpi(\theta_0)$.
+To do so, use the univariate and bivariate residuals $\hat\be_2 = \bT_2(\bp - \bpi(\hat\theta)) = \bT_2 \hat \be$ as the basis for the test statistic.
+Now we derive the asymptotic distribution of this quantity.
+Write 
+$$
+\begin{aligned}
+\sqrt n \, \hat\be
+&= \sqrt n \, (\bp - \bpi(\theta_0)) - \sqrt n \, (\bpi(\hat\theta) - \bpi(\theta_0)) \\
+&= \sqrt n \, (\bp - \bpi(\theta_0)) - \sqrt n \, \bDelta (\hat\theta - \theta_0) + o_p(1),
+\end{aligned}
+$$ 
+where we had considered a Taylor expansion of $\bpi(\hat\theta)$ around $\theta_0$ to get to the second line, and defined $\bDelta = \big(\partial \bpi(\theta) / \partial \theta \big)$.
+Now, for $\sqrt n$-consistent estimators satisfying @eq-theta-consistent, we have that 
+$$
+\begin{aligned}
+\sqrt n \, \hat\be
+&= \sqrt n \, (\bp - \bpi(\theta_0)) -  \bDelta \hat\bQ  \cdot \sqrt{n} \, (\bp - \bpi(\theta_0)) + o_p(1) \\
+&= (\bI - \bDelta \hat\bQ) \cdot \sqrt n \, (\bp - \bpi(\theta_0)) + o_p(1),
+\end{aligned}
+$$ 
+so it is clear that $\hat\be$ is asymptotically normal by the CLT ([@eq-clt-prop]).
+Let $\operatorname{limvar}(\hat\be) = \bOmega$.
+Then, since $\hat\be_2 = \bT_2 \hat\be$, the lower-order residuals are also asymptotically normal with zero mean and variance $\bOmega_2 = \bT_2 \bOmega \bT_2^\top$.
+The full form of the asymptotic variance is given by
+$$
+\begin{aligned}
+\bOmega_2 = 
+  \bSigma_2 
+  - \bDelta_{2} \bQ \bSigma \bT_2^\top
+  - \bT_2 \bSigma \bQ^\top \bDelta_{2}^\top 
+  + \bDelta_{2} \bQ \bSigma \bQ^\top \bDelta_{2}^\top,
+\end{aligned}
+$${#eq-omega2} 
+where $\bDelta_2 = \bT_2 \bDelta$.
+See @maydeu2008overview for further details, including the use of residuals from moments of up to order $q < p$.
+
+In practice, when limited informationntroduces inconsistency between the estimation method and the quantities derived from it, potentially leading to misleading inferences or misinterpretation of model fit. methods are used to estimate the parameters, the estimation of $\bOmega_2$ involves plugging in full information quantities such as fitted probabilities and Jacobians.
+This is less than ideal, since it introduces inconsistency between the estimation method and the quantities derived from it, potentially leading to misleading inferences or misinterpretation of model fit.
+Furthermore, quantities such as the multinomial covariance matrix $\bSigma$ becomes exponentially large in dimension as $p$ increases, making it difficult to work with.
+
+One solution is to consider the weaker $\sqrt n$-consistent condition for limited information estimators suggested by @eq-moments-transform2, in which the influence matrix $\bQ_2$ is utilised.
+Since $\bQ = \bQ_2 \bT_2$, @eq-omega2 will simplify to
+$$
+\begin{aligned}
+\bOmega_2 
+  &= \bSigma_2 
+  - \bDelta_{2} \bQ_2 \bSigma_2
+  - \bSigma_2  \bQ_2^\top \bDelta_{2}^\top
+  + \bDelta_{2} \bQ_2 \bSigma \bQ_2^\top \bDelta_{2}^\top \\
+  &= (\bI - \bDelta_{2} \bQ_2) \bSigma_2 (\bI - \bDelta_{2}\bQ_2)^\top.
+\end{aligned}
+$${#eq-omega2alt} 
+where $\bSigma_2 = \bT_2 \bSigma \bT_2^\top$ is the covariance matrix of the lower-order moments.
+Computationally this is more efficient as it uses only quantities involving uni and bivariate moments, which are much smaller in size than the full joint response probabilities.
+
+### Wald-type tests
+
+Given as $\hat\be_2 \xrightarrow{\text D} \N_S(\bzero, \bOmega_2)$, we can construct a Wald test statistic for the null hypothesis $\text{H}_0: \bpi = \bpi(\theta_0)$ as $$
+X^2 = n \, \hat\be_2^\top \hat\bOmega_2^{-1} \hat\be_2,
+$$ where $\hat\bOmega_2$ is a consistent estimator of $\bOmega_2$.
+This test statistic is asymptotically distributed as chi square under the null hypothesis, with degrees of freedom equal to $S-t$, i.e. the number of lower-order moments used in the test minus the number of parameters estimated.
+
+The computational challenges here are in the estimation of $\hat\bOmega_2$ as well as the inversion of the matrix.
+Addressing the second issue first, suppose an estimator $\hat\bOmega_2$ is available, then the Moore-Penrose pseudoinverse $\hat\bOmega_2^+$ can be computed using the singular value decomposition (SVD) of $\hat\bOmega_2$.
+This sidesteps any numerical instabilities that may occur when inverting the matrix directly, since the rank of $\bOmega_2$ may be deficient [@reiser1996analysis], although inversion can still be computationally challenging when the dimension $S$ is large.
+
+@jamil2025pairwise instead proposed a diagonal Wald test, in which $\diag(\hat\bOmega_2)^{-1}$ is used instead of the full matrix inverse.
+Since inverting a diagonal matrix is straightforward compared to the full (pseudo) inverse, this is indeed computationally efficient.
+However, simulation stadies show that this is not as powerful as the full Wald test, in the context of pairwise likelihood estimation of binary CFA models.
+
+On the estimation of $\bOmega_2$, which involves estimation of the $\bQ$ matrix, which may be involved depending on the estimation method used.
+A very attractive proposal by Maydeu-Olivares and colleagues [@maydeu2005limited; @maydeu2006limited; @maydeu2008overview] is to consider using a matrix $\bXi$ such that $\bOmega_2$ is a generalised inverse of $\bXi$, i.e. $\bXi = \bXi \bOmega_2 \bXi$.
+By denoting $\bDelta_{2,\pi}^\perp$ to be an $S\times (S-t)$ orthogonal complement to $\bDelta_{2,\pi}$ satisfying $\bDelta_{2,\pi}^\perp \bDelta_{2,\pi}^\top = \bzero$, it can be shown that $X^2 = \hat\be_2^\top \hat\bXi \hat\be_2$ converges to the Wald test statistic with similar degrees of freedom [@jamil2025pairwise], where $$
+\bXi = \bDelta_{2,\pi}^\perp \big( (\bDelta_{2,\pi}^\perp)^\top \bSigma_2 \bDelta_{2,\pi}^\perp \big)^{-1} (\bDelta_{2,\pi})^\top.
+$$ This is advantageous in that it does not require the estimation of $\bQ$, and only requires the Jacobian $\bDelta_{2,\pi}$ as well as a consistent estimator for $\bSigma_2$, which can be obtained from a plug-in estimator using the model-implied probabilities $\bpi(\hat\theta)$.
+
+### Pearson and general LIGOF tests
+
+Wald-type tests may behave unstably and has poor small-sample behaviour [@jamil2025pairwise].
+As an alternative, a Pearson-type test can be constructed using the Pearson residuals $$
+\begin{aligned}
+X^2 
+&= n \, \hat\be_2^\top \diag(\bpi_2(\hat\theta))^{-1} \hat\be_2 \\
+&= 
+n \sum_{i,k} \frac{p_k^{(i)} - \pi_k^{(i)}(\hat\theta)}{\pi_k^{(i)}(\hat\theta)} +
+n \sum_{i<j}\sum_{k<l} \frac{p_{k,l}^{(ij)} - \pi_{k,l}^{(ij)}(\hat\theta)}{\pi_{k,l}^{(ij)}(\hat\theta)},
+\end{aligned}
+$$ where $p_k^{(i)}$ and $p_{k,l}^{(ij)}$ are the sample estimates for the univariate and bivariate response probabilities defined earlier.
+Similar test statistics were studied by @cai2006limitedinformation and @bartholomew2002goodness, where the latter considered only bivariate margins.
+The Pearson test statistic does not follow an asymptotic chi-square distribution because of the dependence of the summands in the above equation.
+It does however converge to a sum of scaled chi-square variables $\sum_{s=1}^S \delta_s Z_s$, where each $Z_s \iid \chi^2_1$ and $\delta_s$ are the eigenvalues of $M=\bOmega_2^{-1/2} \diag(\bpi_2(\hat\theta))^{-1} \bOmega_2^{-1/2}$.
+
+For calculation of p-values, a moment matching procedure can be employed [@maydeu2008overview; @jamil2025pairwise], where the first three moments of $X^2$ are matched to the first three moments of some chi-square random variate, which is then used as the reference distribution to conduct the test.
+The moments of $X^2$ are estimated using trace product formulae involving $\diag(\bpi_2(\hat\theta))$ as well as $\hat\bOmega_2$.
+Though the Pearson test looks as if the $\bOmega_2$ matrix is not required, it is actually required to compute the p-values.
+
+More generally, any LIGOF test statistic can be constructed using $X^2 = \hat\be_2^\top \hat\bXi \hat\be_2$, where $\hat\bXi \xrightarrow{\text D} \bXi$ is some $S\times S$ weight matrix that can be arbitrarily chosen.
+We saw earlier that the Wald test involves $\hat\bXi=\hat\bOmega_2^{+}$, while the Pearson test involves $\hat\bXi = \diag(\bpi_2(\hat\theta))^{-1}$.
+Other choices for this weight matrix are $\hat\bXi = \bI$ (RSS test) or $\hat\bXi = \hat\bSigma_2^{-1}$ (Multinomial test).
 
 ## Usage
 

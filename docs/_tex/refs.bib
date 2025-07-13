@@ -12,6 +12,22 @@
   keywords = {Multivariate analysis}
 }
 
+@article{alfonzetti2025pairwise,
+  title = {Pairwise Stochastic Approximation for Confirmatory Factor Analysis of Categorical Data},
+  author = {Alfonzetti, Giuseppe and Bellio, Ruggero and Chen, Yunxiao and Moustaki, Irini},
+  year = {2025},
+  month = feb,
+  journal = {British Journal of Mathematical and Statistical Psychology},
+  volume = {78},
+  number = {1},
+  pages = {22--43},
+  issn = {0007-1102, 2044-8317},
+  doi = {10.1111/bmsp.12347},
+  urldate = {2025-02-01},
+  abstract = {Abstract             Pairwise likelihood is a limited-information method widely used to estimate latent variable models, including factor analysis of categorical data. It can often avoid evaluating high-dimensional integrals and, thus, is computationally more efficient than relying on the full likelihood. Despite its computational advantage, the pairwise likelihood approach can still be demanding for large-scale problems that involve many observed variables. We tackle this challenge by employing an approximation of the pairwise likelihood estimator, which is derived from an optimization procedure relying on stochastic gradients. The stochastic gradients are constructed by subsampling the pairwise log-likelihood contributions, for which the subsampling scheme controls the per-iteration computational complexity. The stochastic estimator is shown to be asymptotically equivalent to the pairwise likelihood one. However, finite-sample performance can be improved by compounding the sampling variability of the data with the uncertainty introduced by the subsampling scheme. We demonstrate the performance of the proposed method using simulation studies and two real data applications.},
+  langid = {english}
+}
+
 @article{bartholomew2002goodness,
   title = {A Goodness of Fit Test for Sparse 2p Contingency Tables},
   author = {Bartholomew, David J and Leung, Shing On},
@@ -21,6 +37,24 @@
   number = {1},
   pages = {1--15},
   publisher = {Wiley Online Library}
+}
+
+@article{bock1970fitting,
+  title = {Fitting a {{Response Model}} for {\emph{n}} {{Dichotomously Scored Items}}},
+  author = {Bock, R. Darrell and Lieberman, Marcus},
+  year = {1970},
+  month = jun,
+  journal = {Psychometrika},
+  volume = {35},
+  number = {2},
+  pages = {179--197},
+  publisher = {Cambridge University Press (CUP)},
+  issn = {0033-3123, 1860-0980},
+  doi = {10.1007/bf02291262},
+  urldate = {2025-07-12},
+  abstract = {A method of estimating the parameters of the normal ogive model for dichotomously scored item-responses by maximum likelihood is demonstrated. Although the procedure requires numerical integration in order to evaluate the likelihood equations, a computer implemented Newton-Raphson solution is shown to be straightforward in other respects. Empirical tests of the procedure show that the resulting estimates are very similar to those based on a conventional analysis of item ``difficulties'' and first factor loadings obtained from the matrix of tetrachoric correlation coefficients. Problems of testing the fit of the model, and of obtaining invariant parameters are discussed.},
+  copyright = {https://www.cambridge.org/core/terms},
+  langid = {english}
 }
 
 @article{cai2006limitedinformation,
@@ -260,6 +294,22 @@
   year = {2023}
 }
 
+@article{katsikatsou2012pairwise,
+  title = {Pairwise Likelihood Estimation for Factor Analysis Models with Ordinal Data},
+  author = {Katsikatsou, Myrsini and Moustaki, Irini and {Yang-Wallentin}, Fan and J{\"o}reskog, Karl G.},
+  year = {2012},
+  month = dec,
+  journal = {Computational Statistics \& Data Analysis},
+  volume = {56},
+  number = {12},
+  pages = {4243--4258},
+  issn = {0167-9473},
+  doi = {10.1016/j.csda.2012.04.010},
+  urldate = {2023-11-22},
+  abstract = {A pairwise maximum likelihood (PML) estimation method is developed for factor analysis models with ordinal data and fitted both in an exploratory and confirmatory set-up. The performance of the method is studied via simulations and comparisons with full information maximum likelihood (FIML) and three-stage limited information estimation methods, namely the robust unweighted least squares (3S-RULS) and robust diagonally weighted least squares (3S-RDWLS). The advantage of PML over FIML is mainly computational. Unlike PML estimation, the computational complexity of FIML estimation increases either with the number of factors or with the number of observed variables depending on the model formulation. Contrary to 3S-RULS and 3S-RDWLS estimation, PML estimates of all model parameters are obtained simultaneously and the PML method does not require the estimation of a weight matrix for the computation of correct standard errors. The simulation study on the performance of PML estimates and estimated asymptotic standard errors investigates the effect of different model and sample sizes. The bias and mean squared error of PML estimates and their standard errors are found to be small in all experimental conditions and decreasing with increasing sample size. Moreover, the PML estimates and their standard errors are found to be very close to those of FIML.},
+  keywords = {Composite maximum likelihood,Factor analysis,Item response theory approach,Ordinal data,Pairwise likelihood,Three-stage estimation}
+}
+
 @article{katsikatsou2016pairwise,
   title = {Pairwise {{Likelihood Ratio Tests}} and {{Model Selection Criteria}} for {{Structural Equation Models}} with {{Ordinal Variables}}},
   author = {Katsikatsou, Myrsini and Moustaki, Irini},
@@ -309,6 +359,23 @@
   abstract = {In confirmatory factor analysis (CFA), the use of maximum likelihood (ML) assumes that the observed indicators follow a continuous and multivariate normal distribution, which is not appropriate for ordinal observed variables. Robust ML (MLR) has been introduced into CFA models when this normality assumption is slightly or moderately violated. Diagonally weighted least squares (WLSMV), on the other hand, is specifically designed for ordinal data. Although WLSMV makes no distributional assumptions about the observed variables, a normal latent distribution underlying each observed categorical variable is instead assumed. A Monte Carlo simulation was carried out to compare the effects of different configurations of latent response distributions, numbers of categories, and sample sizes on model parameter estimates, standard errors, and chi-square test statistics in a correlated two-factor model. The results showed that WLSMV was less biased and more accurate than MLR in estimating the factor loadings across nearly every condition. However, WLSMV yielded moderate overestimation of the interfactor correlations when the sample size was small or/and when the latent distributions were moderately nonnormal. With respect to standard error estimates of the factor loadings and the interfactor correlations, MLR outperformed WLSMV when the latent distributions were nonnormal with a small sample size of N = 200. Finally, the proposed model tended to be over-rejected by chi-square test statistics under both MLR and WLSMV in the condition of small sample size N = 200.},
   langid = {english},
   keywords = {Confirmatory factor analysis,Monte Carlo Simulation,Ordinal data,Robust estimation}
+}
+
+@article{lord1968analysis,
+  title = {An {{Analysis}} of the {{Verbal Scholastic Aptitude Test Using Birnbaum}}'s {{Three-Parameter Logistic Model}}},
+  author = {Lord, Frederic M.},
+  year = {1968},
+  month = dec,
+  journal = {Educational and Psychological Measurement},
+  volume = {28},
+  number = {4},
+  pages = {989--1020},
+  publisher = {SAGE Publications},
+  issn = {0013-1644, 1552-3888},
+  doi = {10.1177/001316446802800401},
+  urldate = {2025-07-12},
+  copyright = {https://journals.sagepub.com/page/policies/text-and-data-mining-license},
+  langid = {english}
 }
 
 @article{maydeu1994distinguishing,
