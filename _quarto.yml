@@ -27,6 +27,15 @@ format:
       margin-width: 0px    
     # template-partials:
     #   - title-metadata.html
+    include-in-header:
+      text: |
+        <style>
+          mth-container[display="true"] {
+            overflow-x: auto;
+            overflow-y: hidden;
+            display: block;
+          }
+        </style>
 
   pdf:
     pdf-engine: pdflatex
