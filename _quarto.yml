@@ -6,10 +6,11 @@ project:
 
 manuscript:
   article: manuscript.qmd
-  notebooks:
-    - notebook: notebooks/ligof.qmd
-    - notebook: notebooks/dwls.qmd
-    - notebook: notebooks/pml.qmd
+  # notebooks:
+  #   - notebook: notebooks/10-ligof.qmd
+  #     title: "LIGOF code"
+  #   - notebook: notebooks/20-dwls.qmd
+  #   - notebook: notebooks/30-pml.qmd
 
 # notebook-links: false
 

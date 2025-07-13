@@ -263,12 +263,12 @@ lavaan is FREE software! Please report any bugs.</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 1,000
 Columns: 5
-$ y1 &lt;ord&gt; 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2…
-$ y2 &lt;ord&gt; 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 1, 2, 2, 2, 2…
-$ y3 &lt;ord&gt; 2, 1, 2, 1, 1, 2, 2, 1, 1, 1, 2, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2…
-$ y4 &lt;ord&gt; 1, 1, 1, 1, 2, 2, 2, 2, 2, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2…
-$ y5 &lt;ord&gt; 2, 2, 2, 1, 2, 2, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2…
- num [1:15] 0.00 0.00 0.00 1.11e-16 0.00 ...</code></pre>
+$ y1 &lt;ord&gt; 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2…
+$ y2 &lt;ord&gt; 2, 1, 2, 1, 2, 1, 1, 2, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1, 2…
+$ y3 &lt;ord&gt; 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 2, 1, 2, 1, 2, 2, 2, 1, 2, 2, 2, 2, 1…
+$ y4 &lt;ord&gt; 2, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2, 1, 2, 1, 1, 2, 2, 2, 2, 2, 2, 1, 2…
+$ y5 &lt;ord&gt; 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2…
+ num [1:15] 1.11e-16 -2.22e-16 0.00 0.00 0.00 ...</code></pre>
 </div>
 </div></div>
 <p>We can use the <code>estimator = "PML"</code> argument in <code>{lavaan}</code> to fit a model using pairwise maximum likelihood (PML) estimation.</p>
@@ -278,66 +278,78 @@ $ y5 &lt;ord&gt; 2, 2, 2, 1, 2, 2, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>f1=~y1 f1=~y2 f1=~y3 f1=~y4 f1=~y5  y1|t1  y2|t1  y3|t1  y4|t1  y5|t1 
- 0.795  0.729  0.623  0.408  0.318 -1.366 -0.496 -0.073 -0.789 -1.085 </code></pre>
+ 0.681  0.716  0.411  0.407  0.291 -1.433 -0.490 -0.045 -0.723 -1.049 </code></pre>
 </div>
 </div></div>
 <p>Alternatively, we can use the addon package <code>{lavaan.pl}</code> for more efficient PML estimation.</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan.pl)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># fit &lt;- lavaan.pl::cfa("f1 =~ y1 + y2 + y3 + y4 + y5", data = dat, std.lv = TRUE)</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan.pl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ Loading required package: lavaan
+── Conflicts ─────────────────────────────────────────── lavaan.pl 0.1.0.9002 ──
+✖ lavaan.pl::cfa() masks lavaan::cfa()
+
+Attaching package: 'lavaan.pl'
+
+
+The following object is masked from 'package:lavaan':
+
+    cfa</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit &lt;- lavaan.pl::cfa("f1 =~ y1 + y2 + y3 + y4 + y5", data = dat, std.lv = TRUE)</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>f1=~y1 f1=~y2 f1=~y3 f1=~y4 f1=~y5  y1|t1  y2|t1  y3|t1  y4|t1  y5|t1 
- 0.795  0.729  0.623  0.408  0.318 -1.366 -0.496 -0.073 -0.789 -1.085 </code></pre>
+ 0.681  0.716  0.411  0.407  0.291 -1.433 -0.490 -0.045 -0.723 -1.049 </code></pre>
 </div>
 </div></div>
 <section id="mathbf-t_2-matrix" class="level2">
 <h2 class="anchored" data-anchor-id="mathbf-t_2-matrix"><span class="math inline">\(\mathbf T_2\)</span> matrix</h2>
 <p>This is the design matrix that maps all joint probabilities to univariate and bivariate moments.</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>CREATE_T2_MAT <span class="ot">&lt;-</span> <span class="cf">function</span>(m) {</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># m: integer vector of length p, where m[i] = number of categories of variable i</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">length</span>(m)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 1) all joint patterns (rows = ∏ m[i], cols = p)</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  patterns <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="fu">rev</span>(<span class="fu">lapply</span>(m, seq_len)), <span class="at">KEEP.OUT.ATTRS =</span> <span class="cn">FALSE</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  patterns <span class="ot">&lt;-</span> patterns[, <span class="fu">rev</span>(<span class="fu">seq_len</span>(p))] <span class="co"># reverse to match y1, y2, ...</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  n_pat <span class="ot">&lt;-</span> <span class="fu">nrow</span>(patterns)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2) precompute total number of rows: sum_i (m[i]-1) + sum_{i&lt;j} (m[i]-1)*(m[j]-1)</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  uni_rows <span class="ot">&lt;-</span> <span class="fu">sum</span>(m <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  biv_rows <span class="ot">&lt;-</span> <span class="dv">0</span>L</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(p<span class="dv">-1</span>)) <span class="cf">for</span>(j <span class="cf">in</span> (i<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>p)</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    biv_rows <span class="ot">&lt;-</span> biv_rows <span class="sc">+</span> (m[i]<span class="sc">-</span><span class="dv">1</span>)<span class="sc">*</span>(m[j]<span class="sc">-</span><span class="dv">1</span>)</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  total_rows <span class="ot">&lt;-</span> uni_rows <span class="sc">+</span> biv_rows</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 3) allocate</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>L, <span class="at">nrow =</span> total_rows, <span class="at">ncol =</span> n_pat)</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  rn  <span class="ot">&lt;-</span> <span class="fu">character</span>(total_rows)</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 4) fill univariate indicator rows</span></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="dv">1</span>L</span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(p)) {</span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(cat <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>m[i]) {</span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>      out[r, ] <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(patterns[[i]] <span class="sc">==</span> cat)</span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>      rn[r]   <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"Y"</span>, i, <span class="st">"="</span>, cat)</span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>      r       <span class="ot">&lt;-</span> r <span class="sc">+</span> <span class="dv">1</span>L</span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 5) fill bivariate indicator rows</span></span>
-<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(p<span class="dv">-1</span>)) <span class="cf">for</span>(j <span class="cf">in</span> (i<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>p) {</span>
-<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(c1 <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>m[i]) <span class="cf">for</span>(c2 <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>m[j]) {</span>
-<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>      out[r, ] <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(patterns[[i]] <span class="sc">==</span> c1 <span class="sc">&amp;</span> patterns[[j]] <span class="sc">==</span> c2)</span>
-<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>      rn[r]   <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"Y"</span>, i, <span class="st">"="</span>, c1, <span class="st">",Y"</span>, j, <span class="st">"="</span>, c2)</span>
-<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>      r       <span class="ot">&lt;-</span> r <span class="sc">+</span> <span class="dv">1</span>L</span>
-<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(out) <span class="ot">&lt;-</span> rn</span>
-<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(out) <span class="ot">&lt;-</span> <span class="fu">apply</span>(patterns, <span class="dv">1</span>, paste0, <span class="at">collapse =</span> <span class="st">""</span>)</span>
-<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>  out</span>
-<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a><span class="fu">CREATE_T2_MAT</span>(<span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>CREATE_T2_MAT <span class="ot">&lt;-</span> <span class="cf">function</span>(m) {</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># m: integer vector of length p, where m[i] = number of categories of variable i</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">length</span>(m)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 1) all joint patterns (rows = ∏ m[i], cols = p)</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  patterns <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="fu">rev</span>(<span class="fu">lapply</span>(m, seq_len)), <span class="at">KEEP.OUT.ATTRS =</span> <span class="cn">FALSE</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  patterns <span class="ot">&lt;-</span> patterns[, <span class="fu">rev</span>(<span class="fu">seq_len</span>(p))] <span class="co"># reverse to match y1, y2, ...</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  n_pat <span class="ot">&lt;-</span> <span class="fu">nrow</span>(patterns)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2) precompute total number of rows: sum_i (m[i]-1) + sum_{i&lt;j} (m[i]-1)*(m[j]-1)</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  uni_rows <span class="ot">&lt;-</span> <span class="fu">sum</span>(m <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  biv_rows <span class="ot">&lt;-</span> <span class="dv">0</span>L</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(p<span class="dv">-1</span>)) <span class="cf">for</span>(j <span class="cf">in</span> (i<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>p)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    biv_rows <span class="ot">&lt;-</span> biv_rows <span class="sc">+</span> (m[i]<span class="sc">-</span><span class="dv">1</span>)<span class="sc">*</span>(m[j]<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  total_rows <span class="ot">&lt;-</span> uni_rows <span class="sc">+</span> biv_rows</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 3) allocate</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>L, <span class="at">nrow =</span> total_rows, <span class="at">ncol =</span> n_pat)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  rn  <span class="ot">&lt;-</span> <span class="fu">character</span>(total_rows)</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 4) fill univariate indicator rows</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="dv">1</span>L</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(p)) {</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(cat <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>m[i]) {</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>      out[r, ] <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(patterns[[i]] <span class="sc">==</span> cat)</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>      rn[r]   <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"Y"</span>, i, <span class="st">"="</span>, cat)</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>      r       <span class="ot">&lt;-</span> r <span class="sc">+</span> <span class="dv">1</span>L</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 5) fill bivariate indicator rows</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(p<span class="dv">-1</span>)) <span class="cf">for</span>(j <span class="cf">in</span> (i<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>p) {</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(c1 <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>m[i]) <span class="cf">for</span>(c2 <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>m[j]) {</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>      out[r, ] <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(patterns[[i]] <span class="sc">==</span> c1 <span class="sc">&amp;</span> patterns[[j]] <span class="sc">==</span> c2)</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>      rn[r]   <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"Y"</span>, i, <span class="st">"="</span>, c1, <span class="st">",Y"</span>, j, <span class="st">"="</span>, c2)</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>      r       <span class="ot">&lt;-</span> r <span class="sc">+</span> <span class="dv">1</span>L</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(out) <span class="ot">&lt;-</span> rn</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(out) <span class="ot">&lt;-</span> <span class="fu">apply</span>(patterns, <span class="dv">1</span>, paste0, <span class="at">collapse =</span> <span class="st">""</span>)</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>  out</span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a><span class="fu">CREATE_T2_MAT</span>(<span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          11111 11112 11121 11122 11211 11212 11221 11222 12111 12112 12121
 Y1=2          0     0     0     0     0     0     0     0     0     0     0
@@ -400,96 +412,96 @@ Y4=2,Y5=2     0     1     0     0     0     1     0     0     0     1</code></pr
 <li><span class="math inline">\(\boldsymbol G\)</span> transformation matrix which brings <span class="math inline">\(\boldsymbol\pi_{\text{pair}} \mapsto \boldsymbol \pi\)</span></li>
 </ul>
 <div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inverse Hessian</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>Hinv <span class="ot">&lt;-</span> lavaan<span class="sc">:::</span><span class="fu">lav_model_information_observed</span>(</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">lavmodel =</span> fit<span class="sc">@</span>Model,</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">lavsamplestats =</span> fit<span class="sc">@</span>SampleStats,</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">lavdata =</span> fit<span class="sc">@</span>Data,</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">lavoptions =</span> fit<span class="sc">@</span>Options,  </span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">lavcache =</span> fit<span class="sc">@</span>Cache, </span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">lavimplied =</span> fit<span class="sc">@</span>Implied,</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">inverted =</span> <span class="cn">TRUE</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(Hinv, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inverse Hessian</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>Hinv <span class="ot">&lt;-</span> lavaan<span class="sc">:::</span><span class="fu">lav_model_information_observed</span>(</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">lavmodel =</span> fit<span class="sc">@</span>Model,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">lavsamplestats =</span> fit<span class="sc">@</span>SampleStats,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">lavdata =</span> fit<span class="sc">@</span>Data,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">lavoptions =</span> fit<span class="sc">@</span>Options,  </span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">lavcache =</span> fit<span class="sc">@</span>Cache, </span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">lavimplied =</span> fit<span class="sc">@</span>Implied,</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">inverted =</span> <span class="cn">TRUE</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(Hinv, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        [,1]   [,2]   [,3]   [,4]   [,5]   [,6]   [,7]   [,8]  [,9] [,10]
- [1,]  3.928 -1.314 -0.571  0.009 -0.100  0.152 -0.021 -0.008 0.001 0.001
- [2,] -1.314  2.980 -0.743 -0.410 -0.251 -0.003  0.010  0.009 0.001 0.001
- [3,] -0.571 -0.743  2.376 -0.218 -0.088  0.004  0.018 -0.019 0.002 0.001
- [4,]  0.009 -0.410 -0.218  2.247 -0.100  0.003  0.003  0.003 0.033 0.001
- [5,] -0.100 -0.251 -0.088 -0.100  2.640  0.002  0.003  0.002 0.001 0.044
- [6,]  0.152 -0.003  0.004  0.003  0.002  0.773  0.047  0.034 0.027 0.022
- [7,] -0.021  0.010  0.018  0.003  0.003  0.047  0.413  0.032 0.022 0.017
- [8,] -0.008  0.009 -0.019  0.003  0.002  0.034  0.032  0.382 0.018 0.014
- [9,]  0.001  0.001  0.002  0.033  0.001  0.027  0.022  0.018 0.487 0.010
-[10,]  0.001  0.001  0.001  0.001  0.044  0.022  0.017  0.014 0.010 0.605</code></pre>
+<pre><code>        [,1]   [,2]   [,3]   [,4]   [,5]   [,6]   [,7]   [,8]   [,9] [,10]
+ [1,]  6.729 -3.212  0.531 -0.450 -0.183  0.152 -0.015  0.001 -0.003 0.000
+ [2,] -3.212  6.346 -1.783 -0.694 -0.623 -0.002  0.013  0.001  0.004 0.001
+ [3,]  0.531 -1.783  3.180 -0.215  0.047  0.003  0.011 -0.006  0.001 0.000
+ [4,] -0.450 -0.694 -0.215  3.169 -0.107  0.002  0.006  0.001  0.026 0.001
+ [5,] -0.183 -0.623  0.047 -0.107  3.573  0.002  0.004  0.001  0.001 0.038
+ [6,]  0.152 -0.002  0.003  0.002  0.002  0.844  0.037  0.019  0.022 0.016
+ [7,] -0.015  0.013  0.011  0.006  0.004  0.037  0.419  0.020  0.021 0.015
+ [8,]  0.001  0.001 -0.006  0.001  0.001  0.019  0.020  0.389  0.012 0.009
+ [9,] -0.003  0.004  0.001  0.026  0.001  0.022  0.021  0.012  0.471 0.009
+[10,]  0.000  0.001  0.000  0.001  0.038  0.016  0.015  0.009  0.009 0.590</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Jacobian -- for PML, there are 4 x (5C2) = 40 rows corresponding to pairwise</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># probabilities.</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>Delta <span class="ot">&lt;-</span> lavaan.bingof<span class="sc">:::</span><span class="fu">get_Delta_mats</span>(fit)<span class="sc">$</span>Delta_til</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(Delta, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Jacobian -- for PML, there are 4 x (5C2) = 40 rows corresponding to pairwise</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># probabilities.</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>Delta <span class="ot">&lt;-</span> lavaan.bingof<span class="sc">:::</span><span class="fu">get_Delta_mats</span>(fit)<span class="sc">$</span>Delta_til</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(Delta, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        [,1]   [,2]   [,3]   [,4]   [,5]   [,6]   [,7]   [,8]   [,9]  [,10]
- [1,]  0.052  0.057  0.000  0.000  0.000  0.101  0.033  0.000  0.000  0.000
- [2,] -0.052 -0.057  0.000  0.000  0.000 -0.101  0.320  0.000  0.000  0.000
- [3,] -0.052 -0.057  0.000  0.000  0.000  0.056 -0.033  0.000  0.000  0.000
- [4,]  0.052  0.057  0.000  0.000  0.000 -0.056 -0.320  0.000  0.000  0.000
- [5,]  0.035  0.000  0.045  0.000  0.000  0.119  0.000  0.025  0.000  0.000
- [6,] -0.035  0.000 -0.045  0.000  0.000 -0.119  0.000  0.373  0.000  0.000
- [7,] -0.035  0.000 -0.045  0.000  0.000  0.038  0.000 -0.025  0.000  0.000
- [8,]  0.035  0.000  0.045  0.000  0.000 -0.038  0.000 -0.373  0.000  0.000
- [9,]  0.025  0.000  0.000  0.049  0.000  0.056  0.000  0.000  0.035  0.000
-[10,] -0.025  0.000  0.000 -0.049  0.000 -0.056  0.000  0.000  0.257  0.000
-[11,] -0.025  0.000  0.000 -0.049  0.000  0.101  0.000  0.000 -0.035  0.000
-[12,]  0.025  0.000  0.000  0.049  0.000 -0.101  0.000  0.000 -0.257  0.000
-[13,]  0.015  0.000  0.000  0.000  0.038  0.035  0.000  0.000  0.000  0.029
-[14,] -0.015  0.000  0.000  0.000 -0.038 -0.035  0.000  0.000  0.000  0.193
-[15,] -0.015  0.000  0.000  0.000 -0.038  0.122  0.000  0.000  0.000 -0.029
-[16,]  0.015  0.000  0.000  0.000  0.038 -0.122  0.000  0.000  0.000 -0.193
-[17,]  0.000  0.097  0.113  0.000  0.000  0.000  0.200  0.120  0.000  0.000
-[18,]  0.000 -0.097 -0.113  0.000  0.000  0.000 -0.200  0.278  0.000  0.000
-[19,]  0.000 -0.097 -0.113  0.000  0.000  0.000  0.152 -0.120  0.000  0.000
-[20,]  0.000  0.097  0.113  0.000  0.000  0.000 -0.152 -0.278  0.000  0.000
-[21,]  0.000  0.048  0.000  0.086  0.000  0.000  0.088  0.000  0.115  0.000
-[22,]  0.000 -0.048  0.000 -0.086  0.000  0.000 -0.088  0.000  0.178  0.000
-[23,]  0.000 -0.048  0.000 -0.086  0.000  0.000  0.264  0.000 -0.115  0.000
-[24,]  0.000  0.048  0.000  0.086  0.000  0.000 -0.264  0.000 -0.178  0.000
-[25,]  0.000  0.028  0.000  0.000  0.064  0.000  0.056  0.000  0.000  0.089
-[26,]  0.000 -0.028  0.000  0.000 -0.064  0.000 -0.056  0.000  0.000  0.133
-[27,]  0.000 -0.028  0.000  0.000 -0.064  0.000  0.297  0.000  0.000 -0.089
-[28,]  0.000  0.028  0.000  0.000  0.064  0.000 -0.297  0.000  0.000 -0.133
-[29,]  0.000  0.000  0.049  0.074  0.000  0.000  0.000  0.085  0.161  0.000
-[30,]  0.000  0.000 -0.049 -0.074  0.000  0.000  0.000 -0.085  0.131  0.000
-[31,]  0.000  0.000 -0.049 -0.074  0.000  0.000  0.000  0.313 -0.161  0.000
-[32,]  0.000  0.000  0.049  0.074  0.000  0.000  0.000 -0.313 -0.131  0.000
-[33,]  0.000  0.000  0.028  0.000  0.056  0.000  0.000  0.055  0.000  0.124
-[34,]  0.000  0.000 -0.028  0.000 -0.056  0.000  0.000 -0.055  0.000  0.098
-[35,]  0.000  0.000 -0.028  0.000 -0.056  0.000  0.000  0.343  0.000 -0.124
-[36,]  0.000  0.000  0.028  0.000  0.056  0.000  0.000 -0.343  0.000 -0.098
-[37,]  0.000  0.000  0.000  0.023  0.029  0.000  0.000  0.000  0.047  0.057
-[38,]  0.000  0.000  0.000 -0.023 -0.029  0.000  0.000  0.000 -0.047  0.165
-[39,]  0.000  0.000  0.000 -0.023 -0.029  0.000  0.000  0.000  0.245 -0.057
-[40,]  0.000  0.000  0.000  0.023  0.029  0.000  0.000  0.000 -0.245 -0.165</code></pre>
+ [1,]  0.045  0.043  0.000  0.000  0.000  0.085  0.030  0.000  0.000  0.000
+ [2,] -0.045 -0.043  0.000  0.000  0.000 -0.085  0.323  0.000  0.000  0.000
+ [3,] -0.045 -0.043  0.000  0.000  0.000  0.058 -0.030  0.000  0.000  0.000
+ [4,]  0.045  0.043  0.000  0.000  0.000 -0.058 -0.323  0.000  0.000  0.000
+ [5,]  0.023  0.000  0.038  0.000  0.000  0.092  0.000  0.028  0.000  0.000
+ [6,] -0.023  0.000 -0.038  0.000  0.000 -0.092  0.000  0.371  0.000  0.000
+ [7,] -0.023  0.000 -0.038  0.000  0.000  0.051  0.000 -0.028  0.000  0.000
+ [8,]  0.023  0.000  0.038  0.000  0.000 -0.051  0.000 -0.371  0.000  0.000
+ [9,]  0.023  0.000  0.000  0.038  0.000  0.053  0.000  0.000  0.031  0.000
+[10,] -0.023  0.000  0.000 -0.038  0.000 -0.053  0.000  0.000  0.277  0.000
+[11,] -0.023  0.000  0.000 -0.038  0.000  0.090  0.000  0.000 -0.031  0.000
+[12,]  0.023  0.000  0.000  0.038  0.000 -0.090  0.000  0.000 -0.277  0.000
+[13,]  0.013  0.000  0.000  0.000  0.029  0.031  0.000  0.000  0.000  0.024
+[14,] -0.013  0.000  0.000  0.000 -0.029 -0.031  0.000  0.000  0.000  0.206
+[15,] -0.013  0.000  0.000  0.000 -0.029  0.112  0.000  0.000  0.000 -0.024
+[16,]  0.013  0.000  0.000  0.000  0.029 -0.112  0.000  0.000  0.000 -0.206
+[17,]  0.000  0.060  0.105  0.000  0.000  0.000  0.192  0.123  0.000  0.000
+[18,]  0.000 -0.060 -0.105  0.000  0.000  0.000 -0.192  0.275  0.000  0.000
+[19,]  0.000 -0.060 -0.105  0.000  0.000  0.000  0.162 -0.123  0.000  0.000
+[20,]  0.000  0.060  0.105  0.000  0.000  0.000 -0.162 -0.275  0.000  0.000
+[21,]  0.000  0.050  0.000  0.088  0.000  0.000  0.096  0.000  0.118  0.000
+[22,]  0.000 -0.050  0.000 -0.088  0.000  0.000 -0.096  0.000  0.189  0.000
+[23,]  0.000 -0.050  0.000 -0.088  0.000  0.000  0.257  0.000 -0.118  0.000
+[24,]  0.000  0.050  0.000  0.088  0.000  0.000 -0.257  0.000 -0.189  0.000
+[25,]  0.000  0.026  0.000  0.000  0.065  0.000  0.059  0.000  0.000  0.090
+[26,]  0.000 -0.026  0.000  0.000 -0.065  0.000 -0.059  0.000  0.000  0.140
+[27,]  0.000 -0.026  0.000  0.000 -0.065  0.000  0.295  0.000  0.000 -0.090
+[28,]  0.000  0.026  0.000  0.000  0.065  0.000 -0.295  0.000  0.000 -0.140
+[29,]  0.000  0.000  0.050  0.051  0.000  0.000  0.000  0.093  0.163  0.000
+[30,]  0.000  0.000 -0.050 -0.051  0.000  0.000  0.000 -0.093  0.144  0.000
+[31,]  0.000  0.000 -0.050 -0.051  0.000  0.000  0.000  0.305 -0.163  0.000
+[32,]  0.000  0.000  0.050  0.051  0.000  0.000  0.000 -0.305 -0.144  0.000
+[33,]  0.000  0.000  0.027  0.000  0.038  0.000  0.000  0.058  0.000  0.122
+[34,]  0.000  0.000 -0.027  0.000 -0.038  0.000  0.000 -0.058  0.000  0.108
+[35,]  0.000  0.000 -0.027  0.000 -0.038  0.000  0.000  0.340  0.000 -0.122
+[36,]  0.000  0.000  0.027  0.000  0.038  0.000  0.000 -0.340  0.000 -0.108
+[37,]  0.000  0.000  0.000  0.022  0.031  0.000  0.000  0.000  0.051  0.063
+[38,]  0.000  0.000  0.000 -0.022 -0.031  0.000  0.000  0.000 -0.051  0.167
+[39,]  0.000  0.000  0.000 -0.022 -0.031  0.000  0.000  0.000  0.256 -0.063
+[40,]  0.000  0.000  0.000  0.022  0.031  0.000  0.000  0.000 -0.256 -0.167</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Weight matrix</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>W <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="dv">1</span> <span class="sc">/</span> <span class="fu">unlist</span>(lavaan<span class="sc">:::</span><span class="fu">lav_tables_pairwise_model_pi</span>(fit)))</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(W)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Weight matrix</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>W <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="dv">1</span> <span class="sc">/</span> <span class="fu">unlist</span>(lavaan<span class="sc">:::</span><span class="fu">lav_tables_pairwise_model_pi</span>(fit)))</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(W)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] 15.591977  4.068084 45.729660  1.496601 14.100867  2.499922 66.288514
- [8]  1.945585 27.823332  5.583359 19.975177  1.360742 44.566943  8.579242
-[15] 15.731919  1.254019  4.714590  3.863650 10.220351  2.318970 10.070604
-[22]  8.639621  4.747152  1.741242 16.038923 13.046272  4.038720  1.630262
-[29]  7.624251 11.921181  2.943170  2.246254 12.039845 17.875968  2.578166
-[36]  2.113589 25.800028  9.976164  5.672630  1.460459</code></pre>
+<pre><code> [1] 19.255900  3.844648 41.558872  1.506242 19.042163  2.328187 42.590628
+ [8]  2.022298 31.524499  4.919761 22.587116  1.387456 53.508654  7.793943
+[15] 17.450234  1.256754  5.193494  3.454408  8.369227  2.509531  9.358707
+[22]  7.804519  4.873732  1.786240 15.681207 12.015948  4.027981  1.653594
+[29]  7.470943  9.888131  2.872062  2.399032 12.213884 15.356433  2.499002
+[36]  2.208252 23.097292  9.643368  5.216807  1.512131</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transformation matrix -- in Jamil et al. (2025), this is the design matrix</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># called B such that G = B %*% T2</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>B  <span class="ot">&lt;-</span> lavaan.bingof<span class="sc">:::</span><span class="fu">Beta_mat_design</span>(<span class="at">nvar =</span> <span class="dv">5</span>)</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>T2 <span class="ot">&lt;-</span> lavaan.bingof<span class="sc">:::</span><span class="fu">create_T2_mat</span>(<span class="at">p =</span> <span class="dv">5</span>)</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># G &lt;- B %*% T2</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Matrix::Matrix(G, sparse = TRUE)</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>G2 <span class="ot">&lt;-</span> B</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>Matrix<span class="sc">::</span><span class="fu">Matrix</span>(G2, <span class="at">sparse =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transformation matrix -- in Jamil et al. (2025), this is the design matrix</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># called B such that G = B %*% T2</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>B  <span class="ot">&lt;-</span> lavaan.bingof<span class="sc">:::</span><span class="fu">Beta_mat_design</span>(<span class="at">nvar =</span> <span class="dv">5</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>T2 <span class="ot">&lt;-</span> lavaan.bingof<span class="sc">:::</span><span class="fu">create_T2_mat</span>(<span class="at">p =</span> <span class="dv">5</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># G &lt;- B %*% T2</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Matrix::Matrix(G, sparse = TRUE)</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>G2 <span class="ot">&lt;-</span> B</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>Matrix<span class="sc">::</span><span class="fu">Matrix</span>(G2, <span class="at">sparse =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>40 x 15 sparse Matrix of class "dgCMatrix"
                                                   
@@ -534,37 +546,37 @@ Y4=2,Y5=2     0     1     0     0     0     1     0     0     0     1</code></pr
 [39,]  .  .  .  .  1  .  .  .  .  .  .  .  .  . -1
 [40,]  .  .  .  .  .  .  .  .  .  .  .  .  .  .  1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Influence matrix</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>Q <span class="ot">&lt;-</span> Hinv <span class="sc">%*%</span> <span class="fu">t</span>(Delta) <span class="sc">%*%</span> W <span class="sc">%*%</span> G2</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(Q, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Influence matrix</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>Q <span class="ot">&lt;-</span> Hinv <span class="sc">%*%</span> <span class="fu">t</span>(Delta) <span class="sc">%*%</span> W <span class="sc">%*%</span> G2</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(Q, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         [,1]    [,2]    [,3]    [,4]    [,5]   [,6]   [,7]   [,8]   [,9]
- [1,] -11.967  -3.657  -4.846  -3.404  -2.104  8.645  9.480  5.410  3.936
- [2,]   2.735 -12.027   5.650   2.256   1.484  6.795 -6.769 -2.919 -2.094
- [3,]   1.445   4.403 -13.597   1.219   0.586 -4.845  7.355 -1.378 -0.854
- [4,]  -2.902  -0.760  -0.986 -11.472  -0.769 -1.537 -0.808  6.063 -0.261
- [5,]  -4.549  -2.847  -2.974  -1.899 -14.068 -1.311 -0.636 -0.409  7.000
- [6,]  -6.369  -0.001   0.001  -0.002   0.000  0.008 -0.012 -0.001 -0.002
- [7,]   0.036  -2.844  -0.020   0.022   0.013  0.028 -0.011 -0.036 -0.027
- [8,]   0.018  -0.008  -2.514   0.007   0.005 -0.009  0.017 -0.016 -0.012
- [9,]  -0.015   0.004   0.002  -3.446   0.002 -0.005  0.000  0.032 -0.004
-[10,]  -0.009   0.003   0.005   0.003  -4.522 -0.002 -0.001 -0.003  0.015
+ [1,] -18.554  -2.641  -9.045  -3.970  -3.316 10.969 11.410  8.188  6.278
+ [2,]   7.281 -17.494  10.154   4.178   3.687  8.506 -9.280 -6.024 -4.673
+ [3,]  -2.258   4.258 -16.183  -0.113  -0.892 -3.506  8.728  0.234  0.642
+ [4,]  -1.940   0.112  -0.335 -13.419  -0.659 -3.342 -1.215  6.689 -0.701
+ [5,]  -5.096  -2.834  -3.121  -2.531 -16.861 -2.337 -0.159 -0.499  8.171
+ [6,]  -6.988   0.000   0.003   0.002   0.001  0.005 -0.010 -0.003 -0.003
+ [7,]   0.018  -2.838  -0.013   0.004   0.002  0.018 -0.006 -0.019 -0.015
+ [8,]  -0.004  -0.001  -2.523   0.000   0.000 -0.001  0.019 -0.002 -0.001
+ [9,]   0.002   0.002   0.007  -3.257   0.004 -0.007 -0.007  0.011 -0.006
+[10,]  -0.003   0.002   0.005   0.003  -4.348 -0.001 -0.002 -0.002  0.007
        [,10]  [,11]  [,12]  [,13]  [,14]  [,15]
- [1,] -4.058 -1.568 -1.502 -0.672 -0.754 -0.117
- [2,]  4.323  2.716  2.342 -1.650 -1.213 -0.718
- [3,]  4.167 -1.371 -0.921  2.461  2.165 -0.326
- [4,] -1.363  4.355 -0.623  3.871 -0.408  2.080
- [5,] -0.725 -0.520  5.636 -0.291  4.986  3.222
- [6,] -0.003 -0.003 -0.003  0.008  0.006  0.002
- [7,] -0.013 -0.009 -0.005  0.025  0.022  0.004
- [8,] -0.004  0.013  0.011 -0.009 -0.006  0.003
- [9,]  0.003 -0.001  0.000 -0.009  0.002  0.000
-[10,]  0.001  0.000 -0.002  0.001 -0.007 -0.002</code></pre>
+ [1,] -2.696 -4.761 -3.217  0.087  0.236 -0.626
+ [2,]  3.823  6.092  4.229 -2.835 -2.308 -1.387
+ [3,]  4.427 -2.572 -1.465  3.379  2.814 -0.133
+ [4,] -1.262  5.808 -0.840  3.409 -0.317  2.676
+ [5,] -0.639 -0.965  7.158 -0.070  4.407  4.322
+ [6,]  0.001 -0.004 -0.002  0.004  0.004  0.001
+ [7,] -0.008 -0.001 -0.001  0.017  0.013  0.008
+ [8,] -0.002  0.001  0.001 -0.002 -0.001  0.001
+ [9,]  0.005 -0.002  0.004 -0.008  0.002 -0.002
+[10,]  0.001  0.001 -0.002  0.001 -0.005 -0.002</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>tinytest<span class="sc">::</span><span class="fu">expect_equal</span>(</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  Q,</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  lavaan.bingof<span class="sc">:::</span><span class="fu">test_begin</span>(fit, <span class="cn">NULL</span>, <span class="cn">FALSE</span>)<span class="sc">$</span>B2</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>tinytest<span class="sc">::</span><span class="fu">expect_equal</span>(</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  Q,</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  lavaan.bingof<span class="sc">:::</span><span class="fu">test_begin</span>(fit, <span class="cn">NULL</span>, <span class="cn">FALSE</span>)<span class="sc">$</span>B2</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>----- PASSED      : &lt;--&gt;
  call| tinytest::expect_equal(Q, lavaan.bingof:::test_begin(fit, NULL, 
@@ -576,18 +588,18 @@ Y4=2,Y5=2     0     1     0     0     0     1     0     0     0     1</code></pr
 <h2 class="anchored" data-anchor-id="boldsymbolomega_2-matrix"><span class="math inline">\(\boldsymbol\Omega_2\)</span> matrix</h2>
 <p>This is the (asymptotic) variance-covariance matrix of the univariate and bivariate moments.</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>Delta2 <span class="ot">&lt;-</span> <span class="fu">create_Delta2_matrix</span>(fit)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>Sigma2 <span class="ot">&lt;-</span> lavaan.bingof<span class="sc">:::</span><span class="fu">create_Sigma2_matrix</span>(fit)</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>D2Q <span class="ot">&lt;-</span> Delta2 <span class="sc">%*%</span> Q</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>Omega2 <span class="ot">&lt;-</span> </span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  Sigma2 <span class="sc">-</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  D2Q <span class="sc">%*%</span> Sigma2 <span class="sc">-</span></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  Sigma2 <span class="sc">%*%</span> <span class="fu">t</span>(D2Q) <span class="sc">+</span></span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  D2Q <span class="sc">%*%</span> Sigma2 <span class="sc">%*%</span> <span class="fu">t</span>(D2Q)</span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>Matrix<span class="sc">::</span><span class="fu">Matrix</span>(Omega2) <span class="sc">|&gt;</span> </span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>Delta2 <span class="ot">&lt;-</span> <span class="fu">create_Delta2_matrix</span>(fit)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>Sigma2 <span class="ot">&lt;-</span> lavaan.bingof<span class="sc">:::</span><span class="fu">create_Sigma2_matrix</span>(fit)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>D2Q <span class="ot">&lt;-</span> Delta2 <span class="sc">%*%</span> Q</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>Omega2 <span class="ot">&lt;-</span> </span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  Sigma2 <span class="sc">-</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  D2Q <span class="sc">%*%</span> Sigma2 <span class="sc">-</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  Sigma2 <span class="sc">%*%</span> <span class="fu">t</span>(D2Q) <span class="sc">+</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  D2Q <span class="sc">%*%</span> Sigma2 <span class="sc">%*%</span> <span class="fu">t</span>(D2Q)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>Matrix<span class="sc">::</span><span class="fu">Matrix</span>(Omega2) <span class="sc">|&gt;</span> </span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>15 x 15 Matrix of class "dgeMatrix"
       [,1] [,2] [,3] [,4] [,5]   [,6]   [,7]   [,8]   [,9]  [,10]  [,11]  [,12]
@@ -597,36 +609,36 @@ Y4=2,Y5=2     0     1     0     0     0     1     0     0     0     1</code></pr
  [4,]    0    0    0    0    0  0.000  0.000  0.000  0.000  0.000  0.000  0.000
  [5,]    0    0    0    0    0  0.000  0.000  0.000  0.000  0.000  0.000  0.000
  [6,]    0    0    0    0    0  0.002 -0.001 -0.002 -0.001 -0.002 -0.002 -0.001
- [7,]    0    0    0    0    0 -0.001  0.002 -0.002 -0.001 -0.002  0.004  0.002
- [8,]    0    0    0    0    0 -0.002 -0.002  0.008 -0.001  0.005 -0.004  0.001
- [9,]    0    0    0    0    0 -0.001 -0.001 -0.001  0.007  0.003  0.001 -0.004
-[10,]    0    0    0    0    0 -0.002 -0.002  0.005  0.003  0.006 -0.003 -0.002
-[11,]    0    0    0    0    0 -0.002  0.004 -0.004  0.001 -0.003  0.013 -0.001
-[12,]    0    0    0    0    0 -0.001  0.002  0.001 -0.004 -0.002 -0.001  0.011
-[13,]    0    0    0    0    0  0.004 -0.003 -0.005  0.001 -0.004 -0.007  0.002
-[14,]    0    0    0    0    0  0.002 -0.002  0.001 -0.004 -0.003  0.002 -0.005
-[15,]    0    0    0    0    0  0.001  0.001 -0.002 -0.002  0.002 -0.003 -0.004
+ [7,]    0    0    0    0    0 -0.001  0.006 -0.002 -0.001 -0.003  0.004  0.002
+ [8,]    0    0    0    0    0 -0.002 -0.002  0.007 -0.001  0.005 -0.004  0.002
+ [9,]    0    0    0    0    0 -0.001 -0.001 -0.001  0.007  0.003  0.002 -0.004
+[10,]    0    0    0    0    0 -0.002 -0.003  0.005  0.003  0.009 -0.004 -0.002
+[11,]    0    0    0    0    0 -0.002  0.004 -0.004  0.002 -0.004  0.010 -0.002
+[12,]    0    0    0    0    0 -0.001  0.002  0.002 -0.004 -0.002 -0.002  0.010
+[13,]    0    0    0    0    0  0.004 -0.004 -0.005  0.001 -0.006 -0.006  0.003
+[14,]    0    0    0    0    0  0.002 -0.002  0.001 -0.003 -0.004  0.003 -0.005
+[15,]    0    0    0    0    0  0.002  0.001 -0.002 -0.003  0.003 -0.003 -0.005
        [,13]  [,14]  [,15]
  [1,]  0.000  0.000  0.000
  [2,]  0.000  0.000  0.000
  [3,]  0.000  0.000  0.000
  [4,]  0.000  0.000  0.000
  [5,]  0.000  0.000  0.000
- [6,]  0.004  0.002  0.001
- [7,] -0.003 -0.002  0.001
+ [6,]  0.004  0.002  0.002
+ [7,] -0.004 -0.002  0.001
  [8,] -0.005  0.001 -0.002
- [9,]  0.001 -0.004 -0.002
-[10,] -0.004 -0.003  0.002
-[11,] -0.007  0.002 -0.003
-[12,]  0.002 -0.005 -0.004
-[13,]  0.017 -0.002 -0.003
-[14,] -0.002  0.014 -0.004
+ [9,]  0.001 -0.003 -0.003
+[10,] -0.006 -0.004  0.003
+[11,] -0.006  0.003 -0.003
+[12,]  0.003 -0.005 -0.005
+[13,]  0.023 -0.003 -0.003
+[14,] -0.003  0.020 -0.004
 [15,] -0.003 -0.004  0.017</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>tinytest<span class="sc">::</span><span class="fu">expect_equal</span>(</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  Omega2,</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  lavaan.bingof<span class="sc">:::</span><span class="fu">test_begin</span>(fit, <span class="cn">NULL</span>, <span class="cn">FALSE</span>)<span class="sc">$</span>Omega2</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>tinytest<span class="sc">::</span><span class="fu">expect_equal</span>(</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  Omega2,</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  lavaan.bingof<span class="sc">:::</span><span class="fu">test_begin</span>(fit, <span class="cn">NULL</span>, <span class="cn">FALSE</span>)<span class="sc">$</span>Omega2</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>----- PASSED      : &lt;--&gt;
  call| tinytest::expect_equal(Omega2, lavaan.bingof:::test_begin(fit, 
@@ -637,102 +649,102 @@ Y4=2,Y5=2     0     1     0     0     0     1     0     0     0     1</code></pr
 <section id="wald-and-pearson-test" class="level2">
 <h2 class="anchored" data-anchor-id="wald-and-pearson-test">Wald and Pearson test</h2>
 <div class="cell-container"><div class="cell-decorator"><pre>In [7]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>ligof_test <span class="ot">&lt;-</span> <span class="cf">function</span>(lavobject) {</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">nobs</span>(lavobject)</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  Delta2 <span class="ot">&lt;-</span> <span class="fu">create_Delta2_matrix</span>(lavobject)</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Delta2 &lt;- lavaan.bingof:::get_Delta_mats(lavobject)$Delta2</span></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  Sigma2 <span class="ot">&lt;-</span> lavaan.bingof<span class="sc">:::</span><span class="fu">create_Sigma2_matrix</span>(lavobject, <span class="at">method =</span> <span class="st">"theoretical"</span>)</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  uni_bi_moments <span class="ot">&lt;-</span> lavaan.bingof<span class="sc">::</span><span class="fu">get_uni_bi_moments</span>(lavobject)</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>  p2_hat <span class="ot">&lt;-</span> <span class="fu">with</span>(uni_bi_moments, <span class="fu">c</span>(pdot1, pdot2))</span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  pi2_hat <span class="ot">&lt;-</span> <span class="fu">with</span>(uni_bi_moments, <span class="fu">c</span>(pidot1, pidot2))</span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>  e2_hat <span class="ot">&lt;-</span> p2_hat <span class="sc">-</span> pi2_hat</span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Build influence matrix</span></span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>  Hinv <span class="ot">&lt;-</span> lavaan<span class="sc">:::</span><span class="fu">lav_model_information_observed</span>(</span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">lavmodel =</span> lavobject<span class="sc">@</span>Model,</span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">lavsamplestats =</span> lavobject<span class="sc">@</span>SampleStats,</span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">lavdata =</span> lavobject<span class="sc">@</span>Data,</span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">lavoptions =</span> lavobject<span class="sc">@</span>Options,  </span>
-<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">lavcache =</span> lavobject<span class="sc">@</span>Cache, </span>
-<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">lavimplied =</span> lavobject<span class="sc">@</span>Implied,</span>
-<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">inverted =</span> <span class="cn">TRUE</span></span>
-<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>  Delta <span class="ot">&lt;-</span> lavaan.bingof<span class="sc">:::</span><span class="fu">get_Delta_mats</span>(lavobject)<span class="sc">$</span>Delta_til</span>
-<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>  W <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="dv">1</span> <span class="sc">/</span> <span class="fu">unlist</span>(lavaan<span class="sc">:::</span><span class="fu">lav_tables_pairwise_model_pi</span>(lavobject)))</span>
-<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>  G2 <span class="ot">&lt;-</span> lavaan.bingof<span class="sc">:::</span><span class="fu">Beta_mat_design</span>(<span class="at">nvar =</span> <span class="dv">5</span>)</span>
-<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>  Q <span class="ot">&lt;-</span> Hinv <span class="sc">%*%</span> <span class="fu">t</span>(Delta) <span class="sc">%*%</span> W <span class="sc">%*%</span> G2</span>
-<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Build Omega2 matrix</span></span>
-<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a>  D2Q <span class="ot">&lt;-</span> Delta2 <span class="sc">%*%</span> Q</span>
-<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a>  Omega2 <span class="ot">&lt;-</span> </span>
-<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>    Sigma2 <span class="sc">-</span></span>
-<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a>    D2Q <span class="sc">%*%</span> Sigma2 <span class="sc">-</span></span>
-<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a>    Sigma2 <span class="sc">%*%</span> <span class="fu">t</span>(D2Q) <span class="sc">+</span></span>
-<span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a>    D2Q <span class="sc">%*%</span> Sigma2 <span class="sc">%*%</span> <span class="fu">t</span>(D2Q)</span>
-<span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a>  Omega2 <span class="ot">&lt;-</span> (Omega2 <span class="sc">+</span> <span class="fu">t</span>(Omega2)) <span class="sc">/</span> <span class="dv">2</span></span>
-<span id="cb29-35"><a href="#cb29-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb29-37"><a href="#cb29-37" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb29-38"><a href="#cb29-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Wald test</span></span>
-<span id="cb29-39"><a href="#cb29-39" aria-hidden="true" tabindex="-1"></a>  Xi <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">ginv</span>(Omega2)</span>
-<span id="cb29-40"><a href="#cb29-40" aria-hidden="true" tabindex="-1"></a>  X2 <span class="ot">&lt;-</span> n <span class="sc">*</span> <span class="fu">colSums</span>(e2_hat <span class="sc">*</span> (Xi <span class="sc">%*%</span> e2_hat))</span>
-<span id="cb29-41"><a href="#cb29-41" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> Matrix<span class="sc">::</span><span class="fu">rankMatrix</span>(Omega2) <span class="sc">-</span> <span class="fu">ncol</span>(Delta2)</span>
-<span id="cb29-42"><a href="#cb29-42" aria-hidden="true" tabindex="-1"></a>  pval <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(X2, df, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb29-43"><a href="#cb29-43" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>Wald <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">X2 =</span> X2, <span class="at">df =</span> df, <span class="at">pval =</span> pval)</span>
-<span id="cb29-44"><a href="#cb29-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># out$WaldLB &lt;- lavaan.bingof::Wald_test(lavobject) |&gt; select(X2, df, pval)</span></span>
-<span id="cb29-45"><a href="#cb29-45" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb29-46"><a href="#cb29-46" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Pearson test</span></span>
-<span id="cb29-47"><a href="#cb29-47" aria-hidden="true" tabindex="-1"></a>  Xi <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="dv">1</span> <span class="sc">/</span> pi2_hat)</span>
-<span id="cb29-48"><a href="#cb29-48" aria-hidden="true" tabindex="-1"></a>  X2 <span class="ot">&lt;-</span> n <span class="sc">*</span> <span class="fu">colSums</span>(e2_hat <span class="sc">*</span> (Xi <span class="sc">%*%</span> e2_hat))</span>
-<span id="cb29-49"><a href="#cb29-49" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">nrow</span>(Delta2) <span class="sc">-</span> <span class="fu">ncol</span>(Delta2)</span>
-<span id="cb29-50"><a href="#cb29-50" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>Pearson <span class="ot">&lt;-</span> </span>
-<span id="cb29-51"><a href="#cb29-51" aria-hidden="true" tabindex="-1"></a>    lavaan.bingof<span class="sc">:::</span><span class="fu">moment_match</span>(X2, Xi, Omega2, df, <span class="dv">3</span>) <span class="sc">|&gt;</span></span>
-<span id="cb29-52"><a href="#cb29-52" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_tibble</span>()</span>
-<span id="cb29-53"><a href="#cb29-53" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>Pearson<span class="sc">$</span>pval <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(out<span class="sc">$</span>Pearson<span class="sc">$</span>X2, df, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb29-54"><a href="#cb29-54" aria-hidden="true" tabindex="-1"></a>  <span class="co"># out$PearsonLB &lt;- lavaan.bingof::Pearson_test(lavobject) |&gt; select(X2, df, pval)</span></span>
-<span id="cb29-55"><a href="#cb29-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-56"><a href="#cb29-56" aria-hidden="true" tabindex="-1"></a>  out</span>
-<span id="cb29-57"><a href="#cb29-57" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb29-58"><a href="#cb29-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-59"><a href="#cb29-59" aria-hidden="true" tabindex="-1"></a><span class="fu">ligof_test</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>ligof_test <span class="ot">&lt;-</span> <span class="cf">function</span>(lavobject) {</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">nobs</span>(lavobject)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  Delta2 <span class="ot">&lt;-</span> <span class="fu">create_Delta2_matrix</span>(lavobject)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Delta2 &lt;- lavaan.bingof:::get_Delta_mats(lavobject)$Delta2</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  Sigma2 <span class="ot">&lt;-</span> lavaan.bingof<span class="sc">:::</span><span class="fu">create_Sigma2_matrix</span>(lavobject, <span class="at">method =</span> <span class="st">"theoretical"</span>)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  uni_bi_moments <span class="ot">&lt;-</span> lavaan.bingof<span class="sc">::</span><span class="fu">get_uni_bi_moments</span>(lavobject)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  p2_hat <span class="ot">&lt;-</span> <span class="fu">with</span>(uni_bi_moments, <span class="fu">c</span>(pdot1, pdot2))</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  pi2_hat <span class="ot">&lt;-</span> <span class="fu">with</span>(uni_bi_moments, <span class="fu">c</span>(pidot1, pidot2))</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  e2_hat <span class="ot">&lt;-</span> p2_hat <span class="sc">-</span> pi2_hat</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Build influence matrix</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  Hinv <span class="ot">&lt;-</span> lavaan<span class="sc">:::</span><span class="fu">lav_model_information_observed</span>(</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">lavmodel =</span> lavobject<span class="sc">@</span>Model,</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">lavsamplestats =</span> lavobject<span class="sc">@</span>SampleStats,</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">lavdata =</span> lavobject<span class="sc">@</span>Data,</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">lavoptions =</span> lavobject<span class="sc">@</span>Options,  </span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">lavcache =</span> lavobject<span class="sc">@</span>Cache, </span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">lavimplied =</span> lavobject<span class="sc">@</span>Implied,</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">inverted =</span> <span class="cn">TRUE</span></span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>  Delta <span class="ot">&lt;-</span> lavaan.bingof<span class="sc">:::</span><span class="fu">get_Delta_mats</span>(lavobject)<span class="sc">$</span>Delta_til</span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>  W <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="dv">1</span> <span class="sc">/</span> <span class="fu">unlist</span>(lavaan<span class="sc">:::</span><span class="fu">lav_tables_pairwise_model_pi</span>(lavobject)))</span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>  G2 <span class="ot">&lt;-</span> lavaan.bingof<span class="sc">:::</span><span class="fu">Beta_mat_design</span>(<span class="at">nvar =</span> <span class="dv">5</span>)</span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>  Q <span class="ot">&lt;-</span> Hinv <span class="sc">%*%</span> <span class="fu">t</span>(Delta) <span class="sc">%*%</span> W <span class="sc">%*%</span> G2</span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Build Omega2 matrix</span></span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>  D2Q <span class="ot">&lt;-</span> Delta2 <span class="sc">%*%</span> Q</span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>  Omega2 <span class="ot">&lt;-</span> </span>
+<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>    Sigma2 <span class="sc">-</span></span>
+<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>    D2Q <span class="sc">%*%</span> Sigma2 <span class="sc">-</span></span>
+<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>    Sigma2 <span class="sc">%*%</span> <span class="fu">t</span>(D2Q) <span class="sc">+</span></span>
+<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a>    D2Q <span class="sc">%*%</span> Sigma2 <span class="sc">%*%</span> <span class="fu">t</span>(D2Q)</span>
+<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>  Omega2 <span class="ot">&lt;-</span> (Omega2 <span class="sc">+</span> <span class="fu">t</span>(Omega2)) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-36"><a href="#cb31-36" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb31-37"><a href="#cb31-37" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-38"><a href="#cb31-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Wald test</span></span>
+<span id="cb31-39"><a href="#cb31-39" aria-hidden="true" tabindex="-1"></a>  Xi <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">ginv</span>(Omega2)</span>
+<span id="cb31-40"><a href="#cb31-40" aria-hidden="true" tabindex="-1"></a>  X2 <span class="ot">&lt;-</span> n <span class="sc">*</span> <span class="fu">colSums</span>(e2_hat <span class="sc">*</span> (Xi <span class="sc">%*%</span> e2_hat))</span>
+<span id="cb31-41"><a href="#cb31-41" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> Matrix<span class="sc">::</span><span class="fu">rankMatrix</span>(Omega2) <span class="sc">-</span> <span class="fu">ncol</span>(Delta2)</span>
+<span id="cb31-42"><a href="#cb31-42" aria-hidden="true" tabindex="-1"></a>  pval <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(X2, df, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb31-43"><a href="#cb31-43" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>Wald <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">X2 =</span> X2, <span class="at">df =</span> df, <span class="at">pval =</span> pval)</span>
+<span id="cb31-44"><a href="#cb31-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># out$WaldLB &lt;- lavaan.bingof::Wald_test(lavobject) |&gt; select(X2, df, pval)</span></span>
+<span id="cb31-45"><a href="#cb31-45" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-46"><a href="#cb31-46" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Pearson test</span></span>
+<span id="cb31-47"><a href="#cb31-47" aria-hidden="true" tabindex="-1"></a>  Xi <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="dv">1</span> <span class="sc">/</span> pi2_hat)</span>
+<span id="cb31-48"><a href="#cb31-48" aria-hidden="true" tabindex="-1"></a>  X2 <span class="ot">&lt;-</span> n <span class="sc">*</span> <span class="fu">colSums</span>(e2_hat <span class="sc">*</span> (Xi <span class="sc">%*%</span> e2_hat))</span>
+<span id="cb31-49"><a href="#cb31-49" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">nrow</span>(Delta2) <span class="sc">-</span> <span class="fu">ncol</span>(Delta2)</span>
+<span id="cb31-50"><a href="#cb31-50" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>Pearson <span class="ot">&lt;-</span> </span>
+<span id="cb31-51"><a href="#cb31-51" aria-hidden="true" tabindex="-1"></a>    lavaan.bingof<span class="sc">:::</span><span class="fu">moment_match</span>(X2, Xi, Omega2, df, <span class="dv">3</span>) <span class="sc">|&gt;</span></span>
+<span id="cb31-52"><a href="#cb31-52" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_tibble</span>()</span>
+<span id="cb31-53"><a href="#cb31-53" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>Pearson<span class="sc">$</span>pval <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(out<span class="sc">$</span>Pearson<span class="sc">$</span>X2, df, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb31-54"><a href="#cb31-54" aria-hidden="true" tabindex="-1"></a>  <span class="co"># out$PearsonLB &lt;- lavaan.bingof::Pearson_test(lavobject) |&gt; select(X2, df, pval)</span></span>
+<span id="cb31-55"><a href="#cb31-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-56"><a href="#cb31-56" aria-hidden="true" tabindex="-1"></a>  out</span>
+<span id="cb31-57"><a href="#cb31-57" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb31-58"><a href="#cb31-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-59"><a href="#cb31-59" aria-hidden="true" tabindex="-1"></a><span class="fu">ligof_test</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$Wald
 # A tibble: 1 × 3
      X2    df  pval
   &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;
-1  2.87     5 0.720
+1  3.51     5 0.621
 
 $Pearson
 # A tibble: 1 × 3
      X2    df  pval
   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1  1.71  3.84 0.887</code></pre>
+1  2.23  3.41 0.817</code></pre>
 </div>
 </div></div>
 </section>
 <section id="verification" class="level2">
 <h2 class="anchored" data-anchor-id="verification">Verification</h2>
 <div class="cell-container"><div class="cell-decorator"><pre>In [8]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(furrr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(furrr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading required package: future</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">2000</span>  <span class="co"># no. of simulations</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>sim_fun <span class="ot">&lt;-</span> <span class="cf">function</span>(i) {</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(i)</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  dat <span class="ot">&lt;-</span> <span class="fu">simulate_data</span>(<span class="at">n =</span> <span class="dv">1000</span>)</span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">cfa</span>(<span class="st">"f1 =~ y1 + y2 + y3 + y4 + y5"</span>, dat, <span class="at">std.lv =</span> <span class="cn">TRUE</span>, <span class="at">estimator =</span> <span class="st">"PML"</span>)</span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ligof_test</span>(fit) <span class="sc">|&gt;</span></span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bind_rows</span>(<span class="at">.id =</span> <span class="st">"name"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">sim =</span> i, <span class="at">name =</span> <span class="fu">factor</span>(name, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Wald"</span>, <span class="st">"Pearson"</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(sim, <span class="fu">everything</span>())</span>
-<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">future_map</span>(<span class="fu">seq_len</span>(B), sim_fun, <span class="at">.progress =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>                  <span class="at">.options =</span> <span class="fu">furrr_options</span>(<span class="at">seed =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">2000</span>  <span class="co"># no. of simulations</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>sim_fun <span class="ot">&lt;-</span> <span class="cf">function</span>(i) {</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(i)</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  dat <span class="ot">&lt;-</span> <span class="fu">simulate_data</span>(<span class="at">n =</span> <span class="dv">1000</span>)</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">cfa</span>(<span class="st">"f1 =~ y1 + y2 + y3 + y4 + y5"</span>, dat, <span class="at">std.lv =</span> <span class="cn">TRUE</span>, <span class="at">estimator =</span> <span class="st">"PML"</span>)</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ligof_test</span>(fit) <span class="sc">|&gt;</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bind_rows</span>(<span class="at">.id =</span> <span class="st">"name"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">sim =</span> i, <span class="at">name =</span> <span class="fu">factor</span>(name, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Wald"</span>, <span class="st">"Pearson"</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(sim, <span class="fu">everything</span>())</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">future_map</span>(<span class="fu">seq_len</span>(B), sim_fun, <span class="at">.progress =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>                  <span class="at">.options =</span> <span class="fu">furrr_options</span>(<span class="at">seed =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: lavaan-&gt;lav_object_post_check():  
    some estimated ov variances are negative
@@ -759,23 +771,23 @@ Warning: lavaan-&gt;lav_object_post_check():
 </div>
 </div></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_rows</span>(res) <span class="sc">|&gt;</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">df =</span> <span class="fu">mean</span>(df),</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">observed =</span> <span class="fu">sort</span>(X2),</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">expected =</span> <span class="fu">qchisq</span>(<span class="fu">ppoints</span>(<span class="fu">n</span>()), <span class="at">df =</span> df),</span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">.by =</span> name</span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(expected, observed, <span class="at">col =</span> name)) <span class="sc">+</span></span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
-<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"QQ-plot of M2 against chi-square distribution with 5 df"</span>,</span>
-<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Theoretical quantiles"</span>,</span>
-<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Sample quantiles"</span></span>
-<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">20</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">20</span>)) <span class="sc">+</span></span>
-<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_rows</span>(res) <span class="sc">|&gt;</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">df =</span> <span class="fu">mean</span>(df),</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">observed =</span> <span class="fu">sort</span>(X2),</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">expected =</span> <span class="fu">qchisq</span>(<span class="fu">ppoints</span>(<span class="fu">n</span>()), <span class="at">df =</span> df),</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">.by =</span> name</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(expected, observed, <span class="at">col =</span> name)) <span class="sc">+</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"QQ-plot of M2 against chi-square distribution with 5 df"</span>,</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Theoretical quantiles"</span>,</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Sample quantiles"</span></span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">20</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">20</span>)) <span class="sc">+</span></span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="">
 <figure class="figure">
@@ -785,26 +797,26 @@ Warning: lavaan-&gt;lav_object_post_check():
 </div>
 </div></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_rows</span>(res) <span class="sc">|&gt;</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> X2, <span class="at">y =</span> ..density.., <span class="at">fill =</span> name)) <span class="sc">+</span></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">col =</span> <span class="st">"gray90"</span>) <span class="sc">+</span></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> </span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">bind_rows</span>(res) <span class="sc">|&gt;</span></span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(name) <span class="sc">|&gt;</span></span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarise</span>(<span class="at">df =</span> <span class="fu">mean</span>(df), <span class="at">.groups =</span> <span class="st">"keep"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(</span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="fu">list</span>(<span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">20</span>, <span class="fl">0.1</span>)),</span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="fu">map</span>(x, \(x) <span class="fu">dchisq</span>(x, <span class="at">df =</span> <span class="fu">first</span>(df))),</span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">|&gt;</span></span>
-<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">unnest</span>(<span class="fu">c</span>(x, y)),</span>
-<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(x, y),</span>
-<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="dv">1</span></span>
-<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(name <span class="sc">~</span> ., <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span> </span>
-<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_rows</span>(res) <span class="sc">|&gt;</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> X2, <span class="at">y =</span> ..density.., <span class="at">fill =</span> name)) <span class="sc">+</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">col =</span> <span class="st">"gray90"</span>) <span class="sc">+</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> </span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">bind_rows</span>(res) <span class="sc">|&gt;</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(name) <span class="sc">|&gt;</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarise</span>(<span class="at">df =</span> <span class="fu">mean</span>(df), <span class="at">.groups =</span> <span class="st">"keep"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="fu">list</span>(<span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">20</span>, <span class="fl">0.1</span>)),</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="fu">map</span>(x, \(x) <span class="fu">dchisq</span>(x, <span class="at">df =</span> <span class="fu">first</span>(df))),</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">|&gt;</span></span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">unnest</span>(<span class="fu">c</span>(x, y)),</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(x, y),</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="dv">1</span></span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(name <span class="sc">~</span> ., <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span> </span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: The dot-dot notation (`..density..`) was deprecated in ggplot2 3.4.0.
 ℹ Please use `after_stat(density)` instead.</code></pre>
@@ -821,13 +833,13 @@ Warning: lavaan-&gt;lav_object_post_check():
 </div>
 </div></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_rows</span>(res) <span class="sc">|&gt;</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> pval, <span class="at">y =</span> ..density.., <span class="at">fill =</span> name)) <span class="sc">+</span></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.05</span>, <span class="at">boundary =</span> <span class="dv">0</span>, <span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">1</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(name <span class="sc">~</span> ., <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span> </span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_rows</span>(res) <span class="sc">|&gt;</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> pval, <span class="at">y =</span> ..density.., <span class="at">fill =</span> name)) <span class="sc">+</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.05</span>, <span class="at">boundary =</span> <span class="dv">0</span>, <span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">1</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(name <span class="sc">~</span> ., <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span> </span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="">
 <figure class="figure">
