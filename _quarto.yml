@@ -28,12 +28,14 @@ format:
     # template-partials:
     #   - title-metadata.html
     include-in-header:
+      # https://github.com/quarto-dev/quarto-cli/discussions/9248
       text: |
         <style>
-          mth-container[display="true"] {
+          span.math.display {
+            display: block;
             overflow-x: auto;
             overflow-y: hidden;
-            display: block;
+            white-space: nowrap;  /* optional: prevents math from wrapping */
           }
         </style>
 

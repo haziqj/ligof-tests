@@ -163,10 +163,11 @@
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
      <style>
-  mth-container[display="true"] {
+  span.math.display {
+    display: block;
     overflow-x: auto;
     overflow-y: hidden;
-    display: block;
+    white-space: nowrap;  /* optional: prevents math from wrapping */
   }
 </style>   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script> 
       <meta name="citation_title" content="Pairwise Maximum Likelihood">
