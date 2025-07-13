@@ -446,7 +446,7 @@ $$
 It is widely known [@agresti2002categorical] for iid samples that $$
 \sqrt{n} (\bp - \bpi) \xrightarrow{D} {\N}_R(\bzero, \bSigma)
 $$ {#eq-clt-prop} as $n\to\infty$, which is a consequence of the central limit theorem.
-Note that this also works for the case of weighted samples in complex sampling designs, but $\bSigma$ need not take a multinomial form in such cases [@fuller2009introduction].
+Note that this also works for the case of weighted samples in complex sampling designs, but $\bSigma$ need not take a multinomial form in such cases [@fuller2009sampling].
 
 Consider testing the composite null hypothesis of $\text{H}_0: \bpi = \bpi(\theta_0)$ against the alternative $\text{H}_1:  \bpi \neq \bpi(\theta_0)$.
 To do so, use the univariate and bivariate residuals $\hat\be_2 = \bT_2(\bp - \bpi(\hat\theta)) = \bT_2 \hat \be$ as the basis for the test statistic.
@@ -519,7 +519,7 @@ Since inverting a diagonal matrix is straightforward compared to the full (pseud
 However, simulation stadies show that this is not as powerful as the full Wald test, in the context of pairwise likelihood estimation of binary CFA models.
 
 On the estimation of $\bOmega_2$, which involves estimation of the $\bQ$ matrix, which may be involved depending on the estimation method used.
-A very attractive proposal by Maydeu-Olivares and colleagues [@maydeu2005limited; @maydeu2006limited; @maydeu2008overview] is to consider using a matrix $\bXi$ such that $\bOmega_2$ is a generalised inverse of $\bXi$, i.e. $\bXi = \bXi \bOmega_2 \bXi$.
+A very attractive proposal by Maydeu-Olivares and Joe [-@maydeu2005limited; -@maydeu2006limited; -@maydeu2008overview] is to consider using a matrix $\bXi$ such that $\bOmega_2$ is a generalised inverse of $\bXi$, i.e. $\bXi = \bXi \bOmega_2 \bXi$.
 By denoting $\bDelta_{2}^\perp$ to be an $S\times (S-t)$ orthogonal complement to $\bDelta_{2}$ satisfying $\bDelta_{2}^\perp \bDelta_{2}^\top = \bzero$, it can be shown that $X^2 = \hat\be_2^\top \hat\bXi \hat\be_2$ converges to the Wald test statistic with similar degrees of freedom [@jamil2025pairwise], where 
 $$
 \bXi = \bDelta_{2}^\perp \big( (\bDelta_{2}^\perp)^\top \bSigma_2 \bDelta_{2}^\perp \big)^{-1} (\bDelta_{2})^\top.
