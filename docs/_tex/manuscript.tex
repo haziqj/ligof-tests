@@ -140,21 +140,12 @@
 
 
 \usepackage{booktabs}
-\usepackage{longtable}
-\usepackage{array}
-\usepackage{multirow}
-\usepackage{wrapfig}
-\usepackage{float}
-\usepackage{colortbl}
-\usepackage{pdflscape}
-\usepackage{tabu}
-\usepackage{threeparttable}
-\usepackage{threeparttablex}
-\usepackage[normalem]{ulem}
-\usepackage{makecell}
-\usepackage{xcolor}
 \usepackage{caption}
+\usepackage{longtable}
+\usepackage{colortbl}
+\usepackage{array}
 \usepackage{anyfontsize}
+\usepackage{multirow}
 \KOMAoption{captions}{tableheading}
 \include{_extensions/maths_shortcuts.tex}
 \makeatletter
@@ -838,19 +829,16 @@ On the estimation of \(\bOmega_2\), which involves estimation of the
 used. A very attractive proposal by Maydeu-Olivares and colleagues
 (Maydeu-Olivares \& Joe, 2005, 2006, 2008) is to consider using a matrix
 \(\bXi\) such that \(\bOmega_2\) is a generalised inverse of \(\bXi\),
-i.e.~\(\bXi = \bXi \bOmega_2 \bXi\). By denoting
-\(\bDelta_{2,\pi}^\perp\) to be an \(S\times (S-t)\) orthogonal
-complement to \(\bDelta_{2,\pi}\) satisfying
-\(\bDelta_{2,\pi}^\perp \bDelta_{2,\pi}^\top = \bzero\), it can be shown
-that \(X^2 = \hat\be_2^\top \hat\bXi \hat\be_2\) converges to the Wald
-test statistic with similar degrees of freedom (Jamil et al., 2025),
-where \[
-\bXi = \bDelta_{2,\pi}^\perp \big( (\bDelta_{2,\pi}^\perp)^\top \bSigma_2 \bDelta_{2,\pi}^\perp \big)^{-1} (\bDelta_{2,\pi})^\top.
+i.e.~\(\bXi = \bXi \bOmega_2 \bXi\). By denoting \(\bDelta_{2}^\perp\)
+to be an \(S\times (S-t)\) orthogonal complement to \(\bDelta_{2}\)
+satisfying \(\bDelta_{2}^\perp \bDelta_{2}^\top = \bzero\), it can be
+shown that \(X^2 = \hat\be_2^\top \hat\bXi \hat\be_2\) converges to the
+Wald test statistic with similar degrees of freedom (Jamil et al.,
+2025), where \[
+\bXi = \bDelta_{2}^\perp \big( (\bDelta_{2}^\perp)^\top \bSigma_2 \bDelta_{2}^\perp \big)^{-1} (\bDelta_{2})^\top.
 \] This is advantageous in that it does not require the estimation of
-\(\bQ\), and only requires the Jacobian \(\bDelta_{2,\pi}\) as well as a
-consistent estimator for \(\bSigma_2\), which can be obtained from a
-plug-in estimator using the model-implied probabilities
-\(\bpi(\hat\theta)\).
+\(\bQ\), and only requires the Jacobian \(\bDelta_{2}\) as well as a
+consistent estimator for \(\bSigma_2\).
 
 \subsection{Pearson and general LIGOF
 tests}\label{pearson-and-general-ligof-tests}
@@ -874,7 +862,7 @@ chi-square distribution because of the dependence of the summands in the
 above equation. It does however converge to a sum of scaled chi-square
 variables \(\sum_{s=1}^S \delta_s Z_s\), where each
 \(Z_s \iid \chi^2_1\) and \(\delta_s\) are the eigenvalues of
-\(M=\bOmega_2^{-1/2} \diag(\bpi_2(\hat\theta))^{-1} \bOmega_2^{-1/2}\).
+\(M=\bOmega_2^{-1/2} \diag(\bpi_2(\theta_0))^{-1} \bOmega_2^{-1/2}\).
 
 For calculation of p-values, a moment matching procedure can be employed
 (Jamil et al., 2025; Maydeu-Olivares \& Joe, 2008), where the first
@@ -894,6 +882,49 @@ involves \(\hat\bXi=\hat\bOmega_2^{+}\), while the Pearson test involves
 \(\hat\bXi = \diag(\bpi_2(\hat\theta))^{-1}\). Other choices for this
 weight matrix are \(\hat\bXi = \bI\) (RSS test) or
 \(\hat\bXi = \hat\bSigma_2^{-1}\) (Multinomial test).
+Table~\ref{tbl-test-weights} summarises the test weights discussed so
+far.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0492}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2295}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.6066}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1148}}@{}}
+\caption{Various LIGOF test statistics for ordinal CFA
+models.}\label{tbl-test-weights}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Name
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(\hat{\bXi}\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+D.f.
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Name
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(\hat{\bXi}\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+D.f.
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & Wald & \(\hat{\bOmega}^+_2\) & \(S-t\) \\
+2 & Wald (VCF) &
+\(\bDelta_{2}^\perp \big( (\bDelta_{2}^\perp)^\top \bSigma_2 \bDelta_{2}^\perp \big)^{-1} (\bDelta_{2})^\top\)
+& \(S-t\) \\
+3 & Wald (Diag.) & \(\diag(\hat{\bOmega}_2)^{-1}\) & est. \\
+4 & Pearson & \(\diag(\hat{\bpi}_2)^{-1}\) & est. \\
+5 & RSS & \(\mathbf I\) & est. \\
+6 & Multinomial & \(\hat{\bSigma}_2^{-1}\) & est. \\
+\end{longtable}
 
 \section{Usage}\label{usage}
 

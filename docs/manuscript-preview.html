@@ -2255,9 +2255,9 @@ X^2 = n \, \hat{\mathbf e}_2^\top \hat{\boldsymbol\Omega}_2^{-1} \hat{\mathbf e}
 \]</span> where <span class="math inline">\(\hat{\boldsymbol\Omega}_2\)</span> is a consistent estimator of <span class="math inline">\({\boldsymbol\Omega}_2\)</span>. This test statistic is asymptotically distributed as chi square under the null hypothesis, with degrees of freedom equal to <span class="math inline">\(S-t\)</span>, i.e.&nbsp;the number of lower-order moments used in the test minus the number of parameters estimated.</p>
 <p>The computational challenges here are in the estimation of <span class="math inline">\(\hat{\boldsymbol\Omega}_2\)</span> as well as the inversion of the matrix. Addressing the second issue first, suppose an estimator <span class="math inline">\(\hat{\boldsymbol\Omega}_2\)</span> is available, then the Moore-Penrose pseudoinverse <span class="math inline">\(\hat{\boldsymbol\Omega}_2^+\)</span> can be computed using the singular value decomposition (SVD) of <span class="math inline">\(\hat{\boldsymbol\Omega}_2\)</span>. This sidesteps any numerical instabilities that may occur when inverting the matrix directly, since the rank of <span class="math inline">\({\boldsymbol\Omega}_2\)</span> may be deficient <span class="citation" data-cites="reiser1996analysis">(<a href="#ref-reiser1996analysis" role="doc-biblioref">Reiser, 1996</a>)</span>, although inversion can still be computationally challenging when the dimension <span class="math inline">\(S\)</span> is large.</p>
 <p><span class="citation" data-cites="jamil2025pairwise">Jamil et al. (<a href="#ref-jamil2025pairwise" role="doc-biblioref">2025</a>)</span> instead proposed a diagonal Wald test, in which <span class="math inline">\(\mathop{\mathrm{diag}}(\hat{\boldsymbol\Omega}_2)^{-1}\)</span> is used instead of the full matrix inverse. Since inverting a diagonal matrix is straightforward compared to the full (pseudo) inverse, this is indeed computationally efficient. However, simulation stadies show that this is not as powerful as the full Wald test, in the context of pairwise likelihood estimation of binary CFA models.</p>
-<p>On the estimation of <span class="math inline">\({\boldsymbol\Omega}_2\)</span>, which involves estimation of the <span class="math inline">\({\mathbf Q}\)</span> matrix, which may be involved depending on the estimation method used. A very attractive proposal by Maydeu-Olivares and colleagues <span class="citation" data-cites="maydeu2005limited maydeu2006limited maydeu2008overview">(<a href="#ref-maydeu2005limited" role="doc-biblioref">Maydeu-Olivares &amp; Joe, 2005</a>, <a href="#ref-maydeu2006limited" role="doc-biblioref">2006</a>, <a href="#ref-maydeu2008overview" role="doc-biblioref">2008</a>)</span> is to consider using a matrix <span class="math inline">\({\boldsymbol\Xi}\)</span> such that <span class="math inline">\({\boldsymbol\Omega}_2\)</span> is a generalised inverse of <span class="math inline">\({\boldsymbol\Xi}\)</span>, i.e.&nbsp;<span class="math inline">\({\boldsymbol\Xi}= {\boldsymbol\Xi}{\boldsymbol\Omega}_2 {\boldsymbol\Xi}\)</span>. By denoting <span class="math inline">\({\boldsymbol\Delta}_{2,\pi}^\perp\)</span> to be an <span class="math inline">\(S\times (S-t)\)</span> orthogonal complement to <span class="math inline">\({\boldsymbol\Delta}_{2,\pi}\)</span> satisfying <span class="math inline">\({\boldsymbol\Delta}_{2,\pi}^\perp {\boldsymbol\Delta}_{2,\pi}^\top = {\mathbf 0}\)</span>, it can be shown that <span class="math inline">\(X^2 = \hat{\mathbf e}_2^\top \hat{\boldsymbol\Xi}\hat{\mathbf e}_2\)</span> converges to the Wald test statistic with similar degrees of freedom <span class="citation" data-cites="jamil2025pairwise">(<a href="#ref-jamil2025pairwise" role="doc-biblioref">Jamil et al., 2025</a>)</span>, where <span class="math display">\[
-{\boldsymbol\Xi}= {\boldsymbol\Delta}_{2,\pi}^\perp \big( ({\boldsymbol\Delta}_{2,\pi}^\perp)^\top {\boldsymbol\Sigma}_2 {\boldsymbol\Delta}_{2,\pi}^\perp \big)^{-1} ({\boldsymbol\Delta}_{2,\pi})^\top.
-\]</span> This is advantageous in that it does not require the estimation of <span class="math inline">\({\mathbf Q}\)</span>, and only requires the Jacobian <span class="math inline">\({\boldsymbol\Delta}_{2,\pi}\)</span> as well as a consistent estimator for <span class="math inline">\({\boldsymbol\Sigma}_2\)</span>, which can be obtained from a plug-in estimator using the model-implied probabilities <span class="math inline">\({\boldsymbol\pi}(\hat\theta)\)</span>.</p>
+<p>On the estimation of <span class="math inline">\({\boldsymbol\Omega}_2\)</span>, which involves estimation of the <span class="math inline">\({\mathbf Q}\)</span> matrix, which may be involved depending on the estimation method used. A very attractive proposal by Maydeu-Olivares and colleagues <span class="citation" data-cites="maydeu2005limited maydeu2006limited maydeu2008overview">(<a href="#ref-maydeu2005limited" role="doc-biblioref">Maydeu-Olivares &amp; Joe, 2005</a>, <a href="#ref-maydeu2006limited" role="doc-biblioref">2006</a>, <a href="#ref-maydeu2008overview" role="doc-biblioref">2008</a>)</span> is to consider using a matrix <span class="math inline">\({\boldsymbol\Xi}\)</span> such that <span class="math inline">\({\boldsymbol\Omega}_2\)</span> is a generalised inverse of <span class="math inline">\({\boldsymbol\Xi}\)</span>, i.e.&nbsp;<span class="math inline">\({\boldsymbol\Xi}= {\boldsymbol\Xi}{\boldsymbol\Omega}_2 {\boldsymbol\Xi}\)</span>. By denoting <span class="math inline">\({\boldsymbol\Delta}_{2}^\perp\)</span> to be an <span class="math inline">\(S\times (S-t)\)</span> orthogonal complement to <span class="math inline">\({\boldsymbol\Delta}_{2}\)</span> satisfying <span class="math inline">\({\boldsymbol\Delta}_{2}^\perp {\boldsymbol\Delta}_{2}^\top = {\mathbf 0}\)</span>, it can be shown that <span class="math inline">\(X^2 = \hat{\mathbf e}_2^\top \hat{\boldsymbol\Xi}\hat{\mathbf e}_2\)</span> converges to the Wald test statistic with similar degrees of freedom <span class="citation" data-cites="jamil2025pairwise">(<a href="#ref-jamil2025pairwise" role="doc-biblioref">Jamil et al., 2025</a>)</span>, where <span class="math display">\[
+{\boldsymbol\Xi}= {\boldsymbol\Delta}_{2}^\perp \big( ({\boldsymbol\Delta}_{2}^\perp)^\top {\boldsymbol\Sigma}_2 {\boldsymbol\Delta}_{2}^\perp \big)^{-1} ({\boldsymbol\Delta}_{2})^\top.
+\]</span> This is advantageous in that it does not require the estimation of <span class="math inline">\({\mathbf Q}\)</span>, and only requires the Jacobian <span class="math inline">\({\boldsymbol\Delta}_{2}\)</span> as well as a consistent estimator for <span class="math inline">\({\boldsymbol\Sigma}_2\)</span>.</p>
 </section>
 <section id="pearson-and-general-ligof-tests" class="level3" data-number="2.6">
 <h3 data-number="2.6" class="anchored" data-anchor-id="pearson-and-general-ligof-tests"><span class="header-section-number">2.6</span> Pearson and general LIGOF tests</h3>
@@ -2269,9 +2269,72 @@ X^2
 n \sum_{i,k} \frac{p_k^{(i)} - \pi_k^{(i)}(\hat\theta)}{\pi_k^{(i)}(\hat\theta)} +
 n \sum_{i&lt;j}\sum_{k&lt;l} \frac{p_{k,l}^{(ij)} - \pi_{k,l}^{(ij)}(\hat\theta)}{\pi_{k,l}^{(ij)}(\hat\theta)},
 \end{aligned}
-\]</span> where <span class="math inline">\(p_k^{(i)}\)</span> and <span class="math inline">\(p_{k,l}^{(ij)}\)</span> are the sample estimates for the univariate and bivariate response probabilities defined earlier. Similar test statistics were studied by <span class="citation" data-cites="cai2006limitedinformation">Cai et al. (<a href="#ref-cai2006limitedinformation" role="doc-biblioref">2006</a>)</span> and <span class="citation" data-cites="bartholomew2002goodness">Bartholomew &amp; Leung (<a href="#ref-bartholomew2002goodness" role="doc-biblioref">2002</a>)</span>, where the latter considered only bivariate margins. The Pearson test statistic does not follow an asymptotic chi-square distribution because of the dependence of the summands in the above equation. It does however converge to a sum of scaled chi-square variables <span class="math inline">\(\sum_{s=1}^S \delta_s Z_s\)</span>, where each <span class="math inline">\(Z_s \,\overset{\text{iid}}{\sim}\,\chi^2_1\)</span> and <span class="math inline">\(\delta_s\)</span> are the eigenvalues of <span class="math inline">\(M={\boldsymbol\Omega}_2^{-1/2} \mathop{\mathrm{diag}}({\boldsymbol\pi}_2(\hat\theta))^{-1} {\boldsymbol\Omega}_2^{-1/2}\)</span>.</p>
+\]</span> where <span class="math inline">\(p_k^{(i)}\)</span> and <span class="math inline">\(p_{k,l}^{(ij)}\)</span> are the sample estimates for the univariate and bivariate response probabilities defined earlier. Similar test statistics were studied by <span class="citation" data-cites="cai2006limitedinformation">Cai et al. (<a href="#ref-cai2006limitedinformation" role="doc-biblioref">2006</a>)</span> and <span class="citation" data-cites="bartholomew2002goodness">Bartholomew &amp; Leung (<a href="#ref-bartholomew2002goodness" role="doc-biblioref">2002</a>)</span>, where the latter considered only bivariate margins. The Pearson test statistic does not follow an asymptotic chi-square distribution because of the dependence of the summands in the above equation. It does however converge to a sum of scaled chi-square variables <span class="math inline">\(\sum_{s=1}^S \delta_s Z_s\)</span>, where each <span class="math inline">\(Z_s \,\overset{\text{iid}}{\sim}\,\chi^2_1\)</span> and <span class="math inline">\(\delta_s\)</span> are the eigenvalues of <span class="math inline">\(M={\boldsymbol\Omega}_2^{-1/2} \mathop{\mathrm{diag}}({\boldsymbol\pi}_2(\theta_0))^{-1} {\boldsymbol\Omega}_2^{-1/2}\)</span>.</p>
 <p>For calculation of p-values, a moment matching procedure can be employed <span class="citation" data-cites="maydeu2008overview jamil2025pairwise">(<a href="#ref-jamil2025pairwise" role="doc-biblioref">Jamil et al., 2025</a>; <a href="#ref-maydeu2008overview" role="doc-biblioref">Maydeu-Olivares &amp; Joe, 2008</a>)</span>, where the first three moments of <span class="math inline">\(X^2\)</span> are matched to the first three moments of some chi-square random variate, which is then used as the reference distribution to conduct the test. The moments of <span class="math inline">\(X^2\)</span> are estimated using trace product formulae involving <span class="math inline">\(\mathop{\mathrm{diag}}({\boldsymbol\pi}_2(\hat\theta))\)</span> as well as <span class="math inline">\(\hat{\boldsymbol\Omega}_2\)</span>. Though the Pearson test looks as if the <span class="math inline">\({\boldsymbol\Omega}_2\)</span> matrix is not required, it is actually required to compute the p-values.</p>
-<p>More generally, any LIGOF test statistic can be constructed using <span class="math inline">\(X^2 = \hat{\mathbf e}_2^\top \hat{\boldsymbol\Xi}\hat{\mathbf e}_2\)</span>, where <span class="math inline">\(\hat{\boldsymbol\Xi}\xrightarrow{\text D} {\boldsymbol\Xi}\)</span> is some <span class="math inline">\(S\times S\)</span> weight matrix that can be arbitrarily chosen. We saw earlier that the Wald test involves <span class="math inline">\(\hat{\boldsymbol\Xi}=\hat{\boldsymbol\Omega}_2^{+}\)</span>, while the Pearson test involves <span class="math inline">\(\hat{\boldsymbol\Xi}= \mathop{\mathrm{diag}}({\boldsymbol\pi}_2(\hat\theta))^{-1}\)</span>. Other choices for this weight matrix are <span class="math inline">\(\hat{\boldsymbol\Xi}= {\mathbf I}\)</span> (RSS test) or <span class="math inline">\(\hat{\boldsymbol\Xi}= \hat{\boldsymbol\Sigma}_2^{-1}\)</span> (Multinomial test).</p>
+<p>More generally, any LIGOF test statistic can be constructed using <span class="math inline">\(X^2 = \hat{\mathbf e}_2^\top \hat{\boldsymbol\Xi}\hat{\mathbf e}_2\)</span>, where <span class="math inline">\(\hat{\boldsymbol\Xi}\xrightarrow{\text D} {\boldsymbol\Xi}\)</span> is some <span class="math inline">\(S\times S\)</span> weight matrix that can be arbitrarily chosen. We saw earlier that the Wald test involves <span class="math inline">\(\hat{\boldsymbol\Xi}=\hat{\boldsymbol\Omega}_2^{+}\)</span>, while the Pearson test involves <span class="math inline">\(\hat{\boldsymbol\Xi}= \mathop{\mathrm{diag}}({\boldsymbol\pi}_2(\hat\theta))^{-1}\)</span>. Other choices for this weight matrix are <span class="math inline">\(\hat{\boldsymbol\Xi}= {\mathbf I}\)</span> (RSS test) or <span class="math inline">\(\hat{\boldsymbol\Xi}= \hat{\boldsymbol\Sigma}_2^{-1}\)</span> (Multinomial test). <a href="#tbl-test-weights" class="quarto-xref">Table&nbsp;3</a> summarises the test weights discussed so far.</p>
+<div id="tbl-test-weights" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-test-weights-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Various LIGOF test statistics for ordinal CFA models.
+</figcaption>
+<div aria-describedby="tbl-test-weights-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 4%">
+<col style="width: 22%">
+<col style="width: 60%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Name</th>
+<th><span class="math inline">\(\hat{{\boldsymbol\Xi}}\)</span></th>
+<th>D.f.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Wald</td>
+<td><span class="math inline">\(\hat{{\boldsymbol\Omega}}^+_2\)</span></td>
+<td><span class="math inline">\(S-t\)</span></td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Wald (VCF)</td>
+<td><span class="math inline">\({\boldsymbol\Delta}_{2}^\perp \big( ({\boldsymbol\Delta}_{2}^\perp)^\top {\boldsymbol\Sigma}_2 {\boldsymbol\Delta}_{2}^\perp \big)^{-1} ({\boldsymbol\Delta}_{2})^\top\)</span></td>
+<td><span class="math inline">\(S-t\)</span></td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Wald (Diag.)</td>
+<td><span class="math inline">\(\mathop{\mathrm{diag}}(\hat{{\boldsymbol\Omega}}_2)^{-1}\)</span></td>
+<td>est.</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Pearson</td>
+<td><span class="math inline">\(\mathop{\mathrm{diag}}(\hat{{\boldsymbol\pi}}_2)^{-1}\)</span></td>
+<td>est.</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>RSS</td>
+<td><span class="math inline">\(\mathbf I\)</span></td>
+<td>est.</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Multinomial</td>
+<td><span class="math inline">\(\hat{{\boldsymbol\Sigma}}_2^{-1}\)</span></td>
+<td>est.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
 </section>
 </section>
 <section id="usage" class="level2" data-number="3">

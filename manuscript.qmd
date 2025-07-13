@@ -520,9 +520,11 @@ However, simulation stadies show that this is not as powerful as the full Wald t
 
 On the estimation of $\bOmega_2$, which involves estimation of the $\bQ$ matrix, which may be involved depending on the estimation method used.
 A very attractive proposal by Maydeu-Olivares and colleagues [@maydeu2005limited; @maydeu2006limited; @maydeu2008overview] is to consider using a matrix $\bXi$ such that $\bOmega_2$ is a generalised inverse of $\bXi$, i.e. $\bXi = \bXi \bOmega_2 \bXi$.
-By denoting $\bDelta_{2,\pi}^\perp$ to be an $S\times (S-t)$ orthogonal complement to $\bDelta_{2,\pi}$ satisfying $\bDelta_{2,\pi}^\perp \bDelta_{2,\pi}^\top = \bzero$, it can be shown that $X^2 = \hat\be_2^\top \hat\bXi \hat\be_2$ converges to the Wald test statistic with similar degrees of freedom [@jamil2025pairwise], where $$
-\bXi = \bDelta_{2,\pi}^\perp \big( (\bDelta_{2,\pi}^\perp)^\top \bSigma_2 \bDelta_{2,\pi}^\perp \big)^{-1} (\bDelta_{2,\pi})^\top.
-$$ This is advantageous in that it does not require the estimation of $\bQ$, and only requires the Jacobian $\bDelta_{2,\pi}$ as well as a consistent estimator for $\bSigma_2$, which can be obtained from a plug-in estimator using the model-implied probabilities $\bpi(\hat\theta)$.
+By denoting $\bDelta_{2}^\perp$ to be an $S\times (S-t)$ orthogonal complement to $\bDelta_{2}$ satisfying $\bDelta_{2}^\perp \bDelta_{2}^\top = \bzero$, it can be shown that $X^2 = \hat\be_2^\top \hat\bXi \hat\be_2$ converges to the Wald test statistic with similar degrees of freedom [@jamil2025pairwise], where 
+$$
+\bXi = \bDelta_{2}^\perp \big( (\bDelta_{2}^\perp)^\top \bSigma_2 \bDelta_{2}^\perp \big)^{-1} (\bDelta_{2})^\top.
+$$ 
+This is advantageous in that it does not require the estimation of $\bQ$, and only requires the Jacobian $\bDelta_{2}$ as well as a consistent estimator for $\bSigma_2$.
 
 ### Pearson and general LIGOF tests
 
@@ -538,7 +540,7 @@ n \sum_{i<j}\sum_{k<l} \frac{p_{k,l}^{(ij)} - \pi_{k,l}^{(ij)}(\hat\theta)}{\pi_
 $$ where $p_k^{(i)}$ and $p_{k,l}^{(ij)}$ are the sample estimates for the univariate and bivariate response probabilities defined earlier.
 Similar test statistics were studied by @cai2006limitedinformation and @bartholomew2002goodness, where the latter considered only bivariate margins.
 The Pearson test statistic does not follow an asymptotic chi-square distribution because of the dependence of the summands in the above equation.
-It does however converge to a sum of scaled chi-square variables $\sum_{s=1}^S \delta_s Z_s$, where each $Z_s \iid \chi^2_1$ and $\delta_s$ are the eigenvalues of $M=\bOmega_2^{-1/2} \diag(\bpi_2(\hat\theta))^{-1} \bOmega_2^{-1/2}$.
+It does however converge to a sum of scaled chi-square variables $\sum_{s=1}^S \delta_s Z_s$, where each $Z_s \iid \chi^2_1$ and $\delta_s$ are the eigenvalues of $M=\bOmega_2^{-1/2} \diag(\bpi_2(\theta_0))^{-1} \bOmega_2^{-1/2}$.
 
 For calculation of p-values, a moment matching procedure can be employed [@maydeu2008overview; @jamil2025pairwise], where the first three moments of $X^2$ are matched to the first three moments of some chi-square random variate, which is then used as the reference distribution to conduct the test.
 The moments of $X^2$ are estimated using trace product formulae involving $\diag(\bpi_2(\hat\theta))$ as well as $\hat\bOmega_2$.
@@ -547,6 +549,24 @@ Though the Pearson test looks as if the $\bOmega_2$ matrix is not required, it i
 More generally, any LIGOF test statistic can be constructed using $X^2 = \hat\be_2^\top \hat\bXi \hat\be_2$, where $\hat\bXi \xrightarrow{\text D} \bXi$ is some $S\times S$ weight matrix that can be arbitrarily chosen.
 We saw earlier that the Wald test involves $\hat\bXi=\hat\bOmega_2^{+}$, while the Pearson test involves $\hat\bXi = \diag(\bpi_2(\hat\theta))^{-1}$.
 Other choices for this weight matrix are $\hat\bXi = \bI$ (RSS test) or $\hat\bXi = \hat\bSigma_2^{-1}$ (Multinomial test).
+@tbl-test-weights summarises the test weights discussed so far.
+
+
+::: {#tbl-test-weights}
+
+|   | Name         | $\hat{\bXi}$                              | D.f.  |
+|---|--------------|-------------------------------------|-------|
+| 1 | Wald         | $\hat{\bOmega}^+_2$                       | $S-t$ |
+| 2 | Wald (VCF)   | $\bDelta_{2}^\perp \big( (\bDelta_{2}^\perp)^\top \bSigma_2 \bDelta_{2}^\perp \big)^{-1} (\bDelta_{2})^\top$                 | $S-t$ |
+| 3 | Wald (Diag.) | $\diag(\hat{\bOmega}_2)^{-1}$             | est.  |
+| 4 | Pearson      | $\diag(\hat{\bpi}_2)^{-1}$               | est.  |
+| 5 | RSS          | $\mathbf I$                         | est.  |
+| 6 | Multinomial  | $\hat{\bSigma}_2^{-1}$   | est.  |
+
+
+Various LIGOF test statistics for ordinal CFA models.
+
+:::
 
 ## Usage
 
